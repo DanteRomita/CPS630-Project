@@ -102,6 +102,9 @@ html {
   background-color: #f4f4f4; /* Sidebar color */
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar .btn {

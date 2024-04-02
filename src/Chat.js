@@ -10,14 +10,11 @@ function Chat({ user }) {
   useEffect(() => {
     const websocket = new WebSocket("ws://localhost:3001");
 
-    websocket.onopen = () => console.log("Connected to the chat server");
     websocket.onmessage = event => {
         const messageData = JSON.parse(event.data);
         displayMessage(messageData.text, messageData.sender);
     };
     
-    websocket.onclose = () => console.log("Disconnected from the chat server");
-
     setWs(websocket);
 
     return () => {
@@ -26,7 +23,6 @@ function Chat({ user }) {
   }, [user.given_name]);
 
   const sendMessage = () => {
-    console.log(user.given_name);
     if (ws) {
       const messageData = { text: message, sender: user.given_name };
       ws.send(JSON.stringify(messageData));
