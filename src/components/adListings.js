@@ -3,18 +3,8 @@ import AdPostings from "./adPosting";
 import AdSearch from "./adSearch";
 
 function AdListings() {
-  // Custom hook to toggle between two states
-  const useToggle = (initialState) => {
-    const [toggleValue, setToggleValue] = useState(initialState);
-
-    const toggler = () => {
-      setToggleValue(!toggleValue);
-    };
-    return [toggleValue, toggler];
-  };
-
-  const [adPostingShown, setAdPostingShown] = useToggle();
-  const [adSearchShown, setAdSearchShown] = useToggle();
+  const [adPostingShown, setAdPostingShown] = useState(false);
+  const [adSearchShown, setAdSearchShown] = useState(true);
   const [ads, setAds] = useState([]);
 
   // Fetch posts from the server when the component mounts
@@ -34,7 +24,10 @@ function AdListings() {
           <button
             className="btn waves-effect center"
             style={{ fontSize: "x-large" }}
-            onClick={setAdSearchShown}
+            onClick={() => {
+              setAdPostingShown(false);
+              setAdSearchShown(true);
+            }}
           >
             Search
           </button>
@@ -44,7 +37,10 @@ function AdListings() {
           <button
             className="btn waves-effect orange darken-4 center"
             style={{ fontSize: "x-large" }}
-            onClick={setAdPostingShown} // Needs to be implemented
+            onClick={() => {
+              setAdPostingShown(true);
+              setAdSearchShown(false);
+            }}
           >
             Post an Ad
           </button>
@@ -92,13 +88,26 @@ function AdListings() {
           <div key={ad._id} className="col s12 xl6">
             <fieldset>
               <h4>{ad.title}</h4>
-              <p><b>Posted by: </b>{ad.user}</p>
-              <p><b>Category: </b>{ad.type}</p>
-              <p><b>Price: </b>$ {ad.price}</p>
-              <p><b>Location: </b>{ad.location}</p>
+              <p>
+                <b>Posted by: </b>
+                {ad.user}
+              </p>
+              <p>
+                <b>Category: </b>
+                {ad.type}
+              </p>
+              <p>
+                <b>Price: </b>$ {ad.price}
+              </p>
+              <p>
+                <b>Location: </b>
+                {ad.location}
+              </p>
               <h5>Ad Description</h5>
               <p>{ad.description}</p>
-              {ad.image && <img style={{ width: "100%" }} src={ad.image} alt="" />}
+              {ad.image && (
+                <img style={{ width: "100%" }} src={ad.image} alt="" />
+              )}
             </fieldset>
           </div>
         ))}
