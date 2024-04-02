@@ -7,6 +7,7 @@ function Login({ setUser }) {
             <GoogleLogin
                 onSuccess={credentialResponse => {
                     let response = jwtDecode(credentialResponse.credential)
+                    console.log(response);
                     if (response.hd === 'torontomu.ca' || response.hd === 'ryerson.ca') {
                         setUser(response);
                         document.getElementById('signInButton').hidden = true;
