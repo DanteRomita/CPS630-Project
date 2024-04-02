@@ -1,8 +1,31 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const PORT = process.env.PORT || 3001;
 const mongoose = require('mongoose');
+const http = require('http');
+const WebSocket = require('ws');
+
+const app = express(); app.use(express.static('public'));
+const bin = http.createServer(app);
+const wss = new WebSocket.Server({ server: bin });
+
+const PORT = process.env.PORT || 3001;
+
+// --- START OF GLOBAL CHAT ROOM SETUP ---
+
+wss.on("connection", (ws) => {
+    ws.on("message", (message) => {
+        message = message.toString()
+        wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        })
+    })
+})
+
+// --- END OF GLOBAL CHAT ROOM SETUP ---
+
+// --- START OF MONGOOSE SETUP ---
 
 // Used 127.0.0.1 instead of localhost for IPv6 compatibility
 mongoose.connect('mongodb://127.0.0.1:27017/adDB', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -22,6 +45,10 @@ const adSchema = new mongoose.Schema({
 });
 
 const adPosting = mongoose.model('adPosting', adSchema);
+
+// --- END OF MONGOOSE SETUP ---
+
+// --- START OF ROUTING SETUP ---
 
 app.use(express.json());
 app.use(cors());
@@ -66,8 +93,9 @@ app.post('/api/ads', async (req, res) => {
     }
 });
 
+// --- END OF ROUTING SETUP ---
 
 // Start the server
-app.listen(PORT, () => {
+bin.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
