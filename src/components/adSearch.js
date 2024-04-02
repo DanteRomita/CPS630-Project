@@ -8,7 +8,17 @@ function AdSearch() {
         <form method="post">
           <div className="input-field">
             <input id="ad-search" type="text" name="ad-title" />
-            <label htmlFor="ad-title">Search</label>
+            <label htmlFor="ad-title">Keyword Search (By Title or Description | Leave Blank for Any)</label>
+          </div>
+          <div className="row">
+            <div className="input-field col s6">
+              <input id="author" type="text" name="author" />
+              <label htmlFor="author">Author (Leave Blank For Any)</label>
+            </div>
+            <div className="input-field col s6">
+              <input id="ad-location" type="text" name="ad-location" />
+              <label htmlFor="ad-location">Location (Leave Blank For Any)</label>
+            </div>
           </div>
           <h6>Price Range (Leave A Field Blank for Any)</h6>
           <div className="row">
@@ -34,15 +44,6 @@ function AdSearch() {
               />
               <label htmlFor="highest-price">Highest ($ CAD)</label>
             </div>
-          </div>
-          <div className="input-field">
-            <input
-              id="ad-location"
-              type="text"
-              name="ad-location"
-              placeholder="Any"
-            />
-            <label htmlFor="ad-location">Location</label>
           </div>
           <h5 className="center">Select Category</h5>
           <div className="row">
