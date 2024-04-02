@@ -23,6 +23,11 @@ function Chat({ user }) {
   }, [user.given_name]);
 
   const sendMessage = () => {
+    if (message === "") {
+      alert("Please enter a message")
+      return;
+    }
+
     if (ws) {
       const messageData = { text: message, sender: user.given_name };
       ws.send(JSON.stringify(messageData));
@@ -41,7 +46,7 @@ function Chat({ user }) {
   };
 
   return (
-    <div className="container">
+    <div>
       <h1>Classifieds Global Chat</h1>
       <p>
         Chat with other users here by typing in the box below and clicking the

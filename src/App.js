@@ -16,7 +16,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="app-container">
+      <div>
         <aside className="sidebar">
           <nav className="nav-container">
             <Link className="btn waves-effect" to="/">
@@ -31,7 +31,7 @@ function App() {
               </Link>
             )}
           </nav>
-          <div id="user-profile">
+          <div class="center" id="user-profile">
             <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
               <>
