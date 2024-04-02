@@ -8,7 +8,8 @@ function Login({ setUser }) {
                 onSuccess={credentialResponse => {
                     let response = jwtDecode(credentialResponse.credential)
                     console.log(response);
-                    if (response.hd === 'torontomu.ca' || response.hd === 'ryerson.ca') {
+                    const domain = response.email.split('@')[1];
+                    if (domain === 'torontomu.ca' || domain === 'ryerson.ca' || domain === 'gmail.com') {
                         setUser(response);
                         document.getElementById('signInButton').hidden = true;
                     } else {

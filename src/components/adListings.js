@@ -15,10 +15,6 @@ function AdListings() {
       .catch((error) => console.error("Error fetching posts:", error));
   });
 
-  const handleGlobalChatClick = () => {
-    window.location.href = "global-chat.html";
-  }
-
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
     <div>
@@ -77,13 +73,6 @@ function AdListings() {
           style={{ fontSize: "x-large", margin: "1.5px 0" }}
         >
           Academic Services
-        </button>
-        <button
-          className="btn waves-effect"
-          style={{ fontSize: "x-large", margin: "1.5px 0" }}
-          onClick={handleGlobalChatClick}
-        >
-          Global Chat
         </button>
       </div>
 
