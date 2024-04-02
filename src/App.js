@@ -34,7 +34,7 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/Chat" element={<Chat />} />
+            <Route path="/Chat" element={<Chat user={user} />} />
           </Routes>
         </main>
       </div>
