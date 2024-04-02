@@ -102,7 +102,7 @@ function NewPost() {
               step="0.01"
             />
           </div>
-          <h5 class="center">Select Category</h5>
+          <h5 className="center">Select Category</h5>
           <div className="row center-align">
             <div className="col s4">
               <label>
