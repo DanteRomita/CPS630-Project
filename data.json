@@ -1,0 +1,35 @@
+[
+    {
+      "title": "Vintage Bicycle",
+      "description": "A well-maintained vintage bicycle from the 1970s. Perfect for collectors or casual rides around town.",
+      "price": 150.00,
+      "type": "Items For Sale",
+      "images": [
+        "http://example.com/image1.jpg",
+        "http://example.com/image2.jpg"
+      ],
+      "location": "Downtown",
+      "user": "user123"
+    },
+    {
+      "title": "Textbook for Sale",
+      "description": "Introduction to Economics textbook, barely used, like new. Great for first-year college students.",
+      "price": 45.00,
+      "type": "Academic Services",
+      "images": [
+        "http://example.com/textbook1.jpg"
+      ],
+      "location": "Campus Bookstore",
+      "user": "student456"
+    },
+    {
+      "title": "Looking for a Study Desk",
+      "description": "In need of a sturdy study desk suitable for a small apartment. Preferably under $50.",
+      "price": 0,
+      "type": "Items Wanted",
+      "images": [],
+      "location": "Suburbs",
+      "user": "user789"
+    }
+  ]
+  

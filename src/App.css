@@ -1,0 +1,162 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+.centred {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html {
+  /* Use the standard system font for whatever device the user is using. */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable",
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+
+  /* We could maybe add a stylized heading font later, but for most UI text, we should use the font that the user expects to see for their device. */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #333;
+  padding: 1vw; /* Adjust padding based on viewport width */
+}
+
+.nav-btn {
+  padding: 0.5vw 2vw; /* Increase padding for bigger buttons */
+  border: none;
+  border-radius: 1vw; /* Adjust border radius based on viewport width */
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  font-size: 2vw; /* Adjust font size based on viewport width */
+  margin-right: 1vw; /* Add horizontal spacing between buttons */
+}
+
+.nav-btn:last-child {
+  margin-right: 0; /* Remove right margin for the last button */
+}
+
+.nav-btn:hover {
+  background-color: #777;
+}
+
+.post-ad-container {
+  text-align: center;
+  margin-top: 20px; /* Adjust margin based on your layout */
+}
+
+.post-ad-btn {
+  padding: 20px 40px; /* Adjust padding for button size */
+  border: none;
+  border-radius: 10px; /* Adjust border radius based on your design */
+  background-color: #007bff; /* Example color, replace with your preferred color */
+  color: white;
+  font-size: 2vw; /* Adjust font size for button label */
+  cursor: pointer;
+}
+
+.post-ad-btn:hover {
+  background-color: #0056b3; /* Example color, replace with your preferred color */
+}
+
+.search-container {
+  width: 100%;
+}
+
+#search-bar {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.filter {
+  width: calc(33.33% - 10px);
+}
+
+/* label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#search-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+@media screen and (max-width: 600px) {
+  #search-bar {
+    width: calc(100% - 50px);
+  }
+
+  #search-btn {
+    width: 50px;
+  }
+} */
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
