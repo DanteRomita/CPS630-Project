@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifieds Global Chat</title>
+
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body class="container">
+
+    <h6 class="center"><a href="index.html">Back to Home</a></h6>
+    <h1>Classifieds Global Chat</h1>
+    <p>
+        Chat with other users of the TMU classifieds here by typing in the box below and clicking the "Send" button!
+    </p>
+    <fieldset>
+        <div id="messages" style="height: 60vh; overflow: scroll; word-wrap: break-word;"></div>
+
+        <p>
+            <input type="text" id="messageBox" placeholder="Enter message here">
+        </p>
+        <p>
+            <button id="send" title="Send Message" style="display: block; width: 100%; padding: 10px;">Send</button>
+        </p>
+    </fieldset>
+</body>
+
+<script>
+    const ws = new WebSocket("ws://localhost:3500");
+
+    const sendButton = document.querySelector("#send");
+    const messages = document.querySelector("#messages");
+    const messageBox = document.querySelector("#messageBox");
+
+    function displayMessage(message, isUser) {
+        if (isUser) messages.innerHTML += `<hr><p style=color:green>${message}</p>`;
+        else messages.innerHTML += `<hr><p>${message}</p>`;
+        messages.scrollTop = messages.scrollHeight;
+        messageBox.value = "";
+    }
+
+    ws.onopen = () => console.log("A client connected");
+    ws.onclose = () => console.log("A client disconnected");
+
+    ws.onmessage = ({ data }) => displayMessage(data);
+
+    sendButton.onclick = () => {
+        if (!ws) {
+            showMessage("No WebSocket connection :(");
+            return;
+        }
+
+        const message = messageBox.value;
+        ws.send(message);
+        displayMessage(message, true);
+    }
+</script>
+
+</html>

@@ -10,6 +10,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "gapi-script": "^1.2.0",
+    "http": "^0.0.1-security",
     "jwt-decode": "^4.0.0",
     "mongoose": "^8.2.4",
     "nodemon": "^3.1.0",
@@ -17,7 +18,8 @@
     "react-dom": "^18.2.0",
     "react-fade-in": "^2.0.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ws": "^8.16.0"
   },
   "scripts": {
     "start": "react-scripts start",
