@@ -12,7 +12,7 @@ import { useState } from "react";
 function App() {
   const [user, setUser] = useState({});
 
-  const adminEmails = process.env.REACT_APP_ADMINS.split(',');
+  const adminEmails = process.env.REACT_APP_ADMINS.split(",");
 
   return (
     <BrowserRouter>
@@ -25,7 +25,7 @@ function App() {
             <Link className="btn waves-effect" to="/Chat">
               Chat
             </Link>
-            {adminEmails.includes(user.email)  && (
+            {adminEmails.includes(user.email) && (
               <Link className="btn waves-effect" to="/Admin">
                 Admin
               </Link>
@@ -41,17 +41,19 @@ function App() {
             )}
           </div>
         </aside>
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Chat" element={<Chat user={user} />} />
-            {adminEmails.includes(user.email)  && (
-              <>
+        {Object.keys(user).length > 0 ? (
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Chat" element={<Chat user={user} />} />
+              {adminEmails.includes(user.email) && (
                 <Route path="/Admin" element={<Admin user={user} />} />
-              </>
-            )}
-          </Routes>
-        </main>
+              )}
+            </Routes>
+          </main>
+        ) : (
+          <h1>Please log in to view content.</h1>
+        )}
       </div>
     </BrowserRouter>
   );
