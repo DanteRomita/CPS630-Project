@@ -94,7 +94,7 @@ html {
 
 .sidebar {
   width: 100px;
-  height: 100vh;
+  height: 100%;
   position: fixed; 
   left: 0;
   top: 0;
@@ -107,9 +107,8 @@ html {
 }
 
 .sidebar .btn {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none; 
-  font-size: 25px;
+  padding: 6px 8px 0px 16px;
+  text-decoration: none;
   color: white;
   display: block;
 }
@@ -123,21 +122,20 @@ html {
   justify-content: center;
   align-items: center;
   margin: 10px 0;
-  width: 50px; /* Adjust the width as needed */
-  height: 50px; /* Adjust the height as needed */
+  width: 80px; /* Adjust the width as needed */
+  height: 80px; /* Adjust the height as needed */
   border-radius: 15%;
   background-color: #f0f0f0; /* Adjust the background color as needed */
 }
 
 .nav-container .icon-link svg {
-  width: 24px; /* Adjust the icon size as needed */
-  height: 24px; /* Adjust the icon size as needed */
+  width: 30px; /* Adjust the icon size as needed */
+  height: 30px; /* Adjust the icon size as needed */
   color: #000000; /* Adjust the icon color as needed */
 }
 
 .main-content {
-  margin-left: 200px; /* Same as the width of the sidebar */
-  padding: 0px 10px;
+  margin-left: 200px;
 }
 
 /* Add a black background color to the top navigation bar */

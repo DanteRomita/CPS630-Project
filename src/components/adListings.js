@@ -13,7 +13,7 @@ function AdListings() {
       .then((response) => response.json())
       .then((data) => setAds(data))
       .catch((error) => console.error("Error fetching posts:", error));
-  });
+  }, []);
 
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
