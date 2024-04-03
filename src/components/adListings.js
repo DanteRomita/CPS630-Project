@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdPostings from "./adPosting";
 import AdSearch from "./adSearch";
 
-function AdListings() {
+function AdListings({ user }) {
   const [adPostingShown, setAdPostingShown] = useState(false);
   const [adSearchShown, setAdSearchShown] = useState(true);
   const [ads, setAds] = useState([]);
@@ -47,35 +47,7 @@ function AdListings() {
         </p>
       </div>
       {adSearchShown && <AdSearch />}
-      {adPostingShown && <AdPostings />}
-      {/* <h2>Explore</h2>
-      <div className="center" style={{ margin: "1.5px 0" }}>
-        <button
-          className="btn waves-effect"
-          style={{ fontSize: "x-large", margin: "1.5px 0" }}
-        >
-          Show All Items
-        </button>
-        <button
-          className="btn waves-effect"
-          style={{ fontSize: "x-large", margin: "1.5px 0" }}
-        >
-          Items Wanted
-        </button>
-        <button
-          className="btn waves-effect"
-          style={{ fontSize: "x-large", margin: "1.5px 0" }}
-        >
-          Items For Sale
-        </button>
-        <button
-          className="btn waves-effect"
-          style={{ fontSize: "x-large", margin: "1.5px 0" }}
-        >
-          Academic Services
-        </button>
-      </div> */}
-
+      {adPostingShown && <AdPostings user={user}/>}
       <h2>The Classifieds</h2>
       <div className="row">
         {ads.map((ad) => (
@@ -84,11 +56,15 @@ function AdListings() {
               <h4>{ad.title}</h4>
               <p>
                 <b>Posted by: </b>
-                {ad.user}
+                {ad.userEmail}
               </p>
               <p>
                 <b>Category: </b>
                 {ad.type}
+              </p>
+              <p>
+                <b>Posted: </b>
+                {ad.timePosted}
               </p>
               <p>
                 <b>Price: </b>$ {ad.price}

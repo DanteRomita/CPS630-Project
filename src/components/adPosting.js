@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import FadeIn from "react-fade-in";
 
-function NewPost() {
+function NewPost({ user }) {
   const [title, setTitle] = useState("Untitled Ad");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0.00");
   const [type, setType] = useState("Items Wanted");
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState("ONLINE");
-  const [user, setUser] = useState(""); // This should be dynamically set based on logged-in user
 
   const handleImageChange = (e) => {
     // NEEDS WORK
@@ -30,6 +29,8 @@ function NewPost() {
       alert("Location cannot be empty. Please provide a location.");
       return; // Exit the function early if location is empty
     }
+    
+    let userEmail = user.email;
 
     const formData = {
       title,
@@ -38,7 +39,7 @@ function NewPost() {
       type,
       images,
       location,
-      user,
+      userEmail,
     };
 
     try {

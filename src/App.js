@@ -47,7 +47,7 @@ function App() {
         {Object.keys(user).length > 0 ? (
           <main className="main-content">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home user={user}/>} />
               <Route path="/Chat" element={<Chat user={user} />} />
               {adminEmails.includes(user.email) && (
                 <Route path="/Admin" element={<Admin user={user} />} />

@@ -2,12 +2,12 @@ import "./App.css";
 import AdListings from "./components/adListings";
 import FadeIn from "react-fade-in";
 
-function App() {
+function App({ user }) {
 
   return (
     <div className="App">
       <FadeIn>
-        <AdListings />
+        <AdListings user={user}/>
       </FadeIn>
     </div>
   );

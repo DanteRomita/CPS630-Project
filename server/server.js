@@ -39,14 +39,14 @@ mongoose
 
 // Define a schema for the ad posting
 const adSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  price: Number,
-  type: String,
-  images: [String], // Assuming images are stored as an array of URLs
-  location: String,
-  timestamp: { type: Date, default: Date.now }, // Automatically set to the current date and time
-  // user: String // This could be a user ID or username, depending on your user management strategy
+    title: String,
+    description: String,
+    price: Number,
+    type: String,
+    images: [String], // Assuming images are stored as an array of URLs
+    location: String,
+    userEmail: String, // User email
+    timePosted: String,
 });
 
 const adPosting = mongoose.model("adPosting", adSchema);
@@ -78,21 +78,24 @@ app.get("/api/ads", async (req, res) => {
 // POST requests
 
 // Route to create a new ad posting
-app.post("/api/ads", async (req, res) => {
-  console.log(req.body);
-  const { title, description, price, type, images, location, user } = req.body;
+app.post('/api/ads', async (req, res) => {
+    console.log(req.body);
+    const { title, description, price, type, images, location, userEmail } = req.body;
 
-  try {
-    // Create a new ad posting with all provided fields
-    const newPost = new adPosting({
-      title,
-      description,
-      price,
-      type,
-      images, // Assuming this is an array of image URLs from the request body
-      location,
-      user,
-    });
+    try {
+        let timePosted = formatDate(Date.now());
+
+        // Create a new ad posting with all provided fields
+        const newPost = new adPosting({
+            title,
+            description,
+            price,
+            type,
+            images, // Assuming this is an array of image URLs from the request body
+            location,
+            userEmail,
+            timePosted,
+        });
 
     await newPost.save(); // Save the new ad posting to the database
     res.status(201).json(newPost); // Respond with the created ad posting
@@ -175,3 +178,15 @@ app.post("/api/ads/search", async (req, res) => {
 bin.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+function formatDate(date) {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    // Array of month names
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    // Get the month name using the month number as an index
+    const month = months[d.getMonth()];
+    const year = d.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  }
