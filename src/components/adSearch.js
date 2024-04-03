@@ -122,7 +122,7 @@ Academic Services: ${searchFormData.AcademicServices}`
             </div>
           </div>
           <h5 className="center">Select Category</h5>
-          <p class="center">If all checkboxes are unchecked, ads of all categories will be returned.</p>
+          <p className="center">If all checkboxes are unchecked, ads of all categories will be returned.</p>
           <div className="row">
             <div className="col s4 center">
               <label style={{ marginRight: "1vw" }}>
