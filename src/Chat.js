@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FadeIn from "react-fade-in";
 import "./App.css";
 
 function Chat({ user }) {
@@ -11,10 +12,10 @@ function Chat({ user }) {
     const websocket = new WebSocket("ws://localhost:3001");
 
     websocket.onmessage = event => {
-        const messageData = JSON.parse(event.data);
-        displayMessage(messageData.text, messageData.sender);
+      const messageData = JSON.parse(event.data);
+      displayMessage(messageData.text, messageData.sender);
     };
-    
+
     setWs(websocket);
 
     return () => {
@@ -47,42 +48,44 @@ function Chat({ user }) {
   };
 
   return (
-    <div>
-      <h1>Classifieds Global Chat</h1>
-      <p>
-        Chat with other users here by typing in the box below and clicking the
-        "Send" button!
-      </p>
-      <fieldset>
-        <div
-          id="messages"
-          style={{ height: "60vh", overflow: "scroll", wordWrap: "break-word" }}
-        >
-          {messages.map((msg, index) => (
-            <p
-              key={index} style={{ color: msg.isCurrentUser ? "green" : "black" }}
-            >
-              {msg.isCurrentUser ? "You" : msg.sender}: {msg.text}
-            </p>
-          ))}
-        </div>
+    <div className="App">
+      <FadeIn>
+        <h1>Classifieds Global Chat</h1>
+        <p>
+          Chat with other users here by typing in the box below and clicking the
+          "Send" button!
+        </p>
+        <fieldset>
+          <div
+            id="messages"
+            style={{ height: "60vh", overflow: "scroll", wordWrap: "break-word" }}
+          >
+            {messages.map((msg, index) => (
+              <p
+                key={index} style={{ color: msg.isCurrentUser ? "green" : "black" }}
+              >
+                {msg.isCurrentUser ? "You" : msg.sender}: {msg.text}
+              </p>
+            ))}
+          </div>
 
-        <input
-          type="text"
-          id="messageBox"
-          placeholder="Enter message here"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button
-          id="send"
-          title="Send Message"
-          style={{ display: "block", width: "100%", padding: "10px" }}
-          onClick={sendMessage}
-        >
-          Send
-        </button>
-      </fieldset>
+          <input
+            type="text"
+            id="messageBox"
+            placeholder="Enter message here"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button
+            id="send"
+            title="Send Message"
+            style={{ display: "block", width: "100%", padding: "10px" }}
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </fieldset>
+      </FadeIn>
     </div>
   );
 }

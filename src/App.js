@@ -8,6 +8,9 @@ import UserProfile from "./components/userProfile";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faComment, faUserShield } from '@fortawesome/free-solid-svg-icons';
+
 
 function App() {
   const [user, setUser] = useState({});
@@ -18,19 +21,19 @@ function App() {
     <BrowserRouter>
       <div>
         <aside className="sidebar">
-          <nav className="nav-container">
-            <Link className="btn waves-effect" to="/">
-              Home
+          <div className="nav-container">
+            <Link className="btn waves-effect icon-link center" to="/">
+              <FontAwesomeIcon icon={faHome} />
             </Link>
-            <Link className="btn waves-effect" to="/Chat">
-              Chat
+            <Link className="btn waves-effect icon-link center" to="/Chat">
+              <FontAwesomeIcon icon={faComment} />
             </Link>
             {adminEmails.includes(user.email) && (
-              <Link className="btn waves-effect" to="/Admin">
-                Admin
+              <Link className="btn waves-effect icon-link center" to="/Admin">
+                <FontAwesomeIcon icon={faUserShield} />
               </Link>
             )}
-          </nav>
+          </div>
           <div className="center" id="user-profile">
             <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
