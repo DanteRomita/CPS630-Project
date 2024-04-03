@@ -31,7 +31,7 @@ function App() {
               </Link>
             )}
           </nav>
-          <div class="center" id="user-profile">
+          <div className="center" id="user-profile">
             <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
               <>
@@ -52,7 +52,9 @@ function App() {
             </Routes>
           </main>
         ) : (
-          <h1>Please log in to view content.</h1>
+          <div className="container right">
+            <h1 className="right">Please log in to view content.</h1>
+          </div>
         )}
       </div>
     </BrowserRouter>
