@@ -14,9 +14,9 @@ function NewSearch() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (lowestPrice > highestPrice) {
+    if (parseFloat(lowestPrice) > parseFloat(highestPrice)) {
       alert("Lowest price cannot be higher than the highest price");
-      return
+      return;
     }
 
     console.log(
@@ -41,15 +41,13 @@ function NewSearch() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
-        .catch((error) => console.error("Error:", error));
+      }).catch((error) => console.error("Error:", error));
     } catch (error) {
       console.error("Error finding posts: ", error);
     }
 
     alert("Search submitted successfully! Scroll down to view results.");
   };
-
 
   return (
     <div className="search-container">
@@ -118,7 +116,10 @@ function NewSearch() {
             </div>
           </div>
           <h5 className="center">Select Category</h5>
-          <p className="center">If all checkboxes are unchecked, ads of all categories will be returned.</p>
+          <p className="center">
+            If all checkboxes are unchecked, ads of all categories will be
+            returned.
+          </p>
           <div className="row">
             <div className="col s4 center">
               <label style={{ marginRight: "1vw" }}>
