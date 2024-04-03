@@ -33,7 +33,6 @@ function App() {
                 <FontAwesomeIcon icon={faUserShield} />
               </Link>
             )}
-
           </div>
           <div className="center" id="user-profile">
             <LoginButton setUser={setUser} />
@@ -56,7 +55,9 @@ function App() {
             </Routes>
           </main>
         ) : (
-          <h1>Please log in to view content.</h1>
+          <div className="container right">
+            <h1 className="right">Please log in to view content.</h1>
+          </div>
         )}
       </div>
     </BrowserRouter>
