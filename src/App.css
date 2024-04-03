@@ -93,7 +93,7 @@ html {
 }
 
 .sidebar {
-  width: 100px;
+  width: 200px;
   height: 100vh;
   position: fixed; 
   left: 0;
@@ -114,8 +114,18 @@ html {
   display: block;
 }
 
-.sidebar .btn:hover {
+.sidebar {
+  height: 100vh; /* Sets the sidebar height to cover the full viewport height */
+  overflow-y: hidden; /* Hides vertical scrollbar */
   color: #f1f1f1; /* Link hover color */
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: column; /* Aligns the icons vertically */
+  align-items: center; /* Centers icons horizontally */
+  justify-content: center; /* Centers content vertically if there's extra space */
+  height: calc(100% - 120px); /* Adjust based on other elements inside sidebar */
 }
 
 .nav-container .icon-link {

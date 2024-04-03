@@ -21,20 +21,20 @@ function App() {
     <BrowserRouter>
       <div>
         <aside className="sidebar">
-          <nav className="nav-container">
-            <Link className="btn waves-effect icon-link" to="/">
+          <div className="nav-container">
+            <Link className="btn waves-effect icon-link center" to="/">
               <FontAwesomeIcon icon={faHome} />
             </Link>
-            <Link className="btn waves-effect icon-link" to="/Chat">
+            <Link className="btn waves-effect icon-link center" to="/Chat">
               <FontAwesomeIcon icon={faComment} />
             </Link>
             {adminEmails.includes(user.email) && (
-              <Link className="btn waves-effect icon-link" to="/Admin">
+              <Link className="btn waves-effect icon-link center" to="/Admin">
                 <FontAwesomeIcon icon={faUserShield} />
               </Link>
             )}
 
-          </nav>
+          </div>
           <div className="center" id="user-profile">
             <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
