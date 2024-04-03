@@ -52,8 +52,8 @@ function App() {
             </Routes>
           </main>
         ) : (
-          <div className="container">
-            <h1 >Please log in to view content.</h1>
+          <div className="container right">
+            <h1 className="right">Please log in to view content.</h1>
           </div>
         )}
       </div>
