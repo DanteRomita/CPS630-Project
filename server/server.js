@@ -105,10 +105,12 @@ app.post("/api/ads/search", async (req, res) => {
     location,
     lowestPrice,
     highestPrice,
-    itemsWanted,
-    itemsForSale,
-    academicServices,
+    ItemsWanted,
+    ItemsForSale,
+    AcademicServices,
   } = req.body;
+
+  console.log(req.body);
 
   const searchCriteria = {};
 
@@ -127,17 +129,20 @@ app.post("/api/ads/search", async (req, res) => {
   if (highestPrice !== undefined) {
     searchCriteria.price = { ...searchCriteria.price, $lte: highestPrice };
   }
-  if (itemsWanted !== undefined) {
-    searchCriteria.itemsWanted = itemsWanted;
+  if (ItemsWanted !== null) {
+    searchCriteria.ItemsWanted = ItemsWanted;
   }
-  if (itemsForSale !== undefined) {
-    searchCriteria.itemsForSale = itemsForSale;
+  if (ItemsForSale !== null) {
+    searchCriteria.ItemsForSale = ItemsForSale;
   }
-  if (academicServices !== undefined) {
-    searchCriteria.academicServices = academicServices;
+  if (AcademicServices !== null) {
+    searchCriteria.AcademicServices = AcademicServices;
   }
 
+  console.log(searchCriteria);
+
   try {
+    // Needs some work
     const ads = await adPosting.find(searchCriteria);
     res.json(ads);
   } catch (err) {
