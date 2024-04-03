@@ -88,19 +88,18 @@ html {
   margin-top: 20px;
 }
 
-/* Styles for static sidebar */
 .app-container {
   display: flex;
 }
 
 .sidebar {
-  width: 200px; /* Width of sidebar - adjust as necessary */
-  height: 100vh; /* Full height */
-  position: fixed; /* Stay in place on scroll */
+  width: 100px;
+  height: 100vh;
+  position: fixed; 
   left: 0;
   top: 0;
-  background-color: #f4f4f4; /* Sidebar color */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: #f4f4f4;
+  overflow-x: hidden;
   padding-top: 20px;
   display: flex;
   flex-direction: column;
@@ -108,15 +107,32 @@ html {
 }
 
 .sidebar .btn {
-  padding: 6px 8px 6px 16px; /* Some padding inside the sidebar */
-  text-decoration: none; /* Remove the underline from links */
-  font-size: 25px; /* Increase font size */
-  color: #818181; /* Link color */
-  display: block; /* Make the links appear below each other */
+  padding: 6px 8px 6px 16px;
+  text-decoration: none; 
+  font-size: 25px;
+  color: white;
+  display: block;
 }
 
 .sidebar .btn:hover {
   color: #f1f1f1; /* Link hover color */
+}
+
+.nav-container .icon-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  width: 50px; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
+  border-radius: 15%;
+  background-color: #f0f0f0; /* Adjust the background color as needed */
+}
+
+.nav-container .icon-link svg {
+  width: 24px; /* Adjust the icon size as needed */
+  height: 24px; /* Adjust the icon size as needed */
+  color: #000000; /* Adjust the icon color as needed */
 }
 
 .main-content {
@@ -141,13 +157,11 @@ html {
   font-size: 17px;
 }
 
-/* Change the color of links on hover */
 .topnav a:hover {
   background-color: #ddd;
   color: black;
 }
 
-/* Add an active class to highlight the current page */
 .topnav a.active {
   background-color: #4CAF50;
   color: white;

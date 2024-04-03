@@ -14,7 +14,7 @@ function Logout({ setUser }) {
     };
 
     return (
-        <div class="center" id="signOutButton">
+        <div className="center" id="signOutButton">
             <button onClick={logout}>Logout</button>
         </div>
     );
