@@ -28,12 +28,13 @@ function Chat({ user }) {
       return;
     }
 
-    if (ws) {
+    if (ws.readyState === WebSocket.OPEN) {
       const messageData = { text: message, sender: user.given_name };
       ws.send(JSON.stringify(messageData));
       displayMessage(message, true, user.given_name);
       setMessage("");
     } else {
+      alert("No WebSocket connection :(");
       console.log("No WebSocket connection :(");
     }
   };

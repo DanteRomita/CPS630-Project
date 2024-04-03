@@ -8,7 +8,8 @@ function AdSearch() {
         <form method="post">
           <div className="input-field">
             <input id="ad-search" type="text" name="ad-title" />
-            <label htmlFor="ad-title">Keyword Search (By Title or Description | Leave Blank for Any)</label>
+            <label htmlFor="ad-title">Keyword Search*</label>
+            <p>*By Title or Description. Leave Blank for Any</p>
           </div>
           <div className="row">
             <div className="input-field col s6">
