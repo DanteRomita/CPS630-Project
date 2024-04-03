@@ -60,11 +60,16 @@ app.use(cors());
 
 // GET requests
 
+let adSearchResults = undefined;
+
 // Route to get all ad postings
 app.get("/api/ads", async (req, res) => {
   try {
-    const ads = await adPosting.find({});
-    res.json(ads);
+    if (adSearchResults) res.json(adSearchResults)
+    else {
+      const ads = await adPosting.find({});
+      res.json(ads);
+    }
   } catch (err) {
     res.status(500).send(err);
   }
@@ -117,13 +122,13 @@ app.post("/api/ads/search", async (req, res) => {
 
   // Set the default price range
   if (lowestPrice === "" && highestPrice === "") {
-    priceRange.price = { $gte: 0, $lte: 10000000000000000000 };
+    priceRange.price = { $gte: 0.00, $lte: 10000000000000000000.00 };
   } else {
     if (lowestPrice !== "") {
-      priceRange.price = { $gte: lowestPrice };
+      priceRange.price = { $gte: parseFloat(lowestPrice) };
     }
     if (highestPrice !== "") {
-      priceRange.price = { ...priceRange.price, $lte: highestPrice };
+      priceRange.price = { ...priceRange.price, $lte: parseFloat(highestPrice) };
     }
   }
 
@@ -135,14 +140,12 @@ app.post("/api/ads/search", async (req, res) => {
     AcademicServices === false
   ) {
     category = ["Items Wanted", "Items For Sale", "Academic Services"];
+  } else {
+    // Add the selected categories to the category array
+    if (ItemsWanted === true) category.push("Items Wanted");
+    if (ItemsForSale === true) category.push("Items For Sale");
+    if (AcademicServices === true) category.push("Academic Services");
   }
-
-  // Add the selected categories to the category array
-  if (ItemsWanted === true) category.push("Items Wanted");
-
-  if (ItemsForSale === true) category.push("Items For Sale");
-
-  if (AcademicServices === true) category.push("Academic Services");
 
   console.log(category);
   console.log(priceRange);
@@ -161,7 +164,7 @@ app.post("/api/ads/search", async (req, res) => {
     //   price: priceRange.price,
     //   type: { $in: category },
     // }
-    const ads = await adPosting.find({
+    adSearchResults = await adPosting.find({
       $or: [
         { title: { $regex: keywords, $options: "i" } },
         { description: { $regex: keywords, $options: "i" } },
@@ -171,9 +174,9 @@ app.post("/api/ads/search", async (req, res) => {
       price: priceRange.price,
       type: { $in: category },
     });
-    console.log(`AD RESULTS: ${ads}`);
-    console.log(`Number of ADS: ${ads.length}`);
-    res.json(ads);
+    console.log(`AD RESULTS: ${adSearchResults}`);
+    console.log(`Number of ADS: ${adSearchResults.length}`);
+    res.sendStatus(204);
   } catch (err) {
     res.status(500).send(err);
   }

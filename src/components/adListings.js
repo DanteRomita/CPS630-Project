@@ -29,7 +29,7 @@ function AdListings() {
               setAdSearchShown(true);
             }}
           >
-            Search
+            New Search
           </button>
         </p>
 
@@ -48,7 +48,7 @@ function AdListings() {
       </div>
       {adSearchShown && <AdSearch />}
       {adPostingShown && <AdPostings />}
-      {/* <h2>Explore</h2>
+      <h2>Explore</h2>
       <div className="center" style={{ margin: "1.5px 0" }}>
         <button
           className="btn waves-effect"
@@ -74,7 +74,7 @@ function AdListings() {
         >
           Academic Services
         </button>
-      </div> */}
+      </div>
 
       <h2>The Classifieds</h2>
       <div className="row">

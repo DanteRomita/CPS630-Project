@@ -2,48 +2,57 @@ import React, { useState } from "react";
 import FadeIn from "react-fade-in";
 
 function NewSearch() {
-  const [keywords, setKeywords] = useState("");
-  const [author, setAuthor] = useState("");
-  const [location, setLocation] = useState("");
-  const [lowestPrice, setLowestPrice] = useState("");
-  const [highestPrice, setHighestPrice] = useState("");
-  const [ItemsWanted, setItemsWanted] = useState(false);
-  const [ItemsForSale, setsItemForSale] = useState(false);
-  const [AcademicServices, setAcademicServices] = useState(false);
+
+  const [searchFormData, setSearchFormData] = useState({
+    keywords: "",
+    author: "",
+    location: "",
+    lowestPrice: "",
+    highestPrice: "",
+    ItemsWanted: false,
+    ItemsForSale: false,
+    AcademicServices: false,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchFormData({ ...searchFormData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (parseFloat(searchFormData.lowestPrice) > parseFloat(searchFormData.highestPrice)) {
+      alert("Lowest price cannot be higher than the highest price");
+      return
+    }
+
     console.log(
-      `Keywords: ${keywords}\nAuthor: ${author}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
+      `Keywords: ${searchFormData.keywords}
+Author: ${searchFormData.author}
+Lowest Price: ${searchFormData.lowestPrice}
+Highest Price: ${searchFormData.highestPrice}
+Items Wanted: ${searchFormData.ItemsWanted}
+Items For Sale: ${searchFormData.ItemsForSale}
+Academic Services: ${searchFormData.AcademicServices}`
     );
 
-    const formData = {
-      keywords,
-      author,
-      location,
-      lowestPrice,
-      highestPrice,
-      ItemsWanted,
-      ItemsForSale,
-      AcademicServices,
-    };
-
     try {
-      const response = await fetch("http://localhost:3001/api/ads/search", {
+      await fetch("http://localhost:3001/api/ads/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
-      });
-
-      console.log(JSON.stringify(formData));
-      // .then((response) => response.json())
-      // .then((data) => console.log(data))
-      // .catch((error) => console.error("Error:", error));
+        body: JSON.stringify(searchFormData),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error:", error));
     } catch (error) {
       console.error("Error finding posts:", error);
     }
+
+    alert("Search submitted successfully! Scroll down to view results.");
   };
 
   return (
@@ -55,8 +64,8 @@ function NewSearch() {
               id="keywords"
               type="text"
               name="keywords"
-              value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
+              value={searchFormData.keywords}
+              onChange={handleInputChange}
             />
             <label htmlFor="keywords">Keyword Search*</label>
             <p>*By Title or Description. Leave Blank for Any</p>
@@ -67,8 +76,8 @@ function NewSearch() {
                 id="author"
                 type="text"
                 name="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={searchFormData.author}
+                onChange={handleInputChange}
               />
               <label htmlFor="author">Author (Leave Blank For Any)</label>
             </div>
@@ -77,8 +86,8 @@ function NewSearch() {
                 id="location"
                 type="text"
                 name="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                value={searchFormData.location}
+                onChange={handleInputChange}
               />
               <label htmlFor="location">Location (Leave Blank For Any)</label>
             </div>
@@ -93,8 +102,8 @@ function NewSearch() {
                 className="validate"
                 min="0"
                 step="0.01"
-                value={lowestPrice}
-                onChange={(e) => setLowestPrice(e.target.value)}
+                value={searchFormData.lowestPrice}
+                onChange={handleInputChange}
               />
               <label htmlFor="lowest-price">Lowest ($ CAD)</label>
             </div>
@@ -106,40 +115,41 @@ function NewSearch() {
                 className="validate"
                 min="0"
                 step="0.01"
-                value={highestPrice}
-                onChange={(e) => setHighestPrice(e.target.value)}
+                value={searchFormData.highestPrice}
+                onChange={handleInputChange}
               />
               <label htmlFor="highest-price">Highest ($ CAD)</label>
             </div>
           </div>
           <h5 className="center">Select Category</h5>
+          <p class="center">If all checkboxes are unchecked, ads of all categories will be returned.</p>
           <div className="row">
-            <div className="col s4">
+            <div className="col s4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={ItemsWanted}
-                  onChange={(e) => setItemsWanted(e.target.checked)}
+                  value={searchFormData.ItemsWanted}
+                  onChange={handleInputChange}
                 />
                 <span>Items Wanted</span>
               </label>
             </div>
-            <div className="col s4">
+            <div className="col s4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={ItemsForSale}
-                  onChange={(e) => setsItemForSale(e.target.checked)}
+                  value={searchFormData.ItemsForSale}
+                  onChange={handleInputChange}
                 />
                 <span>Items For Sale</span>
               </label>
             </div>
-            <div className="col s4">
+            <div className="col s4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={AcademicServices}
-                  onChange={(e) => setAcademicServices(e.target.checked)}
+                  value={searchFormData.AcademicServices}
+                  onChange={handleInputChange}
                 />
                 <span>Academic Services</span>
               </label>
