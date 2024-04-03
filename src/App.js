@@ -16,7 +16,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div className="container">
         <aside className="sidebar">
           <nav className="nav-container">
             <Link className="btn waves-effect" to="/">
