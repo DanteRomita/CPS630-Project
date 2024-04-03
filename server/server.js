@@ -147,23 +147,8 @@ app.post("/api/ads/search", async (req, res) => {
     if (AcademicServices === true) category.push("Academic Services");
   }
 
-  console.log(category);
-  console.log(priceRange);
-
   try {
-    // Needs some work (or not)
-
-    // FORMAT:
-    // {
-    //   $or: [
-    //     { title: { $regex: keywords, $options: "i" } },
-    //     { description: { $regex: keywords, $options: "i" } },
-    //   ],
-    //   author: { $regex: author, $options: "i" },
-    //   location: { $regex: location, $options: "i" },
-    //   price: priceRange.price,
-    //   type: { $in: category },
-    // }
+    // Search for ads that match the provided keywords
     adSearchResults = await adPosting.find({
       $or: [
         { title: { $regex: keywords, $options: "i" } },
@@ -174,8 +159,10 @@ app.post("/api/ads/search", async (req, res) => {
       price: priceRange.price,
       type: { $in: category },
     });
+    
     console.log(`AD RESULTS: ${adSearchResults}`);
     console.log(`Number of ADS: ${adSearchResults.length}`);
+    
     res.sendStatus(204);
   } catch (err) {
     res.status(500).send(err);
