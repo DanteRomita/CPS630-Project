@@ -11,10 +11,40 @@ function NewSearch() {
   const [ItemsForSale, setsItemForSale] = useState(false);
   const [AcademicServices, setAcademicServices] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Items Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`);
-  }
+    console.log(
+      `Keywords: ${keywords}\nAuthor: ${author}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
+    );
+
+    const formData = {
+      keywords,
+      author,
+      location,
+      lowestPrice,
+      highestPrice,
+      ItemsWanted,
+      ItemsForSale,
+      AcademicServices,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3001/api/ads/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log(JSON.stringify(formData));
+      // .then((response) => response.json())
+      // .then((data) => console.log(data))
+      // .catch((error) => console.error("Error:", error));
+    } catch (error) {
+      console.error("Error finding posts:", error);
+    }
+  };
 
   return (
     <div className="search-container">
@@ -34,21 +64,21 @@ function NewSearch() {
           <div className="row">
             <div className="input-field col s6">
               <input
-              id="author"
-              type="text"
-              name="author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+                id="author"
+                type="text"
+                name="author"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
               />
               <label htmlFor="author">Author (Leave Blank For Any)</label>
             </div>
             <div className="input-field col s6">
               <input
-              id="location"
-              type="text"
-              name="location" 
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+                id="location"
+                type="text"
+                name="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
               <label htmlFor="location">Location (Leave Blank For Any)</label>
             </div>
@@ -87,9 +117,9 @@ function NewSearch() {
             <div className="col s4">
               <label style={{ marginRight: "1vw" }}>
                 <input
-                type="checkbox" 
-                value={ItemsWanted}
-                onChange={(e) => setItemsWanted(e.target.checked)}
+                  type="checkbox"
+                  value={ItemsWanted}
+                  onChange={(e) => setItemsWanted(e.target.checked)}
                 />
                 <span>Items Wanted</span>
               </label>
@@ -97,9 +127,9 @@ function NewSearch() {
             <div className="col s4">
               <label style={{ marginRight: "1vw" }}>
                 <input
-                type="checkbox"
-                value={ItemsForSale}
-                onChange={(e) => setsItemForSale(e.target.checked)}
+                  type="checkbox"
+                  value={ItemsForSale}
+                  onChange={(e) => setsItemForSale(e.target.checked)}
                 />
                 <span>Items For Sale</span>
               </label>
@@ -107,9 +137,9 @@ function NewSearch() {
             <div className="col s4">
               <label style={{ marginRight: "1vw" }}>
                 <input
-                type="checkbox"
-                value={AcademicServices}
-                onChange={(e) => setAcademicServices(e.target.checked)}
+                  type="checkbox"
+                  value={AcademicServices}
+                  onChange={(e) => setAcademicServices(e.target.checked)}
                 />
                 <span>Academic Services</span>
               </label>
