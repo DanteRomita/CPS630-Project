@@ -31,7 +31,7 @@ function App() {
               </Link>
             )}
           </nav>
-          <div class="center" id="user-profile">
+          <div className="center" id="user-profile">
             <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
               <>
