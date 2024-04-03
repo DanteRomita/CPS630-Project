@@ -2,40 +2,37 @@ import React, { useState } from "react";
 import FadeIn from "react-fade-in";
 
 function NewSearch() {
-
-  const [searchFormData, setSearchFormData] = useState({
-    keywords: "",
-    author: "",
-    location: "",
-    lowestPrice: "",
-    highestPrice: "",
-    ItemsWanted: false,
-    ItemsForSale: false,
-    AcademicServices: false,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSearchFormData({ ...searchFormData, [name]: value });
-  };
+  const [keywords, setKeywords] = useState("");
+  const [author, setAuthor] = useState("");
+  const [location, setLocation] = useState("");
+  const [lowestPrice, setLowestPrice] = useState("");
+  const [highestPrice, setHighestPrice] = useState("");
+  const [ItemsWanted, setItemsWanted] = useState(false);
+  const [ItemsForSale, setItemForSale] = useState(false);
+  const [AcademicServices, setAcademicServices] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (parseFloat(searchFormData.lowestPrice) > parseFloat(searchFormData.highestPrice)) {
+    if (lowestPrice > highestPrice) {
       alert("Lowest price cannot be higher than the highest price");
       return
     }
 
     console.log(
-      `Keywords: ${searchFormData.keywords}
-Author: ${searchFormData.author}
-Lowest Price: ${searchFormData.lowestPrice}
-Highest Price: ${searchFormData.highestPrice}
-Items Wanted: ${searchFormData.ItemsWanted}
-Items For Sale: ${searchFormData.ItemsForSale}
-Academic Services: ${searchFormData.AcademicServices}`
+      `Keywords: ${keywords}\nAuthor: ${author}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
     );
+
+    const formData = {
+      keywords,
+      author,
+      location,
+      lowestPrice,
+      highestPrice,
+      ItemsWanted,
+      ItemsForSale,
+      AcademicServices,
+    };
 
     try {
       await fetch("http://localhost:3001/api/ads/search", {
@@ -43,17 +40,16 @@ Academic Services: ${searchFormData.AcademicServices}`
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(searchFormData),
+        body: JSON.stringify(formData),
       })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
         .catch((error) => console.error("Error:", error));
     } catch (error) {
-      console.error("Error finding posts:", error);
+      console.error("Error finding posts: ", error);
     }
 
     alert("Search submitted successfully! Scroll down to view results.");
   };
+
 
   return (
     <div className="search-container">
@@ -64,8 +60,8 @@ Academic Services: ${searchFormData.AcademicServices}`
               id="keywords"
               type="text"
               name="keywords"
-              value={searchFormData.keywords}
-              onChange={handleInputChange}
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
             />
             <label htmlFor="keywords">Keyword Search*</label>
             <p>*By Title or Description. Leave Blank for Any</p>
@@ -76,8 +72,8 @@ Academic Services: ${searchFormData.AcademicServices}`
                 id="author"
                 type="text"
                 name="author"
-                value={searchFormData.author}
-                onChange={handleInputChange}
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
               />
               <label htmlFor="author">Author (Leave Blank For Any)</label>
             </div>
@@ -86,8 +82,8 @@ Academic Services: ${searchFormData.AcademicServices}`
                 id="location"
                 type="text"
                 name="location"
-                value={searchFormData.location}
-                onChange={handleInputChange}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
               <label htmlFor="location">Location (Leave Blank For Any)</label>
             </div>
@@ -102,8 +98,8 @@ Academic Services: ${searchFormData.AcademicServices}`
                 className="validate"
                 min="0"
                 step="0.01"
-                value={searchFormData.lowestPrice}
-                onChange={handleInputChange}
+                value={lowestPrice}
+                onChange={(e) => setLowestPrice(e.target.value)}
               />
               <label htmlFor="lowest-price">Lowest ($ CAD)</label>
             </div>
@@ -115,8 +111,8 @@ Academic Services: ${searchFormData.AcademicServices}`
                 className="validate"
                 min="0"
                 step="0.01"
-                value={searchFormData.highestPrice}
-                onChange={handleInputChange}
+                value={highestPrice}
+                onChange={(e) => setHighestPrice(e.target.value)}
               />
               <label htmlFor="highest-price">Highest ($ CAD)</label>
             </div>
@@ -128,8 +124,8 @@ Academic Services: ${searchFormData.AcademicServices}`
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={searchFormData.ItemsWanted}
-                  onChange={handleInputChange}
+                  value={ItemsWanted}
+                  onChange={(e) => setItemsWanted(e.target.checked)}
                 />
                 <span>Items Wanted</span>
               </label>
@@ -138,8 +134,8 @@ Academic Services: ${searchFormData.AcademicServices}`
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={searchFormData.ItemsForSale}
-                  onChange={handleInputChange}
+                  value={ItemsForSale}
+                  onChange={(e) => setItemForSale(e.target.checked)}
                 />
                 <span>Items For Sale</span>
               </label>
@@ -148,8 +144,8 @@ Academic Services: ${searchFormData.AcademicServices}`
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
-                  value={searchFormData.AcademicServices}
-                  onChange={handleInputChange}
+                  value={AcademicServices}
+                  onChange={(e) => setAcademicServices(e.target.checked)}
                 />
                 <span>Academic Services</span>
               </label>
