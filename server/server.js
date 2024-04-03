@@ -101,7 +101,7 @@ app.post("/api/ads", async (req, res) => {
 app.post("/api/ads/search", async (req, res) => {
   const {
     keywords,
-    author,
+    author, // add this once the user management system is implemented for ad posts
     location,
     lowestPrice,
     highestPrice,
@@ -112,38 +112,67 @@ app.post("/api/ads/search", async (req, res) => {
 
   console.log(req.body);
 
-  const searchCriteria = {};
+  const priceRange = {}; // price range object
+  let category = [];
 
-  if (keywords) {
-    searchCriteria.keywords = keywords;
-  }
-  if (author) {
-    searchCriteria.author = author;
-  }
-  if (location) {
-    searchCriteria.location = location;
-  }
-  if (lowestPrice !== undefined) {
-    searchCriteria.price = { $gte: lowestPrice };
-  }
-  if (highestPrice !== undefined) {
-    searchCriteria.price = { ...searchCriteria.price, $lte: highestPrice };
-  }
-  if (ItemsWanted !== null) {
-    searchCriteria.ItemsWanted = ItemsWanted;
-  }
-  if (ItemsForSale !== null) {
-    searchCriteria.ItemsForSale = ItemsForSale;
-  }
-  if (AcademicServices !== null) {
-    searchCriteria.AcademicServices = AcademicServices;
+  // Set the default price range
+  if (lowestPrice === "" && highestPrice === "") {
+    priceRange.price = { $gte: 0, $lte: 10000000000000000000 };
+  } else {
+    if (lowestPrice !== "") {
+      priceRange.price = { $gte: lowestPrice };
+    }
+    if (highestPrice !== "") {
+      priceRange.price = { ...priceRange.price, $lte: highestPrice };
+    }
   }
 
-  console.log(searchCriteria);
+  // In the case where the user doesn't check any of the three checkboxes
+  // it will default to search for all three
+  if (
+    ItemsWanted === false &&
+    ItemsForSale === false &&
+    AcademicServices === false
+  ) {
+    category = ["Items Wanted", "Items For Sale", "Academic Services"];
+  }
+
+  // Add the selected categories to the category array
+  if (ItemsWanted === true) category.push("Items Wanted");
+
+  if (ItemsForSale === true) category.push("Items For Sale");
+
+  if (AcademicServices === true) category.push("Academic Services");
+
+  console.log(category);
+  console.log(priceRange);
 
   try {
-    // Needs some work
-    const ads = await adPosting.find(searchCriteria);
+    // Needs some work (or not)
+
+    // FORMAT:
+    // {
+    //   $or: [
+    //     { title: { $regex: keywords, $options: "i" } },
+    //     { description: { $regex: keywords, $options: "i" } },
+    //   ],
+    //   author: { $regex: author, $options: "i" },
+    //   location: { $regex: location, $options: "i" },
+    //   price: priceRange.price,
+    //   type: { $in: category },
+    // }
+    const ads = await adPosting.find({
+      $or: [
+        { title: { $regex: keywords, $options: "i" } },
+        { description: { $regex: keywords, $options: "i" } },
+      ],
+      //   author: { $regex: author, $options: "i" },
+      location: { $regex: location, $options: "i" },
+      price: priceRange.price,
+      type: { $in: category },
+    });
+    console.log(`AD RESULTS: ${ads}`);
+    console.log(`Number of ADS: ${ads.length}`);
     res.json(ads);
   } catch (err) {
     res.status(500).send(err);
