@@ -39,17 +39,26 @@ mongoose
 
 // Define a schema for the ad posting
 const adSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    price: Number,
-    type: String,
-    image: String,
-    location: String,
-    userEmail: String, // User email
-    timePosted: String,
+  title: String,
+  description: String,
+  price: Number,
+  type: String,
+  image: String,
+  location: String,
+  userEmail: String, // User email
+  timePosted: String,
 });
 
 const adPosting = mongoose.model("adPosting", adSchema);
+
+// Define a schema for the ad posting
+const userSchema = new mongoose.Schema({
+  email: String,
+  admin: Boolean,
+  banned: Boolean
+});
+
+const userEmail = mongoose.model("userEmail", userSchema);
 
 // --- END OF MONGOOSE SETUP ---
 
@@ -62,14 +71,11 @@ app.use(cors());
 
 let adSearchResults = undefined;
 
-// Route to get all ad postings
-app.get("/api/ads", async (req, res) => {
+// Route to get all users
+app.get("/api/users", async (req, res) => {
   try {
-    if (adSearchResults) res.json(adSearchResults)
-    else {
-      let ads = await adPosting.find({});
-      res.json(ads);
-    }
+    let ads = await userEmail.find({});
+    res.json(ads);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -89,27 +95,114 @@ app.get('/api/ads/:id', async (req, res) => {
   }
 });
 
+// Route to get all ad postings
+app.get("/api/ads", async (req, res) => {
+  try {
+    if (adSearchResults) res.json(adSearchResults)
+    else {
+      let ads = await adPosting.find({});
+      res.json(ads);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 // POST requests
+
+// Route to create new users in the DB or check existing user
+app.post('/api/newUser', async (req, res) => {
+  console.log(req.body);
+  const { email, admin, banned } = req.body;
+
+  try {
+    // Check if the user already exists
+    const existingUser = await userEmail.findOne({ email: email });
+
+    if (existingUser) {
+      // User already exists, don't add to the database
+      console.log(`User ${email} already exists in the database.`);
+      res.status(409).json({ message: 'User already exists' }); // 409 Conflict
+    } else {
+      // User doesn't exist, create a new one
+      let newUser = new userEmail({
+        email,
+        admin,
+        banned
+      });
+
+      await newUser.save(); // Save the new user to the database
+      console.log(`New user ${email} added to the database.`);
+      res.status(201).json(newUser); // 201 Created
+    }
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    res.status(500).send(err); // Send the error as the response
+  }
+});
+
+// Toggle Admin Status
+app.post('/api/users/toggleAdmin', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userEmail.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Toggle the admin field
+    user.admin = !user.admin;
+    await user.save();
+
+    res.json({ message: 'Admin status updated', admin: user.admin });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Toggle Ban Status
+app.post('/api/users/toggleBan', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userEmail.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Toggle the banned field
+    user.banned = !user.banned;
+    await user.save();
+
+    res.json({ message: 'Ban status updated', banned: user.banned });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
-    console.log(req.body);
-    let { title, description, price, type, image, location, userEmail } = req.body;
+  console.log(req.body);
+  let { title, description, price, type, image, location, userEmail } = req.body;
 
-    try {
-        let timePosted = formatDate(Date.now());
+  try {
+    let timePosted = formatDate(Date.now());
 
-        // Create a new ad posting with all provided fields
-        let newPost = new adPosting({
-            title,
-            description,
-            price,
-            type,
-            image,
-            location,
-            userEmail,
-            timePosted
-        });
+    // Create a new ad posting with all provided fields
+    let newPost = new adPosting({
+      title,
+      description,
+      price,
+      type,
+      image,
+      location,
+      userEmail,
+      timePosted
+    });
 
     await newPost.save(); // Save the new ad posting to the database
     console.log(`New Post Created`)
@@ -177,10 +270,10 @@ app.post("/api/ads/search", async (req, res) => {
       price: priceRange.price,
       type: { $in: category },
     });
-    
+
     // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
     // console.log(`Number of ADS: ${adSearchResults.length}`);
-    
+
     res.sendStatus(204);
   } catch (err) {
     res.status(500).send(err);
@@ -193,28 +286,28 @@ app.post("/api/ads/search", async (req, res) => {
 
 // Endpoint to delete a post by ID
 app.delete('/api/ads/:id', async (req, res) => {
-    try {
-      await adPosting.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: 'Ad deleted successfully' });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
-  // Endpoint to update a post by ID
-  app.put('/api/ads/:id', async (req, res) => {
-    try {
-      const updatedAd = await adPosting.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      res.status(200).json(updatedAd);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
+  try {
+    await adPosting.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Ad deleted successfully' });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Endpoint to update a post by ID
+app.put('/api/ads/:id', async (req, res) => {
+  try {
+    const updatedAd = await adPosting.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedAd);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 
 // --- END OF ADMIN ACTIONS ---
 
@@ -224,13 +317,13 @@ bin.listen(PORT, () => {
 });
 
 function formatDate(date) {
-    let d = new Date(date);
-    let day = String(d.getDate()).padStart(2, '0');
-    // Array of month names
-    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    // Get the month name using the month number as an index
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-  
-    return `${day} ${month} ${year}`;
-  }
+  let d = new Date(date);
+  let day = String(d.getDate()).padStart(2, '0');
+  // Array of month names
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  // Get the month name using the month number as an index
+  let month = months[d.getMonth()];
+  let year = d.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}

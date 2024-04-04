@@ -8,20 +8,24 @@ import LoginButton from "./components/login";
 import LogoutButton from "./components/logout";
 import UserProfile from "./components/userProfile";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faComment,
-  faUserShield,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHome, faComment, faUserShield, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [user, setUser] = useState({});
+  const [adminUsers, setAdminUsers] = useState([]);
 
-  const adminEmails = process.env.REACT_APP_ADMINS.split(",");
+  useEffect(() => {
+    fetch("http://localhost:3001/api/users")
+      .then((response) => response.json())
+      .then((users) => {
+        // Assuming the 'admin' field is a boolean that indicates if the user is an admin
+        const admins = users.filter(user => user.admin).map(user => user.email);
+        setAdminUsers(admins);
+      })
+      .catch((error) => console.error("Error fetching users:", error));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -41,7 +45,7 @@ function App() {
             <Link className="btn waves-effect icon-link center" to="/Post">
               <FontAwesomeIcon icon={faSquarePlus} />
             </Link>
-            {adminEmails.includes(user.email) && (
+            {adminUsers.includes(user.email) && (
               <Link className="btn waves-effect icon-link center" to="/Admin">
                 <FontAwesomeIcon icon={faUserShield} />
               </Link>
@@ -71,11 +75,11 @@ function App() {
               <Route path="/Chat" element={<Chat user={user} />} />
               <Route path="/Post" element={<Post user={user} />} />
               <Route path="/ads/:id" element={<AdDetail user={user} />} />
-              {adminEmails.includes(user.email) && (
+              {adminUsers.includes(user.email) && (
                 <Route path="/Admin" element={<Admin user={user} />} />
               )}
             </Routes>
-          )}{" "}
+          )}
         </main>
       </div>
     </BrowserRouter>
