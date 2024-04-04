@@ -50,7 +50,7 @@ function Chat({ user }) {
   return (
     <div className="App">
       <FadeIn>
-        <h1>Classifieds Global Chat</h1>
+        <h1>Global Chat</h1>
         <p>
           Chat with other users here by typing in the box below and clicking the
           "Send" button!

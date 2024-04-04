@@ -17,7 +17,7 @@ function AdListings({ user }) {
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
     <div>
-      <h1>TMU Classifieds</h1>
+      <h1>Metropolitan Market</h1>
       <AdSearch/>
       <div className="ad-list">
         {ads.map((ad) => (
