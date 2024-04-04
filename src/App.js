@@ -59,7 +59,7 @@ function App() {
             <div className="not-logged-in-container">
               <div className="login-prompt">
                 <h1>Welcome to Metropolitan Market</h1>
-                <p>Please log in to view content and manage your ads.</p>
+                <p>Please log in to view ad postings.</p>
                 <LoginButton setUser={setUser} />
               </div>
             </div>
