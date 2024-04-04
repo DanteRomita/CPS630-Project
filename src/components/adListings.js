@@ -12,8 +12,9 @@ function AdListings({ user }) {
     fetch("http://localhost:3001/api/ads")
       .then((response) => response.json())
       .then((data) => setAds(data))
+      .then(console.log(ads))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, []);
+  }, [ads]);
 
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (

@@ -67,7 +67,7 @@ app.get("/api/ads", async (req, res) => {
   try {
     if (adSearchResults) res.json(adSearchResults)
     else {
-      const ads = await adPosting.find({});
+      let ads = await adPosting.find({});
       res.json(ads);
     }
   } catch (err) {
@@ -80,13 +80,13 @@ app.get("/api/ads", async (req, res) => {
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
     console.log(req.body);
-    const { title, description, price, type, images, location, userEmail } = req.body;
+    let { title, description, price, type, images, location, userEmail } = req.body;
 
     try {
         let timePosted = formatDate(Date.now());
 
         // Create a new ad posting with all provided fields
-        const newPost = new adPosting({
+        let newPost = new adPosting({
             title,
             description,
             price,
@@ -94,10 +94,11 @@ app.post('/api/ads', async (req, res) => {
             images, // Assuming this is an array of image URLs from the request body
             location,
             userEmail,
-            timePosted,
+            timePosted
         });
 
     await newPost.save(); // Save the new ad posting to the database
+    console.log(`New Post Created`)
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -107,7 +108,7 @@ app.post('/api/ads', async (req, res) => {
 
 // Route to search for ad postings
 app.post("/api/ads/search", async (req, res) => {
-  const {
+  let {
     keywords,
     author, // add this once the user management system is implemented for ad posts
     location,
@@ -120,7 +121,7 @@ app.post("/api/ads/search", async (req, res) => {
 
   console.log(req.body);
 
-  const priceRange = {}; // price range object
+  let priceRange = {}; // price range object
   let category = [];
 
   // Set the default price range
@@ -163,7 +164,7 @@ app.post("/api/ads/search", async (req, res) => {
       type: { $in: category },
     });
     
-    console.log(`AD RESULTS: ${adSearchResults}`);
+    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
     console.log(`Number of ADS: ${adSearchResults.length}`);
     
     res.sendStatus(204);
@@ -180,13 +181,13 @@ bin.listen(PORT, () => {
 });
 
 function formatDate(date) {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, '0');
+    let d = new Date(date);
+    let day = String(d.getDate()).padStart(2, '0');
     // Array of month names
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     // Get the month name using the month number as an index
-    const month = months[d.getMonth()];
-    const year = d.getFullYear();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
   
     return `${day} ${month} ${year}`;
   }
