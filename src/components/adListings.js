@@ -22,7 +22,7 @@ function AdListings({ user }) {
       <div className="row">
         {ads.map((ad) => (
           <Link to={`/ads/${ad._id}`} key={ad._id} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="col s12 m4">
+            <div className="col s12 xl4">
               <fieldset>
                 <h4>{ad.title}</h4>
                 <p>
@@ -43,6 +43,10 @@ function AdListings({ user }) {
                 <p>
                   <b>Location: </b>
                   {ad.location}
+                </p>
+                <p>
+                  <b>Image: </b>
+                  {ad.image}
                 </p>
                 <h5>Ad Description</h5>
                 <p>{ad.description}</p>

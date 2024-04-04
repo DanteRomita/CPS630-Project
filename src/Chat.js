@@ -21,7 +21,7 @@ function Chat({ user }) {
     return () => {
       websocket.close();
     };
-  }, [user.given_name]);
+  }, [user.email]);
 
   const sendMessage = () => {
     if (message === "") {
@@ -30,9 +30,9 @@ function Chat({ user }) {
     }
 
     if (ws.readyState === WebSocket.OPEN) {
-      const messageData = { text: message, sender: user.given_name };
+      const messageData = { text: message, sender: user.email };
       ws.send(JSON.stringify(messageData));
-      displayMessage(message, true, user.given_name);
+      displayMessage(message, true, user.email);
       setMessage("");
     } else {
       alert("No WebSocket connection :(");
@@ -41,7 +41,7 @@ function Chat({ user }) {
   };
 
   const displayMessage = (message, sender, sender_name) => {
-    const isCurrentUser = sender_name === user.given_name;
+    const isCurrentUser = sender_name === user.email;
     console.log(isCurrentUser)
     const newMessage = { text: message, sender, isCurrentUser };
     setMessages(prevMessages => prevMessages.concat(newMessage));

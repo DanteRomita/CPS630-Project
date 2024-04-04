@@ -43,7 +43,7 @@ const adSchema = new mongoose.Schema({
     description: String,
     price: Number,
     type: String,
-    images: [String], // Assuming images are stored as an array of URLs
+    image: String,
     location: String,
     userEmail: String, // User email
     timePosted: String,
@@ -94,7 +94,7 @@ app.get('/api/ads/:id', async (req, res) => {
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
     console.log(req.body);
-    let { title, description, price, type, images, location, userEmail } = req.body;
+    let { title, description, price, type, image, location, userEmail } = req.body;
 
     try {
         let timePosted = formatDate(Date.now());
@@ -105,7 +105,7 @@ app.post('/api/ads', async (req, res) => {
             description,
             price,
             type,
-            images, // Assuming this is an array of image URLs from the request body
+            image,
             location,
             userEmail,
             timePosted

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import FadeIn from "react-fade-in/lib/FadeIn.js";
 
 function AdDetail() {
   const { id } = useParams(); // This hooks allows you to access the ad ID from the URL
@@ -16,17 +17,19 @@ function AdDetail() {
   if (!ad) return <p>Loading...</p>; // Display loading text until ad details are fetched
 
   return (
-    <div>
-      <h1>{ad.title}</h1>
-      <p><strong>Description:</strong> {ad.description}</p>
-      <p><strong>Price:</strong> ${ad.price}</p>
-      <p><strong>Location:</strong> {ad.location}</p>
-      <p><strong>Posted by:</strong> {ad.userEmail}</p>
-      {ad.images && ad.images.map((image, index) => (
-        <img key={index} src={image} alt={`Ad image ${index + 1}`} style={{ width: "100%" }} />
-      ))}
-      {/* Add more ad details as needed */}
-    </div>
+    <FadeIn>
+      <div>
+        <h1>{ad.title}</h1>
+        <p><strong>Description:</strong> {ad.description}</p>
+        <p><strong>Price:</strong> ${ad.price}</p>
+        <p><strong>Location:</strong> {ad.location}</p>
+        <p><strong>Posted by:</strong> {ad.userEmail}</p>
+        {ad.images && ad.images.map((image, index) => (
+          <img key={index} src={image} alt={`Ad image ${index + 1}`} style={{ width: "100%" }} />
+        ))}
+        {/* Add more ad details as needed */}
+      </div>
+    </FadeIn>
   );
 }
 

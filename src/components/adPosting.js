@@ -6,16 +6,16 @@ function NewPost({ user }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0.00");
   const [type, setType] = useState("Items Wanted");
-  const [images, setImages] = useState([]);
+  const [image, setImage] = useState([]);
   const [location, setLocation] = useState("ONLINE");
 
   const handleImageChange = (e) => {
-    // NEEDS WORK
-    // Convert each file to an object URL and update the images state
-    const filesArray = Array.from(e.target.files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setImages(filesArray);
+    // Handle a single file instead of multiple files
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const fileUrl = URL.createObjectURL(file);
+      setImage(fileUrl);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -37,7 +37,7 @@ function NewPost({ user }) {
       description,
       price,
       type,
-      images,
+      image,
       location,
       userEmail,
     };
@@ -60,7 +60,7 @@ function NewPost({ user }) {
         setDescription("");
         setPrice("");
         setType("Items Wanted");
-        setImages([]);
+        setImage("");
         setLocation("");
         alert("Ad posted successfully!");
       }
@@ -72,7 +72,7 @@ function NewPost({ user }) {
   return (
     <div className="pageContent">
       <FadeIn>
-        <h2>Add a New Ad</h2>
+        <h1>Add a New Ad</h1>
         <form id="newAd" onSubmit={handleSubmit}>
           <div>
             <label>Title:</label>
@@ -143,10 +143,9 @@ function NewPost({ user }) {
             </div>
           </div>
           <div>
-            <label>Images:</label><br />
+            <label>Image:</label><br />
             <input
               type="file"
-              multiple
               onChange={handleImageChange}
               accept="image/*"
             />
