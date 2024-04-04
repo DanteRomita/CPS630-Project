@@ -1,3 +1,9 @@
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable",
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+}
+
 .centred {
   display: flex;
   justify-content: center;
@@ -10,18 +16,6 @@
   gap: 1vw;
   justify-content: center;
   padding: 1vw;
-}
-
-@media (max-width: 1500px) {
-  .ad-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 1000px) {
-  .ad-list {
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
 
 .ad-container {
@@ -48,85 +42,31 @@
   justify-content: space-between;
 }
 
-.ad-title, .ad-price, .ad-icon {
+.ad-title {
+  display: flex;
+  justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5vw;
   font-size: 1vw;
 }
 
-.ad-title {
-  align-self: flex-start; 
+.title-text {
+  width: 90%;
   white-space: nowrap;    
   overflow: hidden;        
   text-overflow: ellipsis; 
-  width: 85.5%;             
-  display: block;        
 }
-
 
 .ad-price {
   align-self: flex-end;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5vw;
+  font-size: 1vw;
 }
 
 .ad-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0vw;
-  font-size: 1.5vw;
-  width: 1.5vw;
-  height: 1.5vw;
-}
-
-html {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable",
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-    sans-serif;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-around;
-  background-color: #333;
-  padding: 1vw; /* Adjust padding based on viewport width */
-}
-
-.nav-btn {
-  padding: 0.5vw 2vw; /* Increase padding for bigger buttons */
-  border: none;
-  border-radius: 1vw; /* Adjust border radius based on viewport width */
-  background-color: #555;
-  color: white;
-  cursor: pointer;
-  font-size: 2vw; /* Adjust font size based on viewport width */
-  margin-right: 1vw; /* Add horizontal spacing between buttons */
-}
-
-.nav-btn:last-child {
-  margin-right: 0; /* Remove right margin for the last button */
-}
-
-.nav-btn:hover {
-  background-color: #777;
-}
-
-.post-ad-container {
-  text-align: center;
-  margin-top: 20px; /* Adjust margin based on your layout */
-}
-
-.post-ad-btn {
-  padding: 20px 40px; /* Adjust padding for button size */
-  border: none;
-  border-radius: 10px; /* Adjust border radius based on your design */
-  background-color: #007bff; /* Example color, replace with your preferred color */
-  color: white;
-  font-size: 2vw; /* Adjust font size for button label */
-  cursor: pointer;
-}
-
-.post-ad-btn:hover {
-  background-color: #0056b3; /* Example color, replace with your preferred color */
+  margin: 0.5vw;
+  text-align: right;
 }
 
 .search-container {
@@ -152,29 +92,26 @@ html {
   width: calc(33.33% - 10px);
 }
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.app-container {
-  display: flex;
+#logo {
+  width: 100%;
+  max-height: auto;
+  margin: 0;
 }
 
 .sidebar {
-  width: 200px;
-  height: 100vh;
+  width: 10vw;
+  height: 100%;
   position: fixed; 
   left: 0;
   top: 0;
   background-color: #f4f4f4;
   overflow-x: hidden;
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+  overflow-y: hidden; 
+  color: #f1f1f1;
 }
 
 .sidebar .btn {
@@ -183,82 +120,50 @@ html {
   display: block;
 }
 
-.sidebar {
-  height: 100vh; /* Sets the sidebar height to cover the full viewport height */
-  overflow-y: hidden; /* Hides vertical scrollbar */
-  color: #f1f1f1; /* Link hover color */
-}
-
-.nav-container {
+.nav-container, #user-profile {
   display: flex;
-  flex-direction: column; /* Aligns the icons vertically */
-  align-items: center; /* Centers icons horizontally */
-  justify-content: center; /* Centers content vertically if there's extra space */
-  height: calc(100% - 120px); /* Adjust based on other elements inside sidebar */
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%;
 }
 
 .nav-container .icon-link {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0;
-  width: 80px; /* Adjust the width as needed */
-  height: 80px; /* Adjust the height as needed */
+  margin: 0.5vw 0;
+  width: 5vw; 
+  height: 5vw; 
   border-radius: 15%;
-  background-color: #f0f0f0; /* Adjust the background color as needed */
+  background-color: #f0f0f0; 
 }
 
 .nav-container .icon-link svg {
-  width: 30px; /* Adjust the icon size as needed */
-  height: 30px; /* Adjust the icon size as needed */
-  color: #000000; /* Adjust the icon color as needed */
+  width: 3vw; 
+  height: 3vw; 
+  color: #000000; 
+}
+
+.btn {
+  margin-bottom: 10px;
+}
+
+#user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  color: #000000;
 }
 
 .main-content {
-  margin-left: 200px;
+  margin-left: 10vw;
 }
 
-/* Add a black background color to the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-}
-
-/* Style the content */
 .content {
   padding: 16px;
-}
-
-/* Style the footer */
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: white;
-  text-align: center;
 }
 
 .delete-icon {
@@ -271,4 +176,42 @@ html {
 
 .delete-icon:hover {
   background-color: #777;
+}
+
+@media (max-width: 1500px) {
+  .ad-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ad-title, .ad-price {
+    font-size: 1.5vw;
+  }
+
+  .sidebar {
+    width: 15vw;
+  }
+
+  .nav-container .icon-link {
+    width: 7vw; 
+    height: 7vw; 
+  }
+
+}
+
+@media (max-width: 1000px) {
+  .ad-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .ad-title, .ad-price {
+    font-size: 3vw;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
 }

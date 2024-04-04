@@ -14,9 +14,7 @@ function Logout({ setUser }) {
     };
 
     return (
-        <div className="center" id="signOutButton">
-            <button onClick={logout}>Logout</button>
-        </div>
+        <button id="signOutButton" className="btn waves-effect icon-link center" onClick={logout}>Logout</button>
     );
 }
 

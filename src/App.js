@@ -27,6 +27,8 @@ function App() {
     <BrowserRouter>
       <div>
         <aside className="sidebar">
+          <img id="logo" src="/logo.png" alt="Logo" />
+
           <div className="nav-container">
             <Link className="btn waves-effect icon-link center" to="/">
               <FontAwesomeIcon icon={faHome} />

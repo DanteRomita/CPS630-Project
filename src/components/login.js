@@ -5,20 +5,25 @@ function Login({ setUser }) {
     return (
         <div id="signInButton">
             <GoogleLogin
-                onSuccess={credentialResponse => {
-                    let response = jwtDecode(credentialResponse.credential)
-                    console.log(response);
-                    const domain = response.email.split('@')[1];
-                    if (domain === 'torontomu.ca' || domain === 'ryerson.ca' || domain === 'gmail.com') {
-                        setUser(response);
-                        document.getElementById('signInButton').hidden = true;
-                    } else {
-                        alert('Must login with torontomu.ca or ryerson.ca domain');
-                    }
-                }}
-                onError={() => {
-                    console.log('Login Failed');
-                }}
+            // type="icon"
+            theme="outline"
+            shape="circle" 
+            size="medium"
+            auto_select="false"
+            onSuccess={credentialResponse => {
+                let response = jwtDecode(credentialResponse.credential)
+                console.log(response);
+                const domain = response.email.split('@')[1];
+                if (domain === 'torontomu.ca' || domain === 'ryerson.ca' || domain === 'gmail.com') {
+                    setUser(response);
+                    document.getElementById('signInButton').hidden = true;
+                } else {
+                    alert('Must login with torontomu.ca or ryerson.ca domain');
+                }
+            }}
+            onError={() => {
+                console.log('Login Failed');
+            }}
             />
         </div>
     );   

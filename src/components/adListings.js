@@ -27,6 +27,17 @@ function AdListings() {
     }
   };
 
+  const getTitleWithIcon = (type, title) => {
+    const icon = getIconForAdType(type);
+    return (
+      <div className="ad-title">
+        <span className="title-text">{title}</span>
+        {icon}
+      </div>
+    );
+  };
+
+
   return (
     <div>
       <h1>Metropolitan Market</h1>
@@ -35,8 +46,7 @@ function AdListings() {
         {ads.map((ad) => (
           <Link to={`/ads/${ad._id}`} key={ad._id} className="ad-container">
             <div className="ad-image" style={{ backgroundImage: `url(${ad.image === "" ? "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" : ad.image})` }}>
-              {getIconForAdType(ad.type)}
-              <div className="ad-title">{ad.title}</div>
+              {getTitleWithIcon(ad.type, ad.title)}
               <div className="ad-price">${ad.price.toFixed(2)}</div>
             </div>
           </Link>

@@ -47,8 +47,6 @@ function NewSearch() {
     } catch (error) {
       console.error("Error finding posts: ", error);
     }
-
-    alert("Search submitted successfully! Scroll down to view results.");
   };
 
   return (
