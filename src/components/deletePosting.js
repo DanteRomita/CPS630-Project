@@ -1,55 +1,40 @@
-import React, { useState, useEffect } from "react";
-import AdPostings from "./adPosting";
-import AdSearch from "./adSearch";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-function AdListings({ user }) {
-  const [adPostingShown, setAdPostingShown] = useState(false);
-  const [adSearchShown, setAdSearchShown] = useState(true);
+function DeletePost({ user }) {
   const [ads, setAds] = useState([]);
+
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog before deleting
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      try {
+        const response = await fetch(`http://localhost:3001/api/ads/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Error deleting the post");
+        }
+        // Remove the deleted post from state if deletion is successful
+        setAds(ads.filter((ad) => ad._id !== id));
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+      }
+    }
+  };
 
   // Fetch posts from the server when the component mounts
   useEffect(() => {
     fetch("http://localhost:3001/api/ads")
       .then((response) => response.json())
       .then((data) => setAds(data))
-      .then(ads)
       .catch((error) => console.error("Error fetching posts:", error));
-  }, [ads]);
+  }, []);
 
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
     <div>
-      <h1>TMU Classifieds</h1>
-      <div className="btn-container">
-        <p>
-          <button
-            className="btn waves-effect center"
-            style={{ fontSize: "x-large" }}
-            onClick={() => {
-              setAdPostingShown(false);
-              setAdSearchShown(true);
-            }}
-          >
-            New Search
-          </button>
-        </p>
-
-        <p>
-          <button
-            className="btn waves-effect orange darken-4 center"
-            style={{ fontSize: "x-large" }}
-            onClick={() => {
-              setAdPostingShown(true);
-              setAdSearchShown(false);
-            }}
-          >
-            Post an Ad
-          </button>
-        </p>
-      </div>
-      {adSearchShown && <AdSearch />}
-      {adPostingShown && <AdPostings user={user} />}
-      <h2>The Classifieds</h2>
       <div className="row">
         {ads.map((ad) => (
           <div key={ad._id} className="col s12 xl6">
@@ -76,6 +61,14 @@ function AdListings({ user }) {
               </p>
               <h5>Ad Description</h5>
               <p>{ad.description}</p>
+              <button
+                id="deleteButton"
+                onClick={() => handleDelete(ad._id)}
+                className="delete-icon"
+              >
+                <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
+              </button>
+
               {ad.image && (
                 <img style={{ width: "100%" }} src={ad.image} alt="" />
               )}
@@ -87,4 +80,4 @@ function AdListings({ user }) {
   );
 }
 
-export default AdListings;
+export default DeletePost;

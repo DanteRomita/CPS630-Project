@@ -2,7 +2,7 @@ import "./App.css";
 import AdListings from "./components/adListings";
 import FadeIn from "react-fade-in";
 
-function App({ user }) {
+function Home({ user }) {
 
   return (
     <div className="App">
@@ -13,4 +13,4 @@ function App({ user }) {
   );
 }
 
-export default App;
+export default Home;
