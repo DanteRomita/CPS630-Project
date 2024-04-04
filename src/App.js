@@ -46,7 +46,6 @@ function App() {
             )}
           </div>
           <div className="center" id="user-profile">
-            <LoginButton setUser={setUser} />
             {Object.keys(user).length > 0 && (
               <>
                 <UserProfile user={user} />
@@ -55,8 +54,16 @@ function App() {
             )}
           </div>
         </aside>
-        {Object.keys(user).length > 0 ? (
-          <main className="main-content">
+        <main className="main-content" style={{ marginLeft: "10vw" }}>
+          {Object.keys(user).length === 0 ? (
+            <div className="not-logged-in-container">
+              <div className="login-prompt">
+                <h1>Welcome to Metropolitan Market</h1>
+                <p>Please log in to view content and manage your ads.</p>
+                <LoginButton setUser={setUser} />
+              </div>
+            </div>
+          ) : (
             <Routes>
               <Route path="/" element={<Home user={user} />} />
               <Route path="/Chat" element={<Chat user={user} />} />
@@ -66,11 +73,10 @@ function App() {
                 <Route path="/Admin" element={<Admin user={user} />} />
               )}
             </Routes>
-          </main>
-        ) : (
-          <div className="container right">
-            <h1 className="right">Please log in to view content.</h1>
-          </div>
+          )}{" "}
+        </main>
+        {Object.keys(user).length > 0 && (
+          <LogoutButton setUser={setUser} />
         )}
       </div>
     </BrowserRouter>

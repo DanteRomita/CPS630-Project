@@ -158,8 +158,25 @@ html {
   color: #000000;
 }
 
+#signInButton{
+  display: flex;
+  justify-content: center;
+}
+
+.not-logged-in-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-prompt {
+  text-align: center;
+  max-width: 50%;
+}
+
 .main-content {
-  margin-left: 10vw;
+  margin-left: 0;
 }
 
 .content {
