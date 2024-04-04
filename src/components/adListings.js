@@ -19,37 +19,12 @@ function AdListings({ user }) {
     <div>
       <h1>TMU Classifieds</h1>
       <AdSearch/>
-      <div className="row">
+      <div className="ad-list">
         {ads.map((ad) => (
-          <Link to={`/ads/${ad._id}`} key={ad._id} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="col s12 xl4">
-              <fieldset>
-                <h4>{ad.title}</h4>
-                <p>
-                  <b>Posted by: </b>
-                  {ad.userEmail}
-                </p>
-                <p>
-                  <b>Category: </b>
-                  {ad.type}
-                </p>
-                <p>
-                  <b>Posted: </b>
-                  {ad.timePosted}
-                </p>
-                <p>
-                  <b>Price: </b>${ad.price.toFixed(2)}
-                </p>
-                <p>
-                  <b>Location: </b>
-                  {ad.location}
-                </p>
-                <h5>Ad Description</h5>
-                <p>{ad.description}</p>
-                {ad.image && (
-                  <img className="container" style={{ width: "100%" }} src={ad.image} alt="" />
-                )}
-              </fieldset>
+          <Link to={`/ads/${ad._id}`} key={ad._id} className="ad-container">
+            <div className="ad-image" style={{ backgroundImage: `url(${ad.image})` }}>
+              <div className="ad-title">{ad.title}</div>
+              <div className="ad-price">${ad.price.toFixed(2)}</div>
             </div>
           </Link>
         ))}
