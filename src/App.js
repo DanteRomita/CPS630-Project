@@ -45,7 +45,7 @@ function App() {
               </Link>
             )}
           </div>
-          <div className="center" id="user-profile">
+          <div id="user-profile">
             {Object.keys(user).length > 0 && (
               <>
                 <UserProfile user={user} />
@@ -54,7 +54,7 @@ function App() {
             )}
           </div>
         </aside>
-        <main className="main-content" style={{ marginLeft: "10vw" }}>
+        <main className="main-content">
           {Object.keys(user).length === 0 ? (
             <div className="not-logged-in-container">
               <div className="login-prompt">
