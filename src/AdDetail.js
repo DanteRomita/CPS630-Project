@@ -20,13 +20,20 @@ function AdDetail() {
     <FadeIn>
       <div>
         <h1>{ad.title}</h1>
-        <p><strong>Description:</strong> {ad.description}</p>
-        <p><strong>Price:</strong> ${ad.price}</p>
-        <p><strong>Location:</strong> {ad.location}</p>
-        <p><strong>Posted by:</strong> {ad.userEmail}</p>
-        {ad.images && ad.images.map((image, index) => (
-          <img key={index} src={image} alt={`Ad image ${index + 1}`} style={{ width: "100%" }} />
-        ))}
+        <h5>Details</h5>
+        <p>
+          <b>Posted By: </b>{ad.userEmail}<br />
+          <b>Price: </b>${ad.price.toFixed(2)}<br />
+          <b>Location: </b>{ad.location}
+        </p>
+        <h5>Description</h5>
+        <p>{ad.description}</p>
+        <h5>Attached Images</h5>
+        <br></br>
+        <div className="container">
+          <img className="center" src={ad.image} style={{'width': '75%'}} alt="Ad Image" />
+        </div>
+
         {/* Add more ad details as needed */}
       </div>
     </FadeIn>
