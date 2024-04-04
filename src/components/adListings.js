@@ -44,14 +44,10 @@ function AdListings({ user }) {
                   <b>Location: </b>
                   {ad.location}
                 </p>
-                <p>
-                  <b>Image: </b>
-                  {ad.image}
-                </p>
                 <h5>Ad Description</h5>
                 <p>{ad.description}</p>
                 {ad.image && (
-                  <img style={{ width: "100%" }} src={ad.image} alt="" />
+                  <img className="container" style={{ width: "100%" }} src={ad.image} alt="" />
                 )}
               </fieldset>
             </div>

@@ -6,15 +6,35 @@ function NewPost({ user }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0.00");
   const [type, setType] = useState("Items Wanted");
-  const [image, setImage] = useState([]);
   const [location, setLocation] = useState("ONLINE");
+  const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
+  const [imageURL, setImageURL] = useState('');
+
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'twup5uph');
+
+    try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/dp7bfbfix/image/upload`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        const data = await response.json();
+        if (data.secure_url) {
+            setImageURL(data.secure_url); // Set the image URL in state only after successful upload
+            console.log("Uploaded image");
+            return data.secure_url;
+        }
+    } catch (error) {
+        console.error('Error uploading the image:', error);
+    }
+  };
 
   const handleImageChange = (e) => {
-    // Handle a single file instead of multiple files
     if (e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const fileUrl = URL.createObjectURL(file);
-      setImage(fileUrl);
+        setSelectedFile(e.target.files[0]); // Update the state with the selected file
     }
   };
 
@@ -22,24 +42,28 @@ function NewPost({ user }) {
     e.preventDefault();
 
     // Input validation
-    if (title.trim() === "") {
-      alert("Title cannot be empty. Please provide a title.");
-      return; // Exit the function early if title is empty
-    } else if (location.trim() === "") {
-      alert("Location cannot be empty. Please provide a location.");
-      return; // Exit the function early if location is empty
+    if (title.trim() === "" || location.trim() === "") {
+      alert("Title and Location cannot be empty. Please provide the necessary details.");
+      return;
     }
-    
-    let userEmail = user.email;
+
+    let uploadedImageURL = imageURL; // Use existing imageURL if available
+    if (selectedFile) {
+      uploadedImageURL = await handleImageUpload(selectedFile); // Upload the image and get the URL
+      if (!uploadedImageURL) {
+        alert("Failed to upload image. Please try again.");
+        return;
+      }
+    }
 
     const formData = {
       title,
       description,
       price,
       type,
-      image,
+      image: uploadedImageURL,
       location,
-      userEmail,
+      userEmail: user.email,
     };
 
     try {
@@ -51,8 +75,6 @@ function NewPost({ user }) {
         body: JSON.stringify(formData),
       });
 
-      console.log(JSON.stringify(formData));
-
       if (!response.ok) {
         throw new Error("Failed to add post");
       } else {
@@ -60,7 +82,8 @@ function NewPost({ user }) {
         setDescription("");
         setPrice("");
         setType("Items Wanted");
-        setImage("");
+        setSelectedFile(null); // Reset file selection
+        setImageURL(""); // Clear the imageURL state
         setLocation("");
         alert("Ad posted successfully!");
       }
@@ -68,7 +91,7 @@ function NewPost({ user }) {
       console.error("Error adding post:", error.message);
     }
   };
-
+  
   return (
     <div className="pageContent">
       <FadeIn>
@@ -146,8 +169,8 @@ function NewPost({ user }) {
             <label>Image:</label><br />
             <input
               type="file"
-              onChange={handleImageChange}
               accept="image/*"
+              onChange={handleImageChange}
             />
           </div>
           <div>

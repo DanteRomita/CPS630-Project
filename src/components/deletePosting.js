@@ -35,13 +35,12 @@ function DeletePost() {
 
   // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
-    <div>
-      <div className="row">
-        {ads.map((ad) => (
-          <Link to={`/ads/${ad._id}`} key={ad._id} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="col s12 xl4">
-              <fieldset>
-                <h4>{ad.title}</h4>
+    <div className="row">
+      {ads.map((ad) => (
+        <div key={ad._id} className="ad-container col s12 xl4">
+          <Link to={`/ads/${ad._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <fieldset>
+            <h4>{ad.title}</h4>
                 <p>
                   <b>Posted by: </b>
                   {ad.userEmail}
@@ -63,22 +62,20 @@ function DeletePost() {
                 </p>
                 <h5>Ad Description</h5>
                 <p>{ad.description}</p>
-                <button
-                  id="deleteButton"
-                  onClick={() => handleDelete(ad._id)}
-                  className="btn waves-effect icon-link center"
-                >
-                  <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
-                </button>
-
                 {ad.image && (
                   <img style={{ width: "100%" }} src={ad.image} alt="" />
                 )}
-              </fieldset>
-            </div>
+            </fieldset>
           </Link>
-        ))}
-      </div>
+          <button
+            id="deleteButton"
+            onClick={() => handleDelete(ad._id)}
+            className="delete-button btn waves-effect icon-link"
+          >
+            <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
