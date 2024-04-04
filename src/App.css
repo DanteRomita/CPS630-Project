@@ -189,12 +189,18 @@ html {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 20px;
+  padding: 1vw;
   border-radius: 5%;
 }
 
 .delete-icon:hover {
   background-color: #777;
+}
+
+#deleteButton{
+  width: 4vw;
+  height: 4vw;
+  font-size: 2vw;
 }
 
 @media (max-width: 1500px) {
@@ -213,6 +219,12 @@ html {
   .nav-container .icon-link {
     width: 7vw; 
     height: 7vw; 
+  }
+
+  #deleteButton{
+    width: 5vw;
+    height: 5vw;
+    font-size: 3vw;
   }
 
 }
@@ -257,6 +269,12 @@ html {
 
   .btn.waves-effect.icon-link.center {
     margin: 0 10px; 
+  }
+
+  #deleteButton{
+    width: 10vw;
+    height: 10vw;
+    font-size: 5vw;
   }
 
   @media (max-height: 700px) {
