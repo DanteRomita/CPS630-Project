@@ -3,7 +3,7 @@ import FadeIn from "react-fade-in";
 
 function NewSearch() {
   const [keywords, setKeywords] = useState("");
-  const [author, setAuthor] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [location, setLocation] = useState("");
   const [lowestPrice, setLowestPrice] = useState("");
   const [highestPrice, setHighestPrice] = useState("");
@@ -20,12 +20,12 @@ function NewSearch() {
     }
 
     console.log(
-      `Keywords: ${keywords}\nAuthor: ${author}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
+      `Keywords: ${keywords}\nAuthor Email: ${userEmail}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
     );
 
     const formData = {
       keywords,
-      author,
+      userEmail,
       location,
       lowestPrice,
       highestPrice,
@@ -53,6 +53,7 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
+          <h5 className="center">Leave all of the fields below blank to show all ads.</h5>
           <div className="input-field">
             <input
               id="keywords"
@@ -70,10 +71,10 @@ function NewSearch() {
                 id="author"
                 type="text"
                 name="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
               />
-              <label htmlFor="author">Author (Leave Blank For Any)</label>
+              <label htmlFor="author">Author Email (Leave Blank For Any)</label>
             </div>
             <div className="input-field col s6">
               <input
@@ -152,7 +153,11 @@ function NewSearch() {
               </label>
             </div>
           </div>
-          <button className="btn waves-effect icon-link center" type="submit">Search</button>
+          <p className="center">
+            <button className="btn-large waves-effect icon-link center" type="submit" style={{ 'font-size': 'xx-large' }}>Search</button>
+          </p>
+          <hr />
+          
         </form>
       </FadeIn>
     </div>
