@@ -14,7 +14,7 @@ function Login({ setUser }) {
                 let response = jwtDecode(credentialResponse.credential)
                 console.log(response);
                 const domain = response.email.split('@')[1];
-                if (domain === 'torontomu.ca' || domain === 'ryerson.ca' || domain === 'gmail.com') {
+                if (domain === 'torontomu.ca' || domain === 'ryerson.ca') {
                     setUser(response);
                     document.getElementById('signInButton').hidden = true;
                 } else {
