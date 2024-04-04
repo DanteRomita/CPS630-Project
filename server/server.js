@@ -26,11 +26,45 @@ wss.on("connection", (ws) => {
 
 // --- END OF GLOBAL CHAT ROOM SETUP ---
 
+// --- START OF MONGODB SETUP ---
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+/* Connection String:
+mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/
+*/
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+
+// --- END OF MONGODB SETUP ---
+
 // --- START OF MONGOOSE SETUP ---
 
 // Used 127.0.0.1 instead of localhost for IPv6 compatibility
 mongoose
-  .connect("mongodb://127.0.0.1:27017/adDB", {
+  .connect("mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -62,16 +96,22 @@ app.use(cors());
 
 let adSearchResults = undefined;
 
-// Route to get all ad postings
+// Route to get all ad postings using MongoDB driver
 app.get("/api/ads", async (req, res) => {
   try {
-    if (adSearchResults) res.json(adSearchResults)
-    else {
-      let ads = await adPosting.find({});
+    await client.connect(); // Connect the client if not already connected
+    client.connect()
+    const database = client.db('sample_mflix');
+    const collection = database.collection('adpostings');
+    const ads = await collection.find({}).toArray();
+    if (ads.length > 0) {
       res.json(ads);
+    } else {
+      res.status(404).send('No ad postings found');
     }
   } catch (err) {
-    res.status(500).send(err);
+    console.error(err);
+    res.status(500).send('Server error');
   }
 });
 
@@ -93,7 +133,7 @@ app.get('/api/ads/:id', async (req, res) => {
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     let { title, description, price, type, image, location, userEmail } = req.body;
 
     try {
@@ -112,7 +152,7 @@ app.post('/api/ads', async (req, res) => {
         });
 
     await newPost.save(); // Save the new ad posting to the database
-    console.log(`New Post Created`)
+    // console.log(`New Post Created`)
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -133,7 +173,7 @@ app.post("/api/ads/search", async (req, res) => {
     AcademicServices,
   } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   let priceRange = {}; // price range object
   let category = [];
