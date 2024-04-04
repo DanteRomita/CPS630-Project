@@ -53,6 +53,7 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
+          <h5 className="center">Leave all of the fields below blank to show all ads.</h5>
           <div className="input-field">
             <input
               id="keywords"
@@ -152,7 +153,11 @@ function NewSearch() {
               </label>
             </div>
           </div>
-          <button className="btn waves-effect icon-link center" type="submit">Search</button>
+          <p className="center">
+            <button className="btn-large waves-effect icon-link center" type="submit" style={{ 'font-size': 'xx-large' }}>Search</button>
+          </p>
+          <hr />
+          
         </form>
       </FadeIn>
     </div>
