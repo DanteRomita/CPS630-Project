@@ -66,7 +66,7 @@ function NewSearch() {
             <p>*By Title or Description. Leave Blank for Any</p>
           </div>
           <div className="row">
-            <div className="input-field col s6">
+            <div className="input-field col s12 l6">
               <input
                 id="author"
                 type="text"
@@ -74,9 +74,9 @@ function NewSearch() {
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
               />
-              <label htmlFor="author">Author Email (Leave Blank For Any)</label>
+              <label htmlFor="author">Author Email**</label>
             </div>
-            <div className="input-field col s6">
+            <div className="input-field col s12 l6">
               <input
                 id="location"
                 type="text"
@@ -84,12 +84,12 @@ function NewSearch() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-              <label htmlFor="location">Location (Leave Blank For Any)</label>
+              <label htmlFor="location">Location**</label>
             </div>
           </div>
           <h6>Price Range (Leave A Field Blank for Any)</h6>
           <div className="row">
-            <div className="input-field col s6">
+            <div className="input-field col s12 l6">
               <input
                 id="lowest-price"
                 name="lowest-price"
@@ -100,9 +100,9 @@ function NewSearch() {
                 value={lowestPrice}
                 onChange={(e) => setLowestPrice(e.target.value)}
               />
-              <label htmlFor="lowest-price">Lowest ($ CAD)</label>
+              <label htmlFor="lowest-price">Lowest ($ CAD)**</label>
             </div>
-            <div className="input-field col s6">
+            <div className="input-field col s12 l6">
               <input
                 id="highest-price"
                 name="highest-price"
@@ -113,8 +113,9 @@ function NewSearch() {
                 value={highestPrice}
                 onChange={(e) => setHighestPrice(e.target.value)}
               />
-              <label htmlFor="highest-price">Highest ($ CAD)</label>
+              <label htmlFor="highest-price">Highest ($ CAD)**</label>
             </div>
+            <p>**Leave blank for any</p>
           </div>
           <h5 className="center">Select Category</h5>
           <p className="center">
@@ -122,7 +123,7 @@ function NewSearch() {
             returned.
           </p>
           <div className="row">
-            <div className="col s4 center">
+            <div className="col s12 l4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
@@ -132,7 +133,7 @@ function NewSearch() {
                 <span>Items Wanted</span>
               </label>
             </div>
-            <div className="col s4 center">
+            <div className="col s12 l4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"
@@ -142,7 +143,7 @@ function NewSearch() {
                 <span>Items For Sale</span>
               </label>
             </div>
-            <div className="col s4 center">
+            <div className="col s12 l4 center">
               <label style={{ marginRight: "1vw" }}>
                 <input
                   type="checkbox"

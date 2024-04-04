@@ -128,7 +128,7 @@ function NewPost({ user }) {
           </div>
           <h5 className="center">Select Category</h5>
           <div className="row center-align">
-            <div className="col s4">
+            <div className="col s12 l4">
               <label>
                 <input
                   name="type"
@@ -140,7 +140,7 @@ function NewPost({ user }) {
                 <span>Items Wanted</span>
               </label>
             </div>
-            <div className="col s4">
+            <div className="col s12 l4">
               <label>
                 <input
                   name="type"
@@ -152,7 +152,7 @@ function NewPost({ user }) {
                 <span>Items For Sale</span>
               </label>
             </div>
-            <div className="col s4">
+            <div className="col s12 l4">
               <label>
                 <input
                   name="type"
