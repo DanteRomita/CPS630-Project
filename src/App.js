@@ -75,9 +75,6 @@ function App() {
             </Routes>
           )}{" "}
         </main>
-        {Object.keys(user).length > 0 && (
-          <LogoutButton setUser={setUser} />
-        )}
       </div>
     </BrowserRouter>
   );
