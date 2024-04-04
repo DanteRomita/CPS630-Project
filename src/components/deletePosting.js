@@ -33,39 +33,15 @@ function DeletePost() {
       .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
-  // When clicking on either one of the buttons, the corresponding component will be shown or hidden
   return (
-    <div className="row">
+    <div className="ad-list">
       {ads.map((ad) => (
-        <div key={ad._id} className="ad-container col s12 xl4">
-          <Link to={`/ads/${ad._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <fieldset>
-            <h4>{ad.title}</h4>
-                <p>
-                  <b>Posted by: </b>
-                  {ad.userEmail}
-                </p>
-                <p>
-                  <b>Category: </b>
-                  {ad.type}
-                </p>
-                <p>
-                  <b>Posted: </b>
-                  {ad.timePosted}
-                </p>
-                <p>
-                  <b>Price: </b>$ {ad.price}
-                </p>
-                <p>
-                  <b>Location: </b>
-                  {ad.location}
-                </p>
-                <h5>Ad Description</h5>
-                <p>{ad.description}</p>
-                {ad.image && (
-                  <img style={{ width: "100%" }} src={ad.image} alt="" />
-                )}
-            </fieldset>
+        <div key={ad._id} className="ad-item">
+          <Link to={`/ads/${ad._id}`} className="ad-container">
+            <div className="ad-image" style={{ backgroundImage: `url(${ad.image})` }}>
+              <div className="ad-title">{ad.title}</div>
+              <div className="ad-price">${ad.price.toFixed(2)}</div>
+            </div>
           </Link>
           <button
             id="deleteButton"
