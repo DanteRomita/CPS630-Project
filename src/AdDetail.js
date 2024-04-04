@@ -1,10 +1,12 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import FadeIn from "react-fade-in/lib/FadeIn.js";
 
-function AdDetail() {
+function AdDetail({ user }) {
   const { id } = useParams(); // This hooks allows you to access the ad ID from the URL
   const [ad, setAd] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the ad details from the server based on the ad ID
@@ -14,26 +16,57 @@ function AdDetail() {
       .catch(error => console.error("Failed to fetch ad details:", error));
   }, [id]); // Depend on id so if it changes, we refetch
 
-  if (!ad) return <p>Loading...</p>; // Display loading text until ad details are fetched
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog before deleting
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      try {
+        const response = await fetch(`http://localhost:3001/api/ads/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Error deleting the post");
+        }
+        // Remove the deleted post from state if deletion is successful
+        setAd(null);
+        navigate('/')
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+      }
+    }
+  }
+
+  if (!ad) return <h3 className="center">Ad Not Found. <Link to="/">Return to Home</Link></h3>; // Display loading text until ad details are fetched
 
   return (
     <FadeIn>
       <div>
         <h1>{ad.title}</h1>
+        {
+          user.email === ad.userEmail &&
+          <button
+            className='btn waves-effect red'
+            style={{ 'font-size': 'x-large' }}
+            onClick={() => handleDelete(ad._id)}
+          >
+            Delete Post
+          </button>
+        }
         <h5>Details</h5>
         <p>
           <b>Posted By: </b>{ad.userEmail}<br />
           <b>Price: </b>${ad.price.toFixed(2)}<br />
           <b>Location: </b>{ad.location}
         </p>
-        <h5>Description</h5>
-        <p>{ad.description}</p>
-        <h5>Attached Images</h5>
-        <br></br>
-        <div className="container">
-          <img className="center" src={ad.image} style={{'width': '75%'}} alt="Ad Image" />
-        </div>
-
+        {ad.description && <div><h5>Description</h5> <p>{ad.description}</p></div>}
+        {ad.image &&
+          <div>
+            <h5>Attached Image</h5>
+            <br></br>
+            <div className="container">
+              {ad.image && <img className="center" src={ad.image} style={{ 'width': '75%' }} alt="Ad Image" />}
+            </div>
+          </div>
+        }
         {/* Add more ad details as needed */}
       </div>
     </FadeIn>

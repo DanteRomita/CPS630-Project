@@ -59,7 +59,7 @@ function App() {
               <Route path="/" element={<Home user={user} />} />
               <Route path="/Chat" element={<Chat user={user} />} />
               <Route path="/Post" element={<Post user={user} />} />
-              <Route path="/ads/:id" element={<AdDetail />} />
+              <Route path="/ads/:id" element={<AdDetail user={user} />} />
               {adminEmails.includes(user.email) && (
                 <Route path="/Admin" element={<Admin user={user} />} />
               )}
