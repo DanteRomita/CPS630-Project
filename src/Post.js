@@ -1,16 +1,16 @@
 import "./App.css";
-import AdListings from "./components/adListings";
+import AdPostings from "./components/adPosting";
 import FadeIn from "react-fade-in";
 
-function Home({ user }) {
+function Post({ user }) {
 
   return (
     <div className="App">
       <FadeIn>
-        <AdListings user={user}/>
+        <AdPostings user={user}/>
       </FadeIn>
     </div>
   );
 }
 
-export default Home;
+export default Post;

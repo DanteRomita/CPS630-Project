@@ -175,6 +175,35 @@ app.post("/api/ads/search", async (req, res) => {
 
 // --- END OF ROUTING SETUP ---
 
+// --- START OF ADMIN ACTIONS ---
+
+// Endpoint to delete a post by ID
+app.delete('/api/ads/:id', async (req, res) => {
+    try {
+      await adPosting.findByIdAndDelete(req.params.id);
+      res.status(200).json({ message: 'Ad deleted successfully' });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
+  
+  // Endpoint to update a post by ID
+  app.put('/api/ads/:id', async (req, res) => {
+    try {
+      const updatedAd = await adPosting.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      res.status(200).json(updatedAd);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
+  
+
+// --- END OF ADMIN ACTIONS ---
+
 // Start the server
 bin.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -190,3 +190,15 @@ html {
   color: white;
   text-align: center;
 }
+
+.delete-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 5%;
+}
+
+.delete-icon:hover {
+  background-color: #777;
+}
