@@ -3,6 +3,7 @@ import Home from "./Home";
 import Chat from "./Chat";
 import Admin from "./Admin";
 import Post from "./Post";
+import AdDetail from "./AdDetail";
 import LoginButton from "./components/login";
 import LogoutButton from "./components/logout";
 import UserProfile from "./components/userProfile";
@@ -58,6 +59,7 @@ function App() {
               <Route path="/" element={<Home user={user} />} />
               <Route path="/Chat" element={<Chat user={user} />} />
               <Route path="/Post" element={<Post user={user} />} />
+              <Route path="/ads/:id" element={<AdDetail />} />
               {adminEmails.includes(user.email) && (
                 <Route path="/Admin" element={<Admin user={user} />} />
               )}

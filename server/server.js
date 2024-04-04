@@ -75,6 +75,20 @@ app.get("/api/ads", async (req, res) => {
   }
 });
 
+// Route to get an ad by ID
+app.get('/api/ads/:id', async (req, res) => {
+  try {
+    const ad = await adPosting.findById(req.params.id);
+    if (!ad) {
+      return res.status(404).send('Ad not found');
+    }
+    res.json(ad);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
 // POST requests
 
 // Route to create a new ad posting

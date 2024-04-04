@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-function DeletePost({ user }) {
+function DeletePost() {
   const [ads, setAds] = useState([]);
 
   const handleDelete = async (id) => {
@@ -64,7 +64,7 @@ function DeletePost({ user }) {
               <button
                 id="deleteButton"
                 onClick={() => handleDelete(ad._id)}
-                className="delete-icon"
+                className="btn waves-effect icon-link center"
               >
                 <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
               </button>

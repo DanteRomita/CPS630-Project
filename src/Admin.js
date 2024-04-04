@@ -8,7 +8,7 @@ function Admin({ user }) {
     <div className="App">
       <FadeIn>
         <h1>Admin Page</h1>
-        <DeletePosting user={user}/>
+        <DeletePosting/>
       </FadeIn>
     </div>
   );

@@ -152,7 +152,7 @@ function NewSearch() {
               </label>
             </div>
           </div>
-          <button type="submit">Search</button>
+          <button className="btn waves-effect icon-link center" type="submit">Search</button>
         </form>
       </FadeIn>
     </div>

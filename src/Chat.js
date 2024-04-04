@@ -79,7 +79,8 @@ function Chat({ user }) {
           <button
             id="send"
             title="Send Message"
-            style={{ display: "block", width: "100%", padding: "10px" }}
+            style={{ display: "block", width: "100%" }}
+            className="btn waves-effect icon-link center"
             onClick={sendMessage}
           >
             Send
