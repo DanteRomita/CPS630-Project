@@ -3,7 +3,7 @@ import FadeIn from "react-fade-in";
 
 function NewSearch() {
   const [keywords, setKeywords] = useState("");
-  const [author, setAuthor] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [location, setLocation] = useState("");
   const [lowestPrice, setLowestPrice] = useState("");
   const [highestPrice, setHighestPrice] = useState("");
@@ -20,12 +20,12 @@ function NewSearch() {
     }
 
     console.log(
-      `Keywords: ${keywords}\nAuthor: ${author}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
+      `Keywords: ${keywords}\nAuthor Email: ${userEmail}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
     );
 
     const formData = {
       keywords,
-      author,
+      userEmail,
       location,
       lowestPrice,
       highestPrice,
@@ -70,10 +70,10 @@ function NewSearch() {
                 id="author"
                 type="text"
                 name="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
               />
-              <label htmlFor="author">Author (Leave Blank For Any)</label>
+              <label htmlFor="author">Author Email (Leave Blank For Any)</label>
             </div>
             <div className="input-field col s6">
               <input

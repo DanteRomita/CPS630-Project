@@ -124,7 +124,7 @@ app.post('/api/ads', async (req, res) => {
 app.post("/api/ads/search", async (req, res) => {
   let {
     keywords,
-    author, // add this once the user management system is implemented for ad posts
+    userEmail,
     location,
     lowestPrice,
     highestPrice,
@@ -133,7 +133,7 @@ app.post("/api/ads/search", async (req, res) => {
     AcademicServices,
   } = req.body;
 
-  console.log(req.body);
+  console.log(`User Email: ${userEmail}`);
 
   let priceRange = {}; // price range object
   let category = [];
@@ -172,14 +172,14 @@ app.post("/api/ads/search", async (req, res) => {
         { title: { $regex: keywords, $options: "i" } },
         { description: { $regex: keywords, $options: "i" } },
       ],
-      //   author: { $regex: author, $options: "i" },
+      userEmail: { $regex: userEmail, $options: "i" },
       location: { $regex: location, $options: "i" },
       price: priceRange.price,
       type: { $in: category },
     });
     
-    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    console.log(`Number of ADS: ${adSearchResults.length}`);
+    // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
+    // console.log(`Number of ADS: ${adSearchResults.length}`);
     
     res.sendStatus(204);
   } catch (err) {
