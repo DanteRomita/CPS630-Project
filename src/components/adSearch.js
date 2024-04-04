@@ -154,7 +154,7 @@ function NewSearch() {
             </div>
           </div>
           <p className="center">
-            <button className="btn-large waves-effect icon-link center" type="submit" style={{ 'font-size': 'xx-large' }}>Search</button>
+            <button className="btn-large waves-effect icon-link center" type="submit" style={{ 'fontSize': 'xx-large' }}>Search</button>
           </p>
           <hr />
           

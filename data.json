@@ -1,35 +1,163 @@
 [
-    {
-      "title": "Vintage Bicycle",
-      "description": "A well-maintained vintage bicycle from the 1970s. Perfect for collectors or casual rides around town.",
-      "price": 150.00,
-      "type": "Items For Sale",
-      "images": [
-        "http://example.com/image1.jpg",
-        "http://example.com/image2.jpg"
-      ],
-      "location": "Downtown",
-      "user": "user123"
-    },
-    {
-      "title": "Textbook for Sale",
-      "description": "Introduction to Economics textbook, barely used, like new. Great for first-year college students.",
-      "price": 45.00,
-      "type": "Academic Services",
-      "images": [
-        "http://example.com/textbook1.jpg"
-      ],
-      "location": "Campus Bookstore",
-      "user": "student456"
-    },
-    {
-      "title": "Looking for a Study Desk",
-      "description": "In need of a sturdy study desk suitable for a small apartment. Preferably under $50.",
-      "price": 0,
-      "type": "Items Wanted",
-      "images": [],
-      "location": "Suburbs",
-      "user": "user789"
-    }
-  ]
+  {
+    "title": "CPS 511 Textbook [Used]",
+    "description": "5th Version of the textbook with homework questions. Slightly beat up.",
+    "price": 50,
+    "type": "Items For Sale",
+    "image": "https://res.cloudinary.com/dp7bfbfix/image/upload/v1712197854/no3bple29isjp9wts1kv.jpg",
+    "location": "ENG 201",
+    "userEmail": "julian.bolivar@torontomu.ca",
+    "timePosted": "03 April 2024"
+  },
+  {
+    "title": "Road bike",
+    "description": "Looking for a bike. Any condition is fine",
+    "price": 100,
+    "type": "Items Wanted",
+    "image": "https://res.cloudinary.com/dp7bfbfix/image/upload/v1712198530/igu8d7emiy7stqix7tml.jpg",
+    "location": "Anywhere on campus",
+    "userEmail": "julian.bolivar@torontomu.ca",
+    "timePosted": "03 April 2024"
+  },
+  {
+    "title": "Desk lamp",
+    "description": "Need a desk lamp for late-night study sessions. Flexible arm preferred.",
+    "price": 20,
+    "type": "Items Wanted",
+    "image": "",
+    "location": "Dormitory A",
+    "userEmail": "megan.smith@torontomu.ca",
+    "timePosted": "04 April 2024"
+  },
+  {
+    "title": "Microscope",
+    "description": "In need of a microscope for biology experiments. Functional condition is essential.",
+    "price": 50,
+    "type": "Items Wanted",
+    "image": "",
+    "location": "Science Building",
+    "userEmail": "biologyclub@torontomu.ca",
+    "timePosted": "05 April 2024"
+  },
+  {
+    "title": "Graphing Calculator",
+    "description": "Looking to buy a graphing calculator for calculus class.",
+    "price": 70,
+    "type": "Items Wanted",
+    "image": "",
+    "location": "Math Department",
+    "userEmail": "adam.jones@torontomu.ca",
+    "timePosted": "06 April 2024"
+  },
+  {
+    "title": "Chemistry Textbook",
+    "description": "Seeking a used chemistry textbook for introductory course. Good condition preferred.",
+    "price": 30,
+    "type": "Items Wanted",
+    "image": "",
+    "location": "Library",
+    "userEmail": "sarah.miller@torontomu.ca",
+    "timePosted": "07 April 2024"
+  },
+  {
+    "title": "Guitar Lessons",
+    "description": "Offering guitar lessons for beginners. Flexible scheduling.",
+    "price": 25,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Music Building",
+    "userEmail": "musicdept@torontomu.ca",
+    "timePosted": "08 April 2024"
+  },
+  {
+    "title": "French Tutoring",
+    "description": "Experienced French tutor available for individual or group sessions.",
+    "price": 35,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Language Lab",
+    "userEmail": "frenchdept@torontomu.ca",
+    "timePosted": "09 April 2024"
+  },
+  {
+    "title": "English Composition Editing",
+    "description": "Offering editing services for English composition papers. Fast turnaround.",
+    "price": 15,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Student Center",
+    "userEmail": "englishdept@torontomu.ca",
+    "timePosted": "10 April 2024"
+  },
+  {
+    "title": "Calculator",
+    "description": "Selling a TI-84 graphing calculator in good condition.",
+    "price": 60,
+    "type": "Item For Sale",
+    "image": "",
+    "location": "Math Department",
+    "userEmail": "michael.rodriguez@torontomu.ca",
+    "timePosted": "11 April 2024"
+  },
+  {
+    "title": "Desk Chair",
+    "description": "Selling a comfortable desk chair. Adjustable height and back support.",
+    "price": 40,
+    "type": "Item For Sale",
+    "image": "",
+    "location": "Student Union",
+    "userEmail": "rebecca.jackson@torontomu.ca",
+    "timePosted": "12 April 2024"
+  },
+  {
+    "title": "Laptop Repair Services",
+    "description": "Offering laptop repair services. Quick turnaround and reasonable rates.",
+    "price": 200,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Computer Science Building",
+    "userEmail": "computerservices@torontomu.ca",
+    "timePosted": "14 April 2024"
+  },
+  {
+    "title": "Music Theory Tutoring",
+    "description": "Experienced music theory tutor offering personalized sessions.",
+    "price": 30,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Music Building",
+    "userEmail": "musicdept@torontomu.ca",
+    "timePosted": "15 April 2024"
+  },
+  {
+    "title": "Bed Frame",
+    "description": "Selling a sturdy bed frame. Fits twin-size mattress.",
+    "price": 50,
+    "type": "Item For Sale",
+    "image": "",
+    "location": "Dormitory B",
+    "userEmail": "dormsales@torontomu.ca",
+    "timePosted": "16 April 2024"
+  },
+  {
+    "title": "Math Tutoring",
+    "description": "Available for math tutoring sessions. All levels welcome.",
+    "price": 20,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Math Department",
+    "userEmail": "mathdept@torontomu.ca",
+    "timePosted": "17 April 2024"
+  },
+  {
+    "title": "Spanish Tutoring",
+    "description": "Native Spanish speaker offering tutoring sessions. Flexible hours.",
+    "price": 25,
+    "type": "Academic Services",
+    "image": "",
+    "location": "Language Lab",
+    "userEmail": "spanishdept@torontomu.ca",
+    "timePosted": "19 April 2024"
+  }
+]
   
