@@ -45,7 +45,7 @@ function AdDetail({ user }) {
           user.email === ad.userEmail &&
           <button
             className='btn waves-effect red'
-            style={{ 'font-size': 'x-large' }}
+            style={{ 'fontSize': 'x-large' }}
             onClick={() => handleDelete(ad._id)}
           >
             Delete Post

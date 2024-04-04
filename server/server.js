@@ -133,7 +133,7 @@ app.post("/api/ads/search", async (req, res) => {
     AcademicServices,
   } = req.body;
 
-  console.log(`User Email: ${userEmail}`);
+  console.log(req.body);
 
   let priceRange = {}; // price range object
   let category = [];

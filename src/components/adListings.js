@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faDollarSign, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
-function AdListings({ user }) {
+function AdListings() {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function AdListings({ user }) {
       .then((response) => response.json())
       .then((data) => setAds(data))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, []);
+  }, [ads]);
 
   const getIconForAdType = (type) => {
     switch(type) {
@@ -35,7 +35,7 @@ function AdListings({ user }) {
         {ads.map((ad) => (
           <Link to={`/ads/${ad._id}`} key={ad._id} className="ad-container">
             <div className="ad-image" style={{ backgroundImage: `url(${ad.image === "" ? "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" : ad.image})` }}>
-              {getIconForAdType(ad.type)} {/* Call the function to render the appropriate icon */}
+              {getIconForAdType(ad.type)}
               <div className="ad-title">{ad.title}</div>
               <div className="ad-price">${ad.price.toFixed(2)}</div>
             </div>

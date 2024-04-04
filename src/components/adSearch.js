@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import FadeIn from "react-fade-in";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faDollarSign, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
 function NewSearch() {
   const [keywords, setKeywords] = useState("");
@@ -131,6 +133,7 @@ function NewSearch() {
                   onChange={(e) => setItemsWanted(e.target.checked)}
                 />
                 <span>Items Wanted</span>
+                <FontAwesomeIcon icon={faSearch} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
               </label>
             </div>
             <div className="col s12 l4 center">
@@ -141,6 +144,7 @@ function NewSearch() {
                   onChange={(e) => setItemForSale(e.target.checked)}
                 />
                 <span>Items For Sale</span>
+                <FontAwesomeIcon icon={faDollarSign} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
               </label>
             </div>
             <div className="col s12 l4 center">
@@ -151,6 +155,7 @@ function NewSearch() {
                   onChange={(e) => setAcademicServices(e.target.checked)}
                 />
                 <span>Academic Services</span>
+                <FontAwesomeIcon icon={faGraduationCap} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
               </label>
             </div>
           </div>

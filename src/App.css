@@ -51,11 +51,18 @@
 .ad-title, .ad-price, .ad-icon {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5vw;
+  font-size: 1vw;
 }
 
 .ad-title {
   align-self: flex-start; 
+  white-space: nowrap;    
+  overflow: hidden;        
+  text-overflow: ellipsis; 
+  width: 85.5%;             
+  display: block;        
 }
+
 
 .ad-price {
   align-self: flex-end;
@@ -65,17 +72,16 @@
   position: absolute;
   top: 0;
   right: 0;
-  margin: 10px;
-  font-size: 24px; /* You can adjust the size as needed */
+  margin: 0vw;
+  font-size: 1.5vw;
+  width: 1.5vw;
+  height: 1.5vw;
 }
 
 html {
-  /* Use the standard system font for whatever device the user is using. */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable",
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
-
-  /* We could maybe add a stylized heading font later, but for most UI text, we should use the font that the user expects to see for their device. */
 }
 
 .navbar {
