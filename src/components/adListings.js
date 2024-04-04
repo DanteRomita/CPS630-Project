@@ -38,7 +38,7 @@ function AdListings({ user }) {
                   {ad.timePosted}
                 </p>
                 <p>
-                  <b>Price: </b>$ {ad.price}
+                  <b>Price: </b>${ad.price.toFixed(2)}
                 </p>
                 <p>
                   <b>Location: </b>
