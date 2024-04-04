@@ -95,7 +95,7 @@ function NewPost({ user }) {
   return (
     <div className="pageContent">
       <FadeIn>
-        <h1>Add a New Ad</h1>
+        <h1>Post a New Ad</h1>
         <form id="newAd" onSubmit={handleSubmit}>
           <div>
             <label>Title:</label>

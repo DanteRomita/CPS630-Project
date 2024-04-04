@@ -48,7 +48,7 @@
   justify-content: space-between;
 }
 
-.ad-title, .ad-price {
+.ad-title, .ad-price, .ad-icon {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5vw;
 }
@@ -61,6 +61,13 @@
   align-self: flex-end;
 }
 
+.ad-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  font-size: 24px; /* You can adjust the size as needed */
+}
 
 html {
   /* Use the standard system font for whatever device the user is using. */
