@@ -9,6 +9,18 @@ app.use(express.static("public"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Use memory storage
+const upload = multer({ storage: storage });
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dp7bfbfix', 
+  api_key: '498813646762871', 
+  api_secret: 'EGZV76xI74yiPM9ufEASpFwqOrs' 
+});
+
 const PORT = 3001;
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
@@ -55,7 +67,7 @@ const adPosting = mongoose.model("adPosting", adSchema);
 const userSchema = new mongoose.Schema({
   email: String,
   admin: Boolean,
-  banned: Boolean
+  banned: Boolean,
 });
 
 const userEmail = mongoose.model("userEmail", userSchema);
@@ -73,7 +85,10 @@ let adSearchResults = undefined;
 
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
-  res.json({ oauthtoken: '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com' });
+  res.json({
+    oauthtoken:
+      "166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com",
+  });
 });
 
 // Route to get all users
@@ -87,23 +102,23 @@ app.get("/api/users", async (req, res) => {
 });
 
 // Route to get an ad by ID
-app.get('/api/ads/:id', async (req, res) => {
+app.get("/api/ads/:id", async (req, res) => {
   try {
     const ad = await adPosting.findById(req.params.id);
     if (!ad) {
-      return res.status(404).send('Ad not found');
+      return res.status(404).send("Ad not found");
     }
     res.json(ad);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
 // Route to get all ad postings
 app.get("/api/ads", async (req, res) => {
   try {
-    if (adSearchResults) res.json(adSearchResults)
+    if (adSearchResults) res.json(adSearchResults);
     else {
       let ads = await adPosting.find({});
       res.json(ads);
@@ -113,10 +128,29 @@ app.get("/api/ads", async (req, res) => {
   }
 });
 
+// Route to upload an image to Cloudinary
+app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload_stream({
+      upload_preset: 'twup5uph'
+    }, (error, result) => {
+      if (error) throw error;
+      res.json({ secure_url: result.secure_url });
+    });
+
+    // Get the file buffer from multer
+    const fileBuffer = req.file.buffer;
+    // Use the buffer to upload the file to Cloudinary
+    result.end(fileBuffer);
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    res.status(500).send('Error uploading image');
+  }
+});
 // POST requests
 
 // Route to create new users in the DB or check existing user
-app.post('/api/newUser', async (req, res) => {
+app.post("/api/newUser", async (req, res) => {
   console.log(req.body);
   const { email, admin, banned } = req.body;
 
@@ -127,13 +161,13 @@ app.post('/api/newUser', async (req, res) => {
     if (existingUser) {
       // User already exists, don't add to the database
       console.log(`User ${email} already exists in the database.`);
-      res.status(409).json({ message: 'User already exists' }); // 409 Conflict
+      res.status(409).json({ message: "User already exists" }); // 409 Conflict
     } else {
       // User doesn't exist, create a new one
       let newUser = new userEmail({
         email,
         admin,
-        banned
+        banned,
       });
 
       await newUser.save(); // Save the new user to the database
@@ -147,51 +181,52 @@ app.post('/api/newUser', async (req, res) => {
 });
 
 // Toggle Admin Status
-app.post('/api/users/toggleAdmin', async (req, res) => {
+app.post("/api/users/toggleAdmin", async (req, res) => {
   const { email } = req.body;
 
   try {
     const user = await userEmail.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Toggle the admin field
     user.admin = !user.admin;
     await user.save();
 
-    res.json({ message: 'Admin status updated', admin: user.admin });
+    res.json({ message: "Admin status updated", admin: user.admin });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
 // Toggle Ban Status
-app.post('/api/users/toggleBan', async (req, res) => {
+app.post("/api/users/toggleBan", async (req, res) => {
   const { email } = req.body;
 
   try {
     const user = await userEmail.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Toggle the banned field
     user.banned = !user.banned;
     await user.save();
 
-    res.json({ message: 'Ban status updated', banned: user.banned });
+    res.json({ message: "Ban status updated", banned: user.banned });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
 // Route to create a new ad posting
-app.post('/api/ads', async (req, res) => {
+app.post("/api/ads", async (req, res) => {
   console.log(req.body);
-  let { title, description, price, type, image, location, userEmail } = req.body;
+  let { title, description, price, type, image, location, userEmail } =
+    req.body;
 
   try {
     let timePosted = formatDate(Date.now());
@@ -205,11 +240,11 @@ app.post('/api/ads', async (req, res) => {
       image,
       location,
       userEmail,
-      timePosted
+      timePosted,
     });
 
     await newPost.save(); // Save the new ad posting to the database
-    console.log(`New Post Created`)
+    console.log(`New Post Created`);
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -237,13 +272,16 @@ app.post("/api/ads/search", async (req, res) => {
 
   // Set the default price range
   if (lowestPrice === "" && highestPrice === "") {
-    priceRange.price = { $gte: 0.00, $lte: 10000000000000000000.00 };
+    priceRange.price = { $gte: 0.0, $lte: 10000000000000000000.0 };
   } else {
     if (lowestPrice !== "") {
       priceRange.price = { $gte: parseFloat(lowestPrice) };
     }
     if (highestPrice !== "") {
-      priceRange.price = { ...priceRange.price, $lte: parseFloat(highestPrice) };
+      priceRange.price = {
+        ...priceRange.price,
+        $lte: parseFloat(highestPrice),
+      };
     }
   }
 
@@ -289,17 +327,17 @@ app.post("/api/ads/search", async (req, res) => {
 // --- START OF ADMIN ACTIONS ---
 
 // Endpoint to delete a post by ID
-app.delete('/api/ads/:id', async (req, res) => {
+app.delete("/api/ads/:id", async (req, res) => {
   try {
     await adPosting.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Ad deleted successfully' });
+    res.status(200).json({ message: "Ad deleted successfully" });
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
 // Endpoint to update a post by ID
-app.put('/api/ads/:id', async (req, res) => {
+app.put("/api/ads/:id", async (req, res) => {
   try {
     const updatedAd = await adPosting.findByIdAndUpdate(
       req.params.id,
@@ -312,7 +350,6 @@ app.put('/api/ads/:id', async (req, res) => {
   }
 });
 
-
 // --- END OF ADMIN ACTIONS ---
 
 // Start the server
@@ -322,9 +359,22 @@ bin.listen(PORT, () => {
 
 function formatDate(date) {
   let d = new Date(date);
-  let day = String(d.getDate()).padStart(2, '0');
+  let day = String(d.getDate()).padStart(2, "0");
   // Array of month names
-  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   // Get the month name using the month number as an index
   let month = months[d.getMonth()];
   let year = d.getFullYear();

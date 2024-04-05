@@ -8,33 +8,33 @@ function NewPost({ user }) {
   const [type, setType] = useState("Items Wanted");
   const [location, setLocation] = useState("ONLINE");
   const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
-  const [imageURL, setImageURL] = useState('');
+  const [imageURL, setImageURL] = useState("");
 
   const handleImageUpload = async (file) => {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'twup5uph');
+    formData.append("file", file);
+    formData.append("upload_preset", "twup5uph");
 
     try {
-        const response = await fetch(`https://api.cloudinary.com/v1_1/dp7bfbfix/image/upload`, {
-            method: 'POST',
-            body: formData,
-        });
-
-        const data = await response.json();
-        if (data.secure_url) {
-            setImageURL(data.secure_url); // Set the image URL in state only after successful upload
-            console.log("Uploaded image");
-            return data.secure_url;
-        }
+      const response = await fetch(`http://localhost:3001/api/uploadImage`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.secure_url) {
+        setImageURL(data.secure_url);
+        console.log("Uploaded image");
+        return data.secure_url;
+      }
     } catch (error) {
-        console.error('Error uploading the image:', error);
+      console.error("Error uploading the image:", error);
     }
+    
   };
 
   const handleImageChange = (e) => {
     if (e.target.files.length > 0) {
-        setSelectedFile(e.target.files[0]); // Update the state with the selected file
+      setSelectedFile(e.target.files[0]); // Update the state with the selected file
     }
   };
 
@@ -43,7 +43,9 @@ function NewPost({ user }) {
 
     // Input validation
     if (title.trim() === "" || location.trim() === "") {
-      alert("Title and Location cannot be empty. Please provide the necessary details.");
+      alert(
+        "Title and Location cannot be empty. Please provide the necessary details."
+      );
       return;
     }
 
@@ -91,7 +93,7 @@ function NewPost({ user }) {
       console.error("Error adding post:", error.message);
     }
   };
-  
+
   return (
     <div className="pageContent">
       <FadeIn>
@@ -109,7 +111,7 @@ function NewPost({ user }) {
           <div>
             <label>Description:</label>
             <textarea
-            rows="10"
+              rows="10"
               style={{ resize: "vertical" }}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -166,12 +168,9 @@ function NewPost({ user }) {
             </div>
           </div>
           <div>
-            <label>Image:</label><br />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+            <label>Image:</label>
+            <br />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
           </div>
           <div>
             <label>Location:</label>
