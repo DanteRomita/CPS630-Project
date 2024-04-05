@@ -1,0 +1,57 @@
+[
+    {
+        "email": "julian.bolivar@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "dante.romita@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "f1siddiqui@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "harshita.singh@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "julian.bolivar@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "kade.nanakdewa@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "amir.mohammadi@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "shermineh.ghasemi@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "clyderemp@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "edward.sword@torontomu.ca",
+        "admin": true,
+        "banned": false
+    },
+    {
+        "email": "ofalou@torontomu.ca",
+        "admin": true,
+        "banned": false
+    }
+]

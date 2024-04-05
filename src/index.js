@@ -5,12 +5,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+let clientId;
+
+try {
+  const response = await fetch("http://localhost:3001/api/oauthtoken", {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  });
+  clientId = await response.json();
+} catch (error) {
+  console.error("Error fetching users:", error.message);
+}
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={clientId}>
+    <GoogleOAuthProvider clientId={clientId.oauthtoken}>
       <App />
     </GoogleOAuthProvider>
   </React.StrictMode>

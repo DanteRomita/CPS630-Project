@@ -10,7 +10,7 @@ app.use(express.static("public"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
 
@@ -95,6 +95,15 @@ const adSchema = new mongoose.Schema({
 
 const adPosting = mongoose.model("adPosting", adSchema);
 
+// Define a schema for the ad posting
+const userSchema = new mongoose.Schema({
+  email: String,
+  admin: Boolean,
+  banned: Boolean
+});
+
+const userEmail = mongoose.model("userEmail", userSchema);
+
 // --- END OF MONGOOSE SETUP ---
 
 // --- START OF ROUTING SETUP ---
@@ -116,6 +125,22 @@ app.get("/api/ads", async (req, res) => {
 
     if (adSearchResults) res.json(adSearchResults);
     else res.json(ads);
+
+
+// Route to get all users
+app.get("/api/oauthToken", async (req, res) => {
+  res.json({ oauthtoken: '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com' });
+});
+
+// Route to get all emails
+app.get("/api/users", async (req, res) => {
+  try {
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('userEmail');
+    
+    let emails = await collection.find({}).toArray();
+    res.json(emails);
 
   } catch (err) {
     console.error(err);
@@ -141,11 +166,98 @@ app.get('/api/ads/:id', async (req, res) => {
   }
 });
 
+// Route to get all ad postings
+app.get("/api/ads", async (req, res) => {
+  try {
+    if (adSearchResults) res.json(adSearchResults)
+    else {
+      let ads = await adPosting.find({});
+      res.json(ads);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 // POST requests
+
+// Route to create new users in the DB or check existing user
+app.post('/api/newUser', async (req, res) => {
+  console.log(req.body);
+  const { email, admin, banned } = req.body;
+
+  try {
+    // Check if the user already exists
+    const existingUser = await userEmail.findOne({ email: email });
+
+    if (existingUser) {
+      // User already exists, don't add to the database
+      console.log(`User ${email} already exists in the database.`);
+      res.status(409).json({ message: 'User already exists' }); // 409 Conflict
+    } else {
+      // User doesn't exist, create a new one
+      let newUser = new userEmail({
+        email,
+        admin,
+        banned
+      });
+
+      await newUser.save(); // Save the new user to the database
+      console.log(`New user ${email} added to the database.`);
+      res.status(201).json(newUser); // 201 Created
+    }
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    res.status(500).send(err); // Send the error as the response
+  }
+});
+
+// Toggle Admin Status
+app.post('/api/users/toggleAdmin', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userEmail.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Toggle the admin field
+    user.admin = !user.admin;
+    await user.save();
+
+    res.json({ message: 'Admin status updated', admin: user.admin });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Toggle Ban Status
+app.post('/api/users/toggleBan', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userEmail.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Toggle the banned field
+    user.banned = !user.banned;
+    await user.save();
+
+    res.json({ message: 'Ban status updated', banned: user.banned });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
   // console.log(req.body);
+
   let { title, description, price, type, image, location, userEmail } = req.body;
 
   try {
@@ -169,6 +281,7 @@ app.post('/api/ads', async (req, res) => {
 
     await collection.insertOne(newPost); // Save the new ad posting to the database
     // console.log(`New Post Created`)
+
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
     console.error(err); // Log the error for debugging
