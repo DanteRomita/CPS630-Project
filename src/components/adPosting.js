@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import FadeIn from "react-fade-in";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faImage,
+  faMapMarkerAlt,
+  faInfoCircle,
+  faDollarSign,
+} from "@fortawesome/free-solid-svg-icons";
 
 function NewPost({ user }) {
-  const [title, setTitle] = useState("Untitled Ad");
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0.00");
   const [type, setType] = useState("Items Wanted");
@@ -95,93 +102,71 @@ function NewPost({ user }) {
   };
 
   return (
-    <div className="pageContent">
+    <div className="post-container">
       <FadeIn>
         <h1>Post a New Ad</h1>
-        <form id="newAd" onSubmit={handleSubmit}>
-          <div>
-            <label>Title:</label>
-            <input
-              placeholder="Enter Title"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Description:</label>
-            <textarea
-              rows="10"
-              style={{ resize: "vertical" }}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-          </div>
-          <div>
-            <label>Price ($):</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="0.00"
-              min="0.00"
-              step="0.01"
-            />
-          </div>
-          <h5 className="center">Select Category</h5>
-          <div className="row center-align">
-            <div className="col s12 l4">
-              <label>
-                <input
-                  name="type"
-                  type="radio"
-                  value="Items Wanted"
-                  checked={type === "Items Wanted"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                <span>Items Wanted</span>
-              </label>
+        <form id="newAdForm" onSubmit={handleSubmit}>
+          <div className="post-inputs">
+            <div className="post-input">
+              <input
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Enter Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
-            <div className="col s12 l4">
-              <label>
-                <input
-                  name="type"
-                  type="radio"
-                  value="Items For Sale"
-                  checked={type === "Items For Sale"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                <span>Items For Sale</span>
-              </label>
+
+            <div className="post-input">
+              <FontAwesomeIcon icon={faInfoCircle} className="post-icon" />
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Enter Description"
+                rows="5"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
             </div>
-            <div className="col s12 l4">
-              <label>
-                <input
-                  name="type"
-                  type="radio"
-                  value="Academic Services"
-                  checked={type === "Academic Services"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                <span>Academic Services</span>
-              </label>
+
+            <div className="post-input">
+              Price <FontAwesomeIcon icon={faDollarSign} className="post-icon" />
+              <input
+                id="price"
+                type="number"
+                name="price"
+                placeholder="Enter Price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+
+            <div className="post-input">
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="post-icon" />
+              <input
+                id="location"
+                type="text"
+                name="location"
+                placeholder="Enter Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
+
+            <div className="post-input">
+              <FontAwesomeIcon icon={faImage} className="post-icon" />
+              <input
+                id="image"
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </div>
           </div>
-          <div>
-            <label>Image:</label>
-            <br />
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-          </div>
-          <div>
-            <label>Location:</label>
-            <input
-              placeholder="Enter Location"
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </div>
-          <button type="submit">Add Ad</button>
+
+          <button type="submit" className="post-submit-btn btn">Post Ad</button>
         </form>
       </FadeIn>
     </div>

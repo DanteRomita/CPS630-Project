@@ -29,14 +29,17 @@ function NewSearch() {
       .catch((error) => console.error("Error fetching users:", error));
   };
 
+  // Function to generate price options
   const generatePriceOptions = () => {
-    const maxPrice = 250;
+    const maxPrice = 1000; // Example maximum price
     const priceOptions = [];
     for (let i = 0; i <= maxPrice; i += 50) {
-      priceOptions.push(`${i} - ${i + 50}`);
+      priceOptions.push(i.toString());
     }
     return priceOptions;
   };
+
+  const priceOptions = generatePriceOptions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,134 +81,177 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
-          <div className="search-Inputs">
-            <div className="search-bar">
-              <input
-                id="keywords"
-                type="text"
-                name="keywords"
-                value={keywords}
-                onChange={(e) => setKeywords(e.target.value)}
-              />
-              <label htmlFor="keywords">Keyword Search</label>
-            </div>
-            <div>
-              <select
-                id="author"
-                name="author"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-              >
-                <option value="">Author</option>
-                <option value="">None</option>
-                {authorEmails.map((email) => (
-                  <option key={email.email} value={email.email}>
-                    {email.email}
+          <div className="search-form">
+            <div className="search-inputs">
+              <div className="search-bar">
+                <input
+                  id="keywords"
+                  type="text"
+                  name="keywords"
+                  placeholder="Search..." // You can still have a text placeholder
+                  value={keywords}
+                  onChange={(e) => setKeywords(e.target.value)}
+                />
+              </div>
+              <div>
+                <select
+                  id="author"
+                  name="author"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    Author
                   </option>
-                ))}
-              </select>
+                  <option value="">Any</option>
+                  {authorEmails.map((email) => (
+                    <option key={email.email} value={email.email}>
+                      {email.email}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  id="location"
+                  type="text"
+                  name="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    Location
+                  </option>
+                  <option value="">Any</option>
+                  <option value="ONLINE">ONLINE</option>
+                  <option value="*Message for details*">
+                    *Message for details*
+                  </option>
+                  <option value="Kerr Hall (KH)">Kerr Hall (KH)</option>
+                  <option value="Ted Rogers School of Management (TRSM)">
+                    Ted Rogers School of Management (TRSM)
+                  </option>
+                  <option value="Rogers Communications Centre (RCC)">
+                    Rogers Communications Centre (RCC)
+                  </option>
+                  <option value="Library Building (LB)">
+                    Library Building (LB)
+                  </option>
+                  <option value="Student Learning Centre (SLC)">
+                    Student Learning Centre (SLC)
+                  </option>
+                  <option value="Engineering Building (ENG)">
+                    Engineering Building (ENG)
+                  </option>
+                  <option value="Victoria Building (VIC)">
+                    Victoria Building (VIC)
+                  </option>
+                  <option value="Sally Horsfall Eaton Centre for Studies in Community Health (SHE)">
+                    Sally Horsfall Eaton Centre for Studies in Community Health
+                    (SHE)
+                  </option>
+                  <option value="Mattamy Athletic Centre (MAC)">
+                    Mattamy Athletic Centre (MAC)
+                  </option>
+                  <option value="Daphne Cockwell Health Sciences Complex (DCC)">
+                    Daphne Cockwell Health Sciences Complex (DCC)
+                  </option>
+                  <option value="Creative School (CRS)">
+                    Creative School (CRS)
+                  </option>
+                  <option value="Campus Common (CC)">Campus Common (CC)</option>
+                  <option value="Quad (QD)">Quad (QD)</option>
+                </select>
+              </div>
+              <div>
+                <select
+                  id="lowest-price"
+                  name="lowest-price"
+                  value={lowestPrice}
+                  onChange={(e) => setLowestPrice(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    -- $Low --
+                  </option>
+                  <option value="">Any</option>
+                  {priceOptions.map((price, index) => (
+                    <option key={`lowest-${index}`} value={price}>
+                      ${price} CAD
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  id="highest-price"
+                  name="highest-price"
+                  value={highestPrice}
+                  onChange={(e) => setHighestPrice(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    -- $High --
+                  </option>
+                  <option value="">Any</option>
+                  {priceOptions.map((price, index) => (
+                    <option key={`highest-${index}`} value={price}>
+                      ${price} CAD
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div>
-              <select
-                id="location"
-                type="text"
-                name="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              >
-                <option value="">Location</option>
-                <option value="">None</option>
-                <option value="KH">Kerr Hall (KH)</option>
-                <option value="TRSM">
-                  Ted Rogers School of Management (TRSM)
-                </option>
-                <option value="RCC">Rogers Communications Centre (RCC)</option>
-                <option value="LB">Library Building (LB)</option>
-                <option value="SLC">Student Learning Centre (SLC)</option>
-                <option value="ENG">Engineering Building (ENG)</option>
-                <option value="VIC">Victoria Building (VIC)</option>
-                <option value="SLC">
-                  Sheldon & Tracy Levy Student Learning Centre (SLC)
-                </option>
-                <option value="SHE">
-                  Sally Horsfall Eaton Centre for Studies in Community Health
-                  (SHE)
-                </option>
-                <option value="MAC">Mattamy Athletic Centre (MAC)</option>
-                <option value="DCC">
-                  Daphne Cockwell Health Sciences Complex (DCC)
-                </option>
-                <option value="CRS">Creative School (CRS)</option>
-                <option value="CC">Campus Common (CC)</option>
-                <option value="QD">Quad (QD)</option>
-              </select>
-            </div>
-            <select
-              id="price-range"
-              name="price-range"
-              onChange={(e) => {
-                if (e.target.value === "") {
-                  setLowestPrice("0"); 
-                  setHighestPrice("10000");
-                } else {
-                  const [lowest, highest] = e.target.value.split(' - ');
-                  setLowestPrice(lowest);
-                  setHighestPrice(highest);
-                }
-              }}
-            >
-              <option value="">Select Price Range</option>
-              <option value="">None</option>
-              {generatePriceOptions().map((range, index) => (
-                <option key={index} value={range}>
-                  ${range} CAD
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="row">
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
-                <input
-                  type="checkbox"
-                  value={ItemsWanted}
-                  onChange={(e) => setItemsWanted(e.target.checked)}
-                />
-                <span>Items Wanted</span>
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
-                />
-              </label>
-            </div>
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
-                <input
-                  type="checkbox"
-                  value={ItemsForSale}
-                  onChange={(e) => setItemForSale(e.target.checked)}
-                />
-                <span>Items For Sale</span>
-                <FontAwesomeIcon
-                  icon={faDollarSign}
-                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
-                />
-              </label>
-            </div>
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
-                <input
-                  type="checkbox"
-                  value={AcademicServices}
-                  onChange={(e) => setAcademicServices(e.target.checked)}
-                />
-                <span>Academic Services</span>
-                <FontAwesomeIcon
-                  icon={faGraduationCap}
-                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
-                />
-              </label>
+            <div className="search-checkboxes">
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={ItemsWanted ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={ItemsWanted}
+                    onChange={(e) => setItemsWanted(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Items Wanted</span>
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={ItemsForSale ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={ItemsForSale}
+                    onChange={(e) => setItemForSale(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Items For Sale</span>
+                  <FontAwesomeIcon
+                    icon={faDollarSign}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={AcademicServices ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={AcademicServices}
+                    onChange={(e) => setAcademicServices(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Academic Services</span>
+                  <FontAwesomeIcon
+                    icon={faGraduationCap}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
             </div>
           </div>
           <p className="center">

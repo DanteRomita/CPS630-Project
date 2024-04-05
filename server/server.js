@@ -126,7 +126,6 @@ app.get("/api/oauthToken", async (req, res) => {
 
 // Route to get all emails
 app.get("/api/users", async (req, res) => {
-  console.log('enters get("/api/users")');
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
@@ -304,7 +303,7 @@ app.post('/api/ads', async (req, res) => {
 
 // Route to search for ad postings
 app.post("/api/ads/search", async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   let {
     keywords,
     userEmail,
@@ -370,10 +369,10 @@ app.post("/api/ads/search", async (req, res) => {
         location: { $regex: location, $options: "i" },
         price: priceRange.price,
         type: { $in: category },
-      }).toArray();
+      }).sort({ price: 1 }).toArray();
     }
-    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
+    // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
+    // console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
 
     res.sendStatus(204);
   } catch (err) {
