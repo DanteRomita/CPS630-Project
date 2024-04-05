@@ -22,7 +22,7 @@ function App() {
   const [adminUsers, setAdminUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http:/beam.seven88.racing:55560/api/users")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((users) => {
         const admins = users

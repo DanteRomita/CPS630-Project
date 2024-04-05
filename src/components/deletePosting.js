@@ -8,7 +8,7 @@ function DeletePost() {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
-    fetch("http:/beam.seven88.racing:55560/api/ads")
+    fetch("/api/ads")
       .then((response) => response.json())
       .then((data) => setAds(data))
       .catch((error) => console.error("Error fetching posts:", error));

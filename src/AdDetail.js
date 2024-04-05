@@ -15,7 +15,7 @@ function AdDetail({ user }) {
 
   useEffect(() => {
     // Fetch the ad details from the server based on the ad ID
-    fetch(`http:/beam.seven88.racing:55560/api/ads/${id}`)
+    fetch(`/api/ads/${id}`)
       .then(response => response.json())
       .then(data => setAd(data))
       .catch(error => console.error("Failed to fetch ad details:", error));
@@ -32,7 +32,7 @@ function AdDetail({ user }) {
     // Show a confirmation dialog before deleting
     if (window.confirm("Are you sure you want to delete this post?")) {
       try {
-        const response = await fetch(`http:/beam.seven88.racing:55560/api/ads/${id}`, {
+        const response = await fetch(`/api/ads/${id}`, {
           method: "DELETE",
         });
         if (!response.ok) {
