@@ -185,7 +185,6 @@ app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
 
 // Route to create new users in the DB or check existing user
 app.post('/api/newUser', async (req, res) => {
-  console.log('Enters new user. TO TEST STILL!')
   console.log(req.body);
   const { email, admin, banned } = req.body;
 
@@ -221,7 +220,6 @@ app.post('/api/newUser', async (req, res) => {
 
 // Toggle Admin Status
 app.post('/api/users/toggleAdmin', async (req, res) => {
-  console.log('Enters toggle admin. TO TEST STILL!')
   const { email } = req.body;
 
   try {
@@ -247,7 +245,6 @@ app.post('/api/users/toggleAdmin', async (req, res) => {
 
 // Toggle Ban Status
 app.post('/api/users/toggleBan', async (req, res) => {
-  console.log('Enters toggle ban. TO TEST STILL!')
   const { email } = req.body;
 
   try {

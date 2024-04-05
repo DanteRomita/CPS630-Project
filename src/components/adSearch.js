@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FadeIn from "react-fade-in";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faDollarSign, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faDollarSign,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 
 function NewSearch() {
   const [keywords, setKeywords] = useState("");
@@ -12,6 +16,27 @@ function NewSearch() {
   const [ItemsWanted, setItemsWanted] = useState(false);
   const [ItemsForSale, setItemForSale] = useState(false);
   const [AcademicServices, setAcademicServices] = useState(false);
+  const [authorEmails, setAuthorEmails] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = () => {
+    fetch("http://localhost:3001/api/users")
+      .then((response) => response.json())
+      .then((data) => setAuthorEmails(data))
+      .catch((error) => console.error("Error fetching users:", error));
+  };
+
+  const generatePriceOptions = () => {
+    const maxPrice = 250;
+    const priceOptions = [];
+    for (let i = 0; i <= maxPrice; i += 50) {
+      priceOptions.push(`${i} - ${i + 50}`);
+    }
+    return priceOptions;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,28 +78,34 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
-          <div className="input-field">
-            <input
-              id="keywords"
-              type="text"
-              name="keywords"
-              value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
-            />
-            <label htmlFor="keywords">Keyword Search</label>
-          </div>
-          <div className="row">
-            <div className="input-field col s12 l6">
+          <div className="search-Inputs">
+            <div className="search-bar">
               <input
-                id="author"
+                id="keywords"
                 type="text"
+                name="keywords"
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+              />
+              <label htmlFor="keywords">Keyword Search</label>
+            </div>
+            <div>
+              <select
+                id="author"
                 name="author"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
-              />
-              <label htmlFor="author">Author Email</label>
+              >
+                <option value="">Author</option>
+                <option value="">None</option>
+                {authorEmails.map((email) => (
+                  <option key={email.email} value={email.email}>
+                    {email.email}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="input-field col s12 l6">
+            <div>
               <select
                 id="location"
                 type="text"
@@ -82,39 +113,57 @@ function NewSearch() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                
+                <option value="">Location</option>
+                <option value="">None</option>
+                <option value="KH">Kerr Hall (KH)</option>
+                <option value="TRSM">
+                  Ted Rogers School of Management (TRSM)
+                </option>
+                <option value="RCC">Rogers Communications Centre (RCC)</option>
+                <option value="LB">Library Building (LB)</option>
+                <option value="SLC">Student Learning Centre (SLC)</option>
+                <option value="ENG">Engineering Building (ENG)</option>
+                <option value="VIC">Victoria Building (VIC)</option>
+                <option value="SLC">
+                  Sheldon & Tracy Levy Student Learning Centre (SLC)
+                </option>
+                <option value="SHE">
+                  Sally Horsfall Eaton Centre for Studies in Community Health
+                  (SHE)
+                </option>
+                <option value="MAC">Mattamy Athletic Centre (MAC)</option>
+                <option value="DCC">
+                  Daphne Cockwell Health Sciences Complex (DCC)
+                </option>
+                <option value="CRS">Creative School (CRS)</option>
+                <option value="CC">Campus Common (CC)</option>
+                <option value="QD">Quad (QD)</option>
               </select>
-              <label htmlFor="location">Location</label>
             </div>
+            <select
+              id="price-range"
+              name="price-range"
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setLowestPrice("0"); 
+                  setHighestPrice("10000");
+                } else {
+                  const [lowest, highest] = e.target.value.split(' - ');
+                  setLowestPrice(lowest);
+                  setHighestPrice(highest);
+                }
+              }}
+            >
+              <option value="">Select Price Range</option>
+              <option value="">None</option>
+              {generatePriceOptions().map((range, index) => (
+                <option key={index} value={range}>
+                  ${range} CAD
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="row">
-            <div className="input-field col s12 l6">
-              <input
-                id="lowest-price"
-                name="lowest-price"
-                type="number"
-                className="validate"
-                min="0"
-                step="0.01"
-                value={lowestPrice}
-                onChange={(e) => setLowestPrice(e.target.value)}
-              />
-              <label htmlFor="lowest-price">Lowest ($ CAD)</label>
-            </div>
-            <div className="input-field col s12 l6">
-              <input
-                id="highest-price"
-                name="highest-price"
-                type="number"
-                className="validate"
-                min="0"
-                step="0.01"
-                value={highestPrice}
-                onChange={(e) => setHighestPrice(e.target.value)}
-              />
-              <label htmlFor="highest-price">Highest ($ CAD)</label>
-            </div>
-          </div>
+
           <div className="row">
             <div className="col s12 l4 center">
               <label style={{ marginRight: "1vw" }}>
@@ -124,7 +173,10 @@ function NewSearch() {
                   onChange={(e) => setItemsWanted(e.target.checked)}
                 />
                 <span>Items Wanted</span>
-                <FontAwesomeIcon icon={faSearch} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
+                />
               </label>
             </div>
             <div className="col s12 l4 center">
@@ -135,7 +187,10 @@ function NewSearch() {
                   onChange={(e) => setItemForSale(e.target.checked)}
                 />
                 <span>Items For Sale</span>
-                <FontAwesomeIcon icon={faDollarSign} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
+                <FontAwesomeIcon
+                  icon={faDollarSign}
+                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
+                />
               </label>
             </div>
             <div className="col s12 l4 center">
@@ -146,15 +201,23 @@ function NewSearch() {
                   onChange={(e) => setAcademicServices(e.target.checked)}
                 />
                 <span>Academic Services</span>
-                <FontAwesomeIcon icon={faGraduationCap} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
+                <FontAwesomeIcon
+                  icon={faGraduationCap}
+                  style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}
+                />
               </label>
             </div>
           </div>
           <p className="center">
-            <button className="btn-large waves-effect icon-link search-button btn" type="submit" style={{ 'fontSize': 'x-large' }}>Search</button>
+            <button
+              className="btn-large waves-effect icon-link search-button btn"
+              type="submit"
+              style={{ fontSize: "x-large" }}
+            >
+              Search
+            </button>
           </p>
           <hr />
-          
         </form>
       </FadeIn>
     </div>

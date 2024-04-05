@@ -7,10 +7,15 @@ import AdDetail from "./AdDetail";
 import LoginButton from "./components/login";
 import LogoutButton from "./components/logout";
 import UserProfile from "./components/userProfile";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link, Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faComment, faUserShield, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faComment,
+  faUserShield,
+  faSquarePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [user, setUser] = useState({});
@@ -20,7 +25,9 @@ function App() {
     fetch("http://localhost:3001/api/users")
       .then((response) => response.json())
       .then((users) => {
-        const admins = users.filter(user => user.admin).map(user => user.email);
+        const admins = users
+          .filter((user) => user.admin)
+          .map((user) => user.email);
         setAdminUsers(admins);
       })
       .catch((error) => console.error("Error fetching users:", error));
@@ -35,19 +42,26 @@ function App() {
           </Link>
 
           <div className="nav-container">
-            <Link className="btn waves-effect icon-link center" to="/">
-              <FontAwesomeIcon icon={faHome} />
-            </Link>
-            <Link className="btn waves-effect icon-link center" to="/Chat">
-              <FontAwesomeIcon icon={faComment} />
-            </Link>
-            <Link className="btn waves-effect icon-link center" to="/Post">
-              <FontAwesomeIcon icon={faSquarePlus} />
-            </Link>
-            {adminUsers.includes(user.email) && (
-              <Link className="btn waves-effect icon-link center" to="/Admin">
-                <FontAwesomeIcon icon={faUserShield} />
-              </Link>
+            {Object.keys(user).length > 0 && (
+              <>
+                <Link className="btn waves-effect icon-link center" to="/">
+                  <FontAwesomeIcon icon={faHome} />
+                </Link>
+                <Link className="btn waves-effect icon-link center" to="/Chat">
+                  <FontAwesomeIcon icon={faComment} />
+                </Link>
+                <Link className="btn waves-effect icon-link center" to="/Post">
+                  <FontAwesomeIcon icon={faSquarePlus} />
+                </Link>
+                {adminUsers.includes(user.email) && (
+                  <Link
+                    className="btn waves-effect icon-link center"
+                    to="/Admin"
+                  >
+                    <FontAwesomeIcon icon={faUserShield} />
+                  </Link>
+                )}
+              </>
             )}
           </div>
           <div id="user-profile">
@@ -75,7 +89,16 @@ function App() {
               <Route path="/Post" element={<Post user={user} />} />
               <Route path="/ads/:id" element={<AdDetail user={user} />} />
               {adminUsers.includes(user.email) && (
-                <Route path="/Admin" element={<Admin user={user} />} />
+                <Route
+                  path="/Admin"
+                  element={
+                    adminUsers.includes(user.email) ? (
+                      <Admin user={user} />
+                    ) : (
+                      <Navigate replace to="/" />
+                    )
+                  }
+                />
               )}
             </Routes>
           )}

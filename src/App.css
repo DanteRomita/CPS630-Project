@@ -4,6 +4,10 @@ html {
     sans-serif;
 }
 
+select {
+  display: block;
+}
+
 .centred {
   display: flex;
   justify-content: center;
@@ -69,6 +73,11 @@ html {
   text-align: right;
 }
 
+.search-Inputs{
+  display: flex;
+  flex-direction: row;
+}
+
 .search-container {
   width: 100%;
 }
@@ -77,7 +86,7 @@ html {
   margin-top: 2vw;
 }
 
-#search-bar {
+.search-bar {
   width: 100%;
   box-sizing: border-box;
   padding: 8px;
@@ -205,6 +214,32 @@ html {
   width: 4vw;
   height: 4vw;
   font-size: 2vw;
+  position: relative;
+  top: -4vw;
+}
+
+.user-list {
+  font-size: 1vw;
+  padding-bottom: 10vh;
+}
+
+.user-actions{
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-toggle input:checked + .icon{
+  color: lime;
+}
+
+.ban-toggle input:checked + .icon {
+  color: rgb(255, 174, 0);
+}
+
+.user-actions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 @media (max-width: 1500px) {
@@ -229,6 +264,11 @@ html {
     width: 5vw;
     height: 5vw;
     font-size: 3vw;
+    top: -5vw;
+  }
+
+  .user-list {
+    font-size: 2vw;
   }
 
 }
@@ -239,7 +279,7 @@ html {
   }
 
   .ad-title, .ad-price {
-    font-size: 3vw;
+    font-size: 5vw;
   }
   
   .main-content {
@@ -279,6 +319,11 @@ html {
     width: 10vw;
     height: 10vw;
     font-size: 5vw;
+    top: -10vw;
+  }
+
+  .user-list {
+    font-size: 3vw;
   }
 
   @media (max-height: 700px) {
