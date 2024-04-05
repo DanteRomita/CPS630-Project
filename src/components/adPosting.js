@@ -13,7 +13,7 @@ function NewPost({ user }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0.00");
   const [type, setType] = useState("Items Wanted");
-  const [location, setLocation] = useState("ONLINE");
+  const [location, setLocation] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
   const [imageURL, setImageURL] = useState("");
 
@@ -92,7 +92,7 @@ function NewPost({ user }) {
         setType("Items Wanted");
         setSelectedFile(null); // Reset file selection
         setImageURL(""); // Clear the imageURL state
-        setLocation("ONLINE");
+        setLocation("");
         alert("Ad posted successfully!");
       }
     } catch (error) {
@@ -147,13 +147,12 @@ function NewPost({ user }) {
               <FontAwesomeIcon icon={faMapMarkerAlt} className="post-icon" />
               <select
                 id="location"
-                type="text"
                 name="location"
                 placeholder="Enter Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                <option value="">Any</option>
+                <option value="">Select a Location</option>
                 <option value="ONLINE">ONLINE</option>
                 <option value="*Message for details*">
                   *Message for details*

@@ -124,43 +124,29 @@ function NewSearch() {
                   </option>
                   <option value="">Any</option>
                   <option value="ONLINE">ONLINE</option>
-                  <option value="*Message for details*">
-                    *Message for details*
-                  </option>
-                  <option value="Kerr Hall (KH)">Kerr Hall (KH)</option>
-                  <option value="Ted Rogers School of Management (TRSM)">
+                  <option value="Message">*Message for details*</option>
+                  <option value="Kerr">Kerr Hall (KH)</option>
+                  <option value="TRSM">
                     Ted Rogers School of Management (TRSM)
                   </option>
-                  <option value="Rogers Communications Centre (RCC)">
+                  <option value="Communications">
                     Rogers Communications Centre (RCC)
                   </option>
-                  <option value="Library Building (LB)">
-                    Library Building (LB)
-                  </option>
-                  <option value="Student Learning Centre (SLC)">
-                    Student Learning Centre (SLC)
-                  </option>
-                  <option value="Engineering Building (ENG)">
-                    Engineering Building (ENG)
-                  </option>
-                  <option value="Victoria Building (VIC)">
-                    Victoria Building (VIC)
-                  </option>
-                  <option value="Sally Horsfall Eaton Centre for Studies in Community Health (SHE)">
+                  <option value="Library">Library Building (LB)</option>
+                  <option value="SLC">Student Learning Centre (SLC)</option>
+                  <option value="ENG">Engineering Building (ENG)</option>
+                  <option value="VIC">Victoria Building (VIC)</option>
+                  <option value="Horsfall">
                     Sally Horsfall Eaton Centre for Studies in Community Health
                     (SHE)
                   </option>
-                  <option value="Mattamy Athletic Centre (MAC)">
-                    Mattamy Athletic Centre (MAC)
-                  </option>
-                  <option value="Daphne Cockwell Health Sciences Complex (DCC)">
+                  <option value="MAC">Mattamy Athletic Centre (MAC)</option>
+                  <option value="DCC">
                     Daphne Cockwell Health Sciences Complex (DCC)
                   </option>
-                  <option value="Creative School (CRS)">
-                    Creative School (CRS)
-                  </option>
-                  <option value="Campus Common (CC)">Campus Common (CC)</option>
-                  <option value="Quad (QD)">Quad (QD)</option>
+                  <option value="CRS">Creative School (CRS)</option>
+                  <option value="Common">Campus Common (CC)</option>
+                  <option value="QD">Quad (QD)</option>
                 </select>
               </div>
               <div>
@@ -212,10 +198,7 @@ function NewSearch() {
                     onChange={(e) => setItemsWanted(e.target.checked)}
                   />
                   <span className="search-checkbox">Items Wanted</span>
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className="search-icon"
-                  />
+                  <FontAwesomeIcon icon={faSearch} className="search-icon" />
                 </label>
               </div>
               <div>
