@@ -23,7 +23,7 @@ function NewSearch() {
   }, []);
 
   const fetchUsers = () => {
-    fetch("/api/users")
+    fetch("http:/beam.seven88.racing:55560/api/users")
       .then((response) => response.json())
       .then((data) => setAuthorEmails(data))
       .catch((error) => console.error("Error fetching users:", error));
@@ -65,7 +65,7 @@ function NewSearch() {
     };
 
     try {
-      await fetch("/api/ads/search", {
+      await fetch("http:/beam.seven88.racing:55560/api/ads/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

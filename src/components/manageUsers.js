@@ -11,14 +11,14 @@ const UsersAdmin = () => {
   }, []);
 
   const fetchUsers = () => {
-    fetch("/api/users")
+    fetch("http:/beam.seven88.racing:55560/api/users")
       .then((response) => response.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error("Error fetching users:", error));
   };
 
   const toggleAdmin = (email) => {
-    fetch(`/api/users/toggleAdmin`, {
+    fetch(`http:/beam.seven88.racing:55560/api/users/toggleAdmin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const UsersAdmin = () => {
   };
 
   const toggleBan = (email) => {
-    fetch(`/api/users/toggleBan`, {
+    fetch(`http:/beam.seven88.racing:55560/api/users/toggleBan`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
