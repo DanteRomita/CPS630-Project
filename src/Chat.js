@@ -48,14 +48,14 @@ function Chat({ user }) {
   };
 
   return (
-    <div className="App">
+    <div>
       <FadeIn>
         <h1>Global Chat</h1>
-        <p>
+        <h6>
           Chat with other users here by typing in the box below and clicking the
           "Send" button!
-        </p>
-        <fieldset>
+        </h6>
+        <fieldset className="chat">
           <div
             id="messages"
             style={{ height: "60vh", overflow: "scroll", wordWrap: "break-word" }}
@@ -75,6 +75,7 @@ function Chat({ user }) {
             placeholder="Enter message here"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            className="chat"
           />
           <button
             id="send"

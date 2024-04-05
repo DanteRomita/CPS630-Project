@@ -1,7 +1,12 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import FadeIn from "react-fade-in/lib/FadeIn.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faDollarSign,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 
 function AdDetail({ user }) {
   const { id } = useParams(); // This hooks allows you to access the ad ID from the URL
@@ -15,6 +20,13 @@ function AdDetail({ user }) {
       .then(data => setAd(data))
       .catch(error => console.error("Failed to fetch ad details:", error));
   }, [id]); // Depend on id so if it changes, we refetch
+
+  const categoryIcons = {
+    'Items Wanted': faSearch,
+    'Items For Sale': faDollarSign,
+    'Academic Services': faGraduationCap,
+  };
+
 
   const handleDelete = async (id) => {
     // Show a confirmation dialog before deleting
@@ -41,6 +53,12 @@ function AdDetail({ user }) {
     <FadeIn>
       <div>
         <h1>{ad.title}</h1>
+        <h5>Category</h5>
+        <p>
+          <b>
+            {ad.type} <FontAwesomeIcon icon={categoryIcons[ad.type]} />
+          </b>
+        </p>
         {
           user.email === ad.userEmail &&
           <button

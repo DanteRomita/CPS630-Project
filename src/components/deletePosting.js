@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faSearch, faDollarSign, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
+import FadeIn from "react-fade-in/lib/FadeIn";
 
 function DeletePost() {
   const [ads, setAds] = useState([]);
@@ -54,21 +55,23 @@ function DeletePost() {
 
 
   return (
-    <div className="ad-list">
-      {ads.map((ad) => (
-        <div key={ad._id} className="ad-item">
-          <Link to={`/ads/${ad._id}`} className="ad-container">
-            <div className="ad-image" style={{ backgroundImage: `url(${ad.image === "" ? "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" : ad.image})` }}>
-            {getTitleWithIcon(ad.type, ad.title)}
-              <div className="ad-price">${ad.price.toFixed(2)}</div>
-            </div>
-          </Link>
-          <button id="deleteButton" onClick={() => handleDelete(ad._id)} className="delete-button btn waves-effect icon-link">
-            <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
-          </button>
-        </div>
-      ))}
-    </div>
+    <FadeIn>
+      <div className="ad-list">
+        {ads.map((ad) => (
+          <div key={ad._id} className="ad-item">
+            <Link to={`/ads/${ad._id}`} className="ad-container">
+              <div className="ad-image" style={{ backgroundImage: `url(${ad.image === "" ? "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=" : ad.image})` }}>
+              {getTitleWithIcon(ad.type, ad.title)}
+                <div className="ad-price">${ad.price.toFixed(2)}</div>
+              </div>
+            </Link>
+            <button id="deleteButton" onClick={() => handleDelete(ad._id)} className="delete-button btn waves-effect icon-link">
+              <FontAwesomeIcon icon={faTrashCan} style={{ color: "red" }} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </FadeIn>
   );
 }
 

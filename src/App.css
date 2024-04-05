@@ -4,6 +4,11 @@ html {
     sans-serif;
 }
 
+select {
+  display: block;
+  height: fit-content;
+}
+
 .centred {
   display: flex;
   justify-content: center;
@@ -69,6 +74,22 @@ html {
   text-align: right;
 }
 
+.search-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5vw;
+  margin-top: 5vw;
+  width: 100%;
+}
+
+.search-inputs{
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5vw;
+  width: 50%;
+}
+
 .search-container {
   width: 100%;
 }
@@ -77,13 +98,38 @@ html {
   margin-top: 2vw;
 }
 
-#search-bar {
-  width: 100%;
+.search-bar {
   box-sizing: border-box;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  font-size: 1.5vw;
+}
+
+#keywords {
+  font-size: 1.5vw;
+}
+
+.search-checkboxes {
+  margin-left: auto;
+  margin-top: auto;
+}
+
+[type="checkbox"]+span:not(.lever) {
+  font-size: 1.5vw;
+  margin: 1vw;
+}
+
+.search-icon{
+  font-size: 1.5vw;
+}
+
+.checkbox-checked {
+  color: black;
+  font-size: 2vw;
+}
+
+.post-container{
+  font-size: 1.5vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .filters {
@@ -173,7 +219,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 40vw;
 }
 
 .login-prompt {
@@ -205,6 +251,36 @@ html {
   width: 4vw;
   height: 4vw;
   font-size: 2vw;
+  position: relative;
+  top: -4vw;
+}
+
+.user-list {
+  font-size: 1vw;
+  padding-bottom: 10vh;
+}
+
+.user-actions{
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-toggle input:checked + .icon{
+  color: lime;
+}
+
+.ban-toggle input:checked + .icon {
+  color: rgb(255, 174, 0);
+}
+
+.user-actions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat{
+  font-size: 1.5vw;
 }
 
 @media (max-width: 1500px) {
@@ -229,22 +305,59 @@ html {
     width: 5vw;
     height: 5vw;
     font-size: 3vw;
+    top: -5vw;
+  }
+
+  .user-list {
+    font-size: 2vw;
   }
 
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .ad-list {
     grid-template-columns: repeat(1, 1fr);
   }
 
   .ad-title, .ad-price {
-    font-size: 3vw;
+    font-size: 5vw;
   }
   
   .main-content {
     margin-left: 0;
     margin-top: 25vh;
+  }
+
+  .search-form{
+    font-size: 3vw;
+    flex-direction: column;
+  }
+
+  .search-form select{
+    font-size: 3vw;
+  }
+
+  .search-bar{
+    font-size: 5vw;
+  }
+
+  #keywords {
+    font-size: 3vw;
+  }
+
+  .search-checkboxes {
+    margin-top: 5vw;
+    margin-left: 0;
+  }
+
+  [type="checkbox"]+span:not(.lever) {
+    font-size: 3vw;
+    margin: 1vw;
+  }
+
+  .search-icon{
+    padding-left: 0.5vw;
+    font-size: 5vw;
   }
 
   .sidebar {
@@ -268,7 +381,7 @@ html {
 
   #logo {
     height: 100%;
-    width: 20vw;
+    width: 15vw;
   }
 
   .btn.waves-effect.icon-link.center {
@@ -279,9 +392,18 @@ html {
     width: 10vw;
     height: 10vw;
     font-size: 5vw;
+    top: -10vw;
   }
 
-  @media (max-height: 700px) {
+  .user-list {
+    font-size: 3vw;
+  }
+
+  .chat{
+    font-size: 3vw;
+  }
+
+  @media (max-height: 800px) {
     .main-content {
       margin-top: 35vh;
     }

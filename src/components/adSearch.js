@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FadeIn from "react-fade-in";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faDollarSign, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faDollarSign,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 
 function NewSearch() {
   const [keywords, setKeywords] = useState("");
@@ -12,6 +16,30 @@ function NewSearch() {
   const [ItemsWanted, setItemsWanted] = useState(false);
   const [ItemsForSale, setItemForSale] = useState(false);
   const [AcademicServices, setAcademicServices] = useState(false);
+  const [authorEmails, setAuthorEmails] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = () => {
+    fetch("http://localhost:3001/api/users")
+      .then((response) => response.json())
+      .then((data) => setAuthorEmails(data))
+      .catch((error) => console.error("Error fetching users:", error));
+  };
+
+  // Function to generate price options
+  const generatePriceOptions = () => {
+    const maxPrice = 1000; // Example maximum price
+    const priceOptions = [];
+    for (let i = 0; i <= maxPrice; i += 50) {
+      priceOptions.push(i.toString());
+    }
+    return priceOptions;
+  };
+
+  const priceOptions = generatePriceOptions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,108 +81,189 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
-          <div className="input-field">
-            <input
-              id="keywords"
-              type="text"
-              name="keywords"
-              value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
-            />
-            <label htmlFor="keywords">Keyword Search</label>
-          </div>
-          <div className="row">
-            <div className="input-field col s12 l6">
-              <input
-                id="author"
-                type="text"
-                name="author"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-              />
-              <label htmlFor="author">Author Email</label>
-            </div>
-            <div className="input-field col s12 l6">
-              <select
-                id="location"
-                type="text"
-                name="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              >
-                
-              </select>
-              <label htmlFor="location">Location</label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s12 l6">
-              <input
-                id="lowest-price"
-                name="lowest-price"
-                type="number"
-                className="validate"
-                min="0"
-                step="0.01"
-                value={lowestPrice}
-                onChange={(e) => setLowestPrice(e.target.value)}
-              />
-              <label htmlFor="lowest-price">Lowest ($ CAD)</label>
-            </div>
-            <div className="input-field col s12 l6">
-              <input
-                id="highest-price"
-                name="highest-price"
-                type="number"
-                className="validate"
-                min="0"
-                step="0.01"
-                value={highestPrice}
-                onChange={(e) => setHighestPrice(e.target.value)}
-              />
-              <label htmlFor="highest-price">Highest ($ CAD)</label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
+          <div className="search-form">
+            <div className="search-inputs">
+              <div className="search-bar">
                 <input
-                  type="checkbox"
-                  value={ItemsWanted}
-                  onChange={(e) => setItemsWanted(e.target.checked)}
+                  id="keywords"
+                  type="text"
+                  name="keywords"
+                  placeholder="Search..." // You can still have a text placeholder
+                  value={keywords}
+                  onChange={(e) => setKeywords(e.target.value)}
                 />
-                <span>Items Wanted</span>
-                <FontAwesomeIcon icon={faSearch} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
-              </label>
+              </div>
+              <div>
+                <select
+                  id="author"
+                  name="author"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    Author
+                  </option>
+                  <option value="">Any</option>
+                  {authorEmails.map((email) => (
+                    <option key={email.email} value={email.email}>
+                      {email.email}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  id="location"
+                  type="text"
+                  name="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    Location
+                  </option>
+                  <option value="">Any</option>
+                  <option value="ONLINE">ONLINE</option>
+                  <option value="*Message for details*">
+                    *Message for details*
+                  </option>
+                  <option value="Kerr Hall (KH)">Kerr Hall (KH)</option>
+                  <option value="Ted Rogers School of Management (TRSM)">
+                    Ted Rogers School of Management (TRSM)
+                  </option>
+                  <option value="Rogers Communications Centre (RCC)">
+                    Rogers Communications Centre (RCC)
+                  </option>
+                  <option value="Library Building (LB)">
+                    Library Building (LB)
+                  </option>
+                  <option value="Student Learning Centre (SLC)">
+                    Student Learning Centre (SLC)
+                  </option>
+                  <option value="Engineering Building (ENG)">
+                    Engineering Building (ENG)
+                  </option>
+                  <option value="Victoria Building (VIC)">
+                    Victoria Building (VIC)
+                  </option>
+                  <option value="Sally Horsfall Eaton Centre for Studies in Community Health (SHE)">
+                    Sally Horsfall Eaton Centre for Studies in Community Health
+                    (SHE)
+                  </option>
+                  <option value="Mattamy Athletic Centre (MAC)">
+                    Mattamy Athletic Centre (MAC)
+                  </option>
+                  <option value="Daphne Cockwell Health Sciences Complex (DCC)">
+                    Daphne Cockwell Health Sciences Complex (DCC)
+                  </option>
+                  <option value="Creative School (CRS)">
+                    Creative School (CRS)
+                  </option>
+                  <option value="Campus Common (CC)">Campus Common (CC)</option>
+                  <option value="Quad (QD)">Quad (QD)</option>
+                </select>
+              </div>
+              <div>
+                <select
+                  id="lowest-price"
+                  name="lowest-price"
+                  value={lowestPrice}
+                  onChange={(e) => setLowestPrice(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    -- $Low --
+                  </option>
+                  <option value="">Any</option>
+                  {priceOptions.map((price, index) => (
+                    <option key={`lowest-${index}`} value={price}>
+                      ${price} CAD
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  id="highest-price"
+                  name="highest-price"
+                  value={highestPrice}
+                  onChange={(e) => setHighestPrice(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    -- $High --
+                  </option>
+                  <option value="">Any</option>
+                  {priceOptions.map((price, index) => (
+                    <option key={`highest-${index}`} value={price}>
+                      ${price} CAD
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
-                <input
-                  type="checkbox"
-                  value={ItemsForSale}
-                  onChange={(e) => setItemForSale(e.target.checked)}
-                />
-                <span>Items For Sale</span>
-                <FontAwesomeIcon icon={faDollarSign} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
-              </label>
-            </div>
-            <div className="col s12 l4 center">
-              <label style={{ marginRight: "1vw" }}>
-                <input
-                  type="checkbox"
-                  value={AcademicServices}
-                  onChange={(e) => setAcademicServices(e.target.checked)}
-                />
-                <span>Academic Services</span>
-                <FontAwesomeIcon icon={faGraduationCap} style={{ paddingLeft: "0.5vw", fontSize: "1.5vw" }}/>
-              </label>
+            <div className="search-checkboxes">
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={ItemsWanted ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={ItemsWanted}
+                    onChange={(e) => setItemsWanted(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Items Wanted</span>
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={ItemsForSale ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={ItemsForSale}
+                    onChange={(e) => setItemForSale(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Items For Sale</span>
+                  <FontAwesomeIcon
+                    icon={faDollarSign}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
+              <div>
+                <label
+                  style={{ marginRight: "1vw" }}
+                  className={AcademicServices ? "checkbox-checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={AcademicServices}
+                    onChange={(e) => setAcademicServices(e.target.checked)}
+                  />
+                  <span className="search-checkbox">Academic Services</span>
+                  <FontAwesomeIcon
+                    icon={faGraduationCap}
+                    className="search-icon"
+                  />
+                </label>
+              </div>
             </div>
           </div>
           <p className="center">
-            <button className="btn-large waves-effect icon-link search-button btn" type="submit" style={{ 'fontSize': 'x-large' }}>Search</button>
+            <button
+              className="btn-large waves-effect icon-link search-button btn"
+              type="submit"
+              style={{ fontSize: "x-large" }}
+            >
+              Search
+            </button>
           </p>
           <hr />
-          
         </form>
       </FadeIn>
     </div>

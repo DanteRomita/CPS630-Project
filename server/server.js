@@ -5,7 +5,7 @@ const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
 
 const app = express();
-app.use(express.static("public"));
+app.use(express.static("build"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
@@ -126,7 +126,6 @@ app.get("/api/oauthToken", async (req, res) => {
 
 // Route to get all emails
 app.get("/api/users", async (req, res) => {
-  console.log('enters get("/api/users")');
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
@@ -185,8 +184,6 @@ app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
 
 // Route to create new users in the DB or check existing user
 app.post('/api/newUser', async (req, res) => {
-  console.log('Enters new user. TO TEST STILL!')
-  console.log(req.body);
   const { email, admin, banned } = req.body;
 
   try {
@@ -221,7 +218,6 @@ app.post('/api/newUser', async (req, res) => {
 
 // Toggle Admin Status
 app.post('/api/users/toggleAdmin', async (req, res) => {
-  console.log('Enters toggle admin. TO TEST STILL!')
   const { email } = req.body;
 
   try {
@@ -247,7 +243,6 @@ app.post('/api/users/toggleAdmin', async (req, res) => {
 
 // Toggle Ban Status
 app.post('/api/users/toggleBan', async (req, res) => {
-  console.log('Enters toggle ban. TO TEST STILL!')
   const { email } = req.body;
 
   try {
@@ -296,7 +291,6 @@ app.post('/api/ads', async (req, res) => {
 
     await collection.insertOne(newPost); // Save the new ad posting to the database
     console.log(`New Post Created`)
-    console.log(newPost)
 
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
@@ -307,7 +301,7 @@ app.post('/api/ads', async (req, res) => {
 
 // Route to search for ad postings
 app.post("/api/ads/search", async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   let {
     keywords,
     userEmail,
@@ -373,10 +367,10 @@ app.post("/api/ads/search", async (req, res) => {
         location: { $regex: location, $options: "i" },
         price: priceRange.price,
         type: { $in: category },
-      }).toArray();
+      }).sort({ price: 1 }).toArray();
     }
-    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
+    // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
+    // console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
 
     res.sendStatus(204);
   } catch (err) {

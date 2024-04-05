@@ -4,23 +4,23 @@ import "./App.css";
 import DeletePosting from "./components/deletePosting";
 import UsersAdmin from "./components/manageUsers";
 
-function Admin({ user }) {
+function Admin() {
   // State to track the current view ('deletePosts' or 'manageUsers')
   const [currentView, setCurrentView] = useState('deletePosts');
 
   return (
-    <div className="App">
+    <div>
       <FadeIn>
         <h1>Admin Page</h1>
         <div className="admin-buttons">
           <button
-            className={`btn-large waves-effect icon-link center admin-button ${currentView === 'deletePosts' ? 'active' : ''}`}
+            className={`btn-large waves-effect icon-link center admin-button btn ${currentView === 'deletePosts' ? 'active' : ''}`}
             onClick={() => setCurrentView('deletePosts')}
           >
             Delete Posts
           </button>
           <button
-            className={`btn-large waves-effect icon-link center admin-button ${currentView === 'manageUsers' ? 'active' : ''}`}
+            className={`btn-large waves-effect icon-link center admin-button btn ${currentView === 'manageUsers' ? 'active' : ''}`}
             onClick={() => setCurrentView('manageUsers')}
           >
             Manage Users
