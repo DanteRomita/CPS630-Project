@@ -205,25 +205,6 @@ app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
   }
 });
 
-// Route to upload an image to Cloudinary
-app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
-  try {
-    const result = await cloudinary.uploader.upload_stream({
-      upload_preset: 'twup5uph'
-    }, (error, result) => {
-      if (error) throw error;
-      res.json({ secure_url: result.secure_url });
-    });
-
-    // Get the file buffer from multer
-    const fileBuffer = req.file.buffer;
-    // Use the buffer to upload the file to Cloudinary
-    result.end(fileBuffer);
-  } catch (error) {
-    console.error('Error uploading to Cloudinary:', error);
-    res.status(500).send('Error uploading image');
-  }
-});
 // POST requests
 
 // Route to create new users in the DB or check existing user
