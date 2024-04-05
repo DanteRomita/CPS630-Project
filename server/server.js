@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-// const mongoose = require("mongoose");
 const http = require("http");
 const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
@@ -84,40 +83,6 @@ async function runWithRetry() {
 runWithRetry().catch(console.dir);
 
 // --- END OF MONGODB SETUP ---
-
-// --- START OF MONGOOSE SETUP ---
-
-// Used 127.0.0.1 instead of localhost for IPv6 compatibility
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/adDb", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }).catch((err) => console.error("MongoDB connection error:", err));
-
-// // Define a schema for the ad posting
-// const adSchema = new mongoose.Schema({
-//   title: String,
-//   description: String,
-//   price: Number,
-//   type: String,
-//   image: String,
-//   location: String,
-//   userEmail: String, // User email
-//   timePosted: String,
-// });
-
-// const adPosting = mongoose.model("adPosting", adSchema);
-
-// // Define a schema for the ad posting
-// const userSchema = new mongoose.Schema({
-//   email: String,
-//   admin: Boolean,
-//   banned: Boolean
-// });
-
-// const userEmail = mongoose.model("userEmail", userSchema);
-
-// --- END OF MONGOOSE SETUP ---
 
 // --- START OF ROUTING SETUP ---
 

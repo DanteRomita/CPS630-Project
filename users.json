@@ -1,10 +1,5 @@
 [
     {
-        "email": "julian.bolivar@torontomu.ca",
-        "admin": true,
-        "banned": false
-    },
-    {
         "email": "dante.romita@torontomu.ca",
         "admin": true,
         "banned": false

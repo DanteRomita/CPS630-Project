@@ -30,7 +30,7 @@ function Login({ setUser }) {
         }
     };
 
-    const checkBannedStatus = async (email) => {
+    const checkUserStatus = async (email) => {
         try {
             const response = await fetch("http://localhost:3001/api/users", {
                 method: "GET",
@@ -40,10 +40,19 @@ function Login({ setUser }) {
             });
             const users = await response.json();
             const user = users.find(user => user.email === email);
-            return user ? !user.banned : true; // If user is not found, allow login by default
+            
+            if (user) {
+                // User exists, return their banned status
+                console.log(user)
+                return { exists: true, banned: user.banned };
+            } else {
+                // User does not exist
+                return { exists: false, banned: false };
+            }
         } catch (error) {
             console.error("Error fetching users:", error.message);
-            return true; // Default to allow login in case of error
+            // Default to allow login in case of error but consider user does not exist
+            return { exists: false, banned: false }; 
         }
     };
 
@@ -58,10 +67,12 @@ function Login({ setUser }) {
                     console.log(response);
                     const domain = response.email.split('@')[1];
                     if (domain === 'torontomu.ca' || domain === 'ryerson.ca') {
-                        const canLogin = await checkBannedStatus(response.email);
-                        if (canLogin) {
+                        const { exists, banned } = await checkUserStatus(response.email);
+                        if (!banned) {
                             setUser(response);
-                            handleNewUser(response);
+                            if (!exists) {
+                                handleNewUser(response); // Call this only if user does not exist
+                            }
                             document.getElementById('signInButton').hidden = true;
                         } else {
                             alert('Your account has been banned. You cannot log in.');
