@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const http = require("http");
 const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
@@ -30,6 +30,7 @@ wss.on("connection", (ws) => {
 // --- START OF MONGODB SETUP ---
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const e = require("express");
 const uri = "mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 /* Connection String:
@@ -75,34 +76,34 @@ runWithRetry().catch(console.dir);
 // --- START OF MONGOOSE SETUP ---
 
 // Used 127.0.0.1 instead of localhost for IPv6 compatibility
-mongoose
-  .connect("mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }).catch((err) => console.error("MongoDB connection error:", err));
+// mongoose
+//   .connect("mongodb://127.0.0.1:27017/adDb", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   }).catch((err) => console.error("MongoDB connection error:", err));
 
-// Define a schema for the ad posting
-const adSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  price: Number,
-  type: String,
-  image: String,
-  location: String,
-  userEmail: String, // User email
-  timePosted: String,
-});
+// // Define a schema for the ad posting
+// const adSchema = new mongoose.Schema({
+//   title: String,
+//   description: String,
+//   price: Number,
+//   type: String,
+//   image: String,
+//   location: String,
+//   userEmail: String, // User email
+//   timePosted: String,
+// });
 
-const adPosting = mongoose.model("adPosting", adSchema);
+// const adPosting = mongoose.model("adPosting", adSchema);
 
-// Define a schema for the ad posting
-const userSchema = new mongoose.Schema({
-  email: String,
-  admin: Boolean,
-  banned: Boolean
-});
+// // Define a schema for the ad posting
+// const userSchema = new mongoose.Schema({
+//   email: String,
+//   admin: Boolean,
+//   banned: Boolean
+// });
 
-const userEmail = mongoose.model("userEmail", userSchema);
+// const userEmail = mongoose.model("userEmail", userSchema);
 
 // --- END OF MONGOOSE SETUP ---
 
@@ -123,9 +124,20 @@ app.get("/api/ads", async (req, res) => {
     let collection = database.collection('adpostings');
     let ads = await collection.find({}).toArray();
 
-    if (adSearchResults) res.json(adSearchResults);
-    else res.json(ads);
-
+    if (adSearchResults) {
+      res.json(adSearchResults);
+      // console.log(`Check get("/api/ads") to uncomment this. Number of search results: ${adSearchResults.length}`);
+    }
+    else {
+      res.json(ads);
+      //console.log(`Check get("/api/ads") to uncomment this. Number of ads: ${ads.length}`);
+    }
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+})
 
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
@@ -134,11 +146,12 @@ app.get("/api/oauthToken", async (req, res) => {
 
 // Route to get all emails
 app.get("/api/users", async (req, res) => {
+  console.log('enters get("/api/users")');
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
     let collection = database.collection('useremails');
-    
+
     let emails = await collection.find({}).toArray();
     res.json(emails);
 
@@ -166,23 +179,11 @@ app.get('/api/ads/:id', async (req, res) => {
   }
 });
 
-// Route to get all ad postings
-app.get("/api/ads", async (req, res) => {
-  try {
-    if (adSearchResults) res.json(adSearchResults)
-    else {
-      let ads = await adPosting.find({});
-      res.json(ads);
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
 // POST requests
 
 // Route to create new users in the DB or check existing user
 app.post('/api/newUser', async (req, res) => {
+  console.log('Enters new user. TO TEST STILL!')
   console.log(req.body);
   const { email, admin, banned } = req.body;
 
@@ -218,6 +219,7 @@ app.post('/api/newUser', async (req, res) => {
 
 // Toggle Admin Status
 app.post('/api/users/toggleAdmin', async (req, res) => {
+  console.log('Enters toggle admin. TO TEST STILL!')
   const { email } = req.body;
 
   try {
@@ -243,6 +245,7 @@ app.post('/api/users/toggleAdmin', async (req, res) => {
 
 // Toggle Ban Status
 app.post('/api/users/toggleBan', async (req, res) => {
+  console.log('Enters toggle ban. TO TEST STILL!')
   const { email } = req.body;
 
   try {
@@ -268,8 +271,6 @@ app.post('/api/users/toggleBan', async (req, res) => {
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
-  // console.log(req.body);
-
   let { title, description, price, type, image, location, userEmail } = req.body;
 
   try {
@@ -304,6 +305,7 @@ app.post('/api/ads', async (req, res) => {
 
 // Route to search for ad postings
 app.post("/api/ads/search", async (req, res) => {
+  console.log(req.body)
   let {
     keywords,
     userEmail,
@@ -352,20 +354,24 @@ app.post("/api/ads/search", async (req, res) => {
     let database = client.db('sample_mflix');
     let collection = database.collection('adpostings');
 
-    // Search for ads that match the provided keywords
-    adSearchResults = await collection.find({
-      $or: [
-        { title: { $regex: keywords, $options: "i" } },
-        { description: { $regex: keywords, $options: "i" } },
-      ],
-      userEmail: { $regex: userEmail, $options: "i" },
-      location: { $regex: location, $options: "i" },
-      price: priceRange.price,
-      type: { $in: category },
-    }).toArray();
-
+    if (keywords === '' && userEmail === '' && location === '' && lowestPrice === '' && highestPrice === '' && ItemsWanted === false && ItemsForSale === false && AcademicServices === false) {
+      adSearchResults = await collection.find({}).toArray();
+      // adSearchResults = undefined;
+    } else {
+      // Search for ads that match the provided keywords
+      adSearchResults = await collection.find({
+        $or: [
+          { title: { $regex: keywords, $options: "i" } },
+          { description: { $regex: keywords, $options: "i" } },
+        ],
+        userEmail: { $regex: userEmail, $options: "i" },
+        location: { $regex: location, $options: "i" },
+        price: priceRange.price,
+        type: { $in: category },
+      }).toArray();
+    }
     console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    console.log(`Number of ADS: ${adSearchResults.length}`);
+    console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
 
     res.sendStatus(204);
   } catch (err) {

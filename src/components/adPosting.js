@@ -59,7 +59,7 @@ function NewPost({ user }) {
     const formData = {
       title,
       description,
-      price,
+      price: parseFloat(price),
       type,
       image: uploadedImageURL,
       location,
