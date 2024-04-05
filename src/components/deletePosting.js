@@ -8,7 +8,7 @@ function DeletePost() {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/ads")
+    fetch("/api/ads")
       .then((response) => response.json())
       .then((data) => setAds(data))
       .catch((error) => console.error("Error fetching posts:", error));
@@ -17,7 +17,7 @@ function DeletePost() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       try {
-        const response = await fetch(`http://localhost:3001/api/ads/${id}`, {
+        const response = await fetch(`/api/ads/${id}`, {
           method: "DELETE",
         });
         if (!response.ok) {

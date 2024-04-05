@@ -23,7 +23,7 @@ function NewPost({ user }) {
     formData.append("upload_preset", "twup5uph");
 
     try {
-      const response = await fetch(`http://localhost:3001/api/uploadImage`, {
+      const response = await fetch(`/api/uploadImage`, {
         method: "POST",
         body: formData,
       });
@@ -75,7 +75,7 @@ function NewPost({ user }) {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/ads", {
+      const response = await fetch("/api/ads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

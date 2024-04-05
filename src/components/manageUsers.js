@@ -11,14 +11,14 @@ const UsersAdmin = () => {
   }, []);
 
   const fetchUsers = () => {
-    fetch("http://localhost:3001/api/users")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error("Error fetching users:", error));
   };
 
   const toggleAdmin = (email) => {
-    fetch(`http://localhost:3001/api/users/toggleAdmin`, {
+    fetch(`/api/users/toggleAdmin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const UsersAdmin = () => {
   };
 
   const toggleBan = (email) => {
-    fetch(`http://localhost:3001/api/users/toggleBan`, {
+    fetch(`/api/users/toggleBan`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ function AdListings() {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/ads")
+    fetch("/api/ads")
       .then((response) => response.json())
       .then((data) => setAds(data))
       .catch((error) => console.error("Error fetching posts:", error));

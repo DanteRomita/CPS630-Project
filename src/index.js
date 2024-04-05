@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 let clientId;
 
 try {
-  const response = await fetch("http://localhost:3001/api/oauthtoken", {
+  const response = await fetch("/api/oauthtoken", {
       method: "GET",
       headers: {
           "Content-Type": "application/json",

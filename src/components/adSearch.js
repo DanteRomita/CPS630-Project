@@ -23,7 +23,7 @@ function NewSearch() {
   }, []);
 
   const fetchUsers = () => {
-    fetch("http://localhost:3001/api/users")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((data) => setAuthorEmails(data))
       .catch((error) => console.error("Error fetching users:", error));
@@ -65,7 +65,7 @@ function NewSearch() {
     };
 
     try {
-      await fetch("http://localhost:3001/api/ads/search", {
+      await fetch("/api/ads/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
