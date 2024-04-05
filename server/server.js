@@ -125,7 +125,11 @@ app.get("/api/ads", async (req, res) => {
 
     if (adSearchResults) res.json(adSearchResults);
     else res.json(ads);
-
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+})
 
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
@@ -166,18 +170,6 @@ app.get('/api/ads/:id', async (req, res) => {
   }
 });
 
-// Route to get all ad postings
-app.get("/api/ads", async (req, res) => {
-  try {
-    if (adSearchResults) res.json(adSearchResults)
-    else {
-      let ads = await adPosting.find({});
-      res.json(ads);
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
 
 // POST requests
 
