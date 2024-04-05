@@ -92,7 +92,7 @@ function NewPost({ user }) {
         setType("Items Wanted");
         setSelectedFile(null); // Reset file selection
         setImageURL(""); // Clear the imageURL state
-        setLocation("");
+        setLocation("ONLINE");
         alert("Ad posted successfully!");
       }
     } catch (error) {
@@ -143,15 +143,56 @@ function NewPost({ user }) {
             </div>
 
             <div className="post-input">
+              Location{" "}
               <FontAwesomeIcon icon={faMapMarkerAlt} className="post-icon" />
-              <input
+              <select
                 id="location"
                 type="text"
                 name="location"
                 placeholder="Enter Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-              />
+              >
+                <option value="">Any</option>
+                <option value="ONLINE">ONLINE</option>
+                <option value="*Message for details*">
+                  *Message for details*
+                </option>
+                <option value="Kerr Hall (KH)">Kerr Hall (KH)</option>
+                <option value="Ted Rogers School of Management (TRSM)">
+                  Ted Rogers School of Management (TRSM)
+                </option>
+                <option value="Rogers Communications Centre (RCC)">
+                  Rogers Communications Centre (RCC)
+                </option>
+                <option value="Library Building (LB)">
+                  Library Building (LB)
+                </option>
+                <option value="Student Learning Centre (SLC)">
+                  Student Learning Centre (SLC)
+                </option>
+                <option value="Engineering Building (ENG)">
+                  Engineering Building (ENG)
+                </option>
+                <option value="Victoria Building (VIC)">
+                  Victoria Building (VIC)
+                </option>
+                <option value="Sally Horsfall Eaton Centre for Studies in Community Health (SHE)">
+                  Sally Horsfall Eaton Centre for Studies in Community Health
+                  (SHE)
+                </option>
+                <option value="Mattamy Athletic Centre (MAC)">
+                  Mattamy Athletic Centre (MAC)
+                </option>
+                <option value="Daphne Cockwell Health Sciences Complex (DCC)">
+                  Daphne Cockwell Health Sciences Complex (DCC)
+                </option>
+                <option value="Creative School (CRS)">
+                  Creative School (CRS)
+                </option>
+                <option value="Campus Common (CC)">Campus Common (CC)</option>
+                <option value="Quad (QD)">Quad (QD)</option>
+              </select>
             </div>
 
             <div className="post-input">
