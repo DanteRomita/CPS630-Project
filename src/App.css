@@ -73,6 +73,10 @@ html {
   width: 100%;
 }
 
+.search-button {
+  margin-top: 2vw;
+}
+
 #search-bar {
   width: 100%;
   box-sizing: border-box;
@@ -146,6 +150,7 @@ html {
 
 .btn {
   margin-bottom: 10px;
+  background-color: #419cad;
 }
 
 #user-profile {

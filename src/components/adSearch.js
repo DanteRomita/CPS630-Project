@@ -53,7 +53,6 @@ function NewSearch() {
     <div className="search-container">
       <FadeIn>
         <form method="post" onSubmit={handleSubmit}>
-          <h5 className="center">Leave all of the fields below blank to show all ads.</h5>
           <div className="input-field">
             <input
               id="keywords"
@@ -62,8 +61,7 @@ function NewSearch() {
               value={keywords}
               onChange={(e) => setKeywords(e.target.value)}
             />
-            <label htmlFor="keywords">Keyword Search*</label>
-            <p>*By Title or Description. Leave Blank for Any</p>
+            <label htmlFor="keywords">Keyword Search</label>
           </div>
           <div className="row">
             <div className="input-field col s12 l6">
@@ -74,20 +72,21 @@ function NewSearch() {
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
               />
-              <label htmlFor="author">Author Email**</label>
+              <label htmlFor="author">Author Email</label>
             </div>
             <div className="input-field col s12 l6">
-              <input
+              <select
                 id="location"
                 type="text"
                 name="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-              />
-              <label htmlFor="location">Location**</label>
+              >
+                
+              </select>
+              <label htmlFor="location">Location</label>
             </div>
           </div>
-          <h6>Price Range (Leave A Field Blank for Any)</h6>
           <div className="row">
             <div className="input-field col s12 l6">
               <input
@@ -100,7 +99,7 @@ function NewSearch() {
                 value={lowestPrice}
                 onChange={(e) => setLowestPrice(e.target.value)}
               />
-              <label htmlFor="lowest-price">Lowest ($ CAD)**</label>
+              <label htmlFor="lowest-price">Lowest ($ CAD)</label>
             </div>
             <div className="input-field col s12 l6">
               <input
@@ -113,15 +112,9 @@ function NewSearch() {
                 value={highestPrice}
                 onChange={(e) => setHighestPrice(e.target.value)}
               />
-              <label htmlFor="highest-price">Highest ($ CAD)**</label>
+              <label htmlFor="highest-price">Highest ($ CAD)</label>
             </div>
-            <p>**Leave blank for any</p>
           </div>
-          <h5 className="center">Select Category</h5>
-          <p className="center">
-            If all checkboxes are unchecked, ads of all categories will be
-            returned.
-          </p>
           <div className="row">
             <div className="col s12 l4 center">
               <label style={{ marginRight: "1vw" }}>
@@ -158,7 +151,7 @@ function NewSearch() {
             </div>
           </div>
           <p className="center">
-            <button className="btn-large waves-effect icon-link center" type="submit" style={{ 'fontSize': 'xx-large' }}>Search</button>
+            <button className="btn-large waves-effect icon-link search-button btn" type="submit" style={{ 'fontSize': 'x-large' }}>Search</button>
           </p>
           <hr />
           
