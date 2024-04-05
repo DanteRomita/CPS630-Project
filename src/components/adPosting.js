@@ -36,7 +36,6 @@ function NewPost({ user }) {
     } catch (error) {
       console.error("Error uploading the image:", error);
     }
-    
   };
 
   const handleImageChange = (e) => {
@@ -131,7 +130,8 @@ function NewPost({ user }) {
             </div>
 
             <div className="post-input">
-              Price <FontAwesomeIcon icon={faDollarSign} className="post-icon" />
+              Price{" "}
+              <FontAwesomeIcon icon={faDollarSign} className="post-icon" />
               <input
                 id="price"
                 type="number"
@@ -164,9 +164,25 @@ function NewPost({ user }) {
                 onChange={handleImageChange}
               />
             </div>
+
+            <div className="post-input">
+              Type
+              <select
+                id="type"
+                name="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="Items Wanted">Items Wanted</option>
+                <option value="Items For Sale">Items For Sale</option>
+                <option value="Academic Services">Academic Services</option>
+              </select>
+            </div>
           </div>
 
-          <button type="submit" className="post-submit-btn btn">Post Ad</button>
+          <button type="submit" className="post-submit-btn btn">
+            Post Ad
+          </button>
         </form>
       </FadeIn>
     </div>
