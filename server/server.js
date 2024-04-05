@@ -5,7 +5,7 @@ const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
 
 const app = express();
-app.use(express.static("public"));
+app.use(express.static("build"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
@@ -184,7 +184,6 @@ app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
 
 // Route to create new users in the DB or check existing user
 app.post('/api/newUser', async (req, res) => {
-  console.log(req.body);
   const { email, admin, banned } = req.body;
 
   try {
@@ -292,7 +291,6 @@ app.post('/api/ads', async (req, res) => {
 
     await collection.insertOne(newPost); // Save the new ad posting to the database
     console.log(`New Post Created`)
-    console.log(newPost)
 
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
