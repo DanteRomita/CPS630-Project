@@ -1,0 +1,19 @@
+FROM node:20-alpine3.18
+
+# sets the working directory of all following instructions
+WORKDIR /CPS630-Project
+
+# copy package.json and package-lock.json
+COPY package*.json ./
+
+# installs all dependencies
+RUN npm install --force
+
+# copy all files
+COPY . .
+
+# run command to build project and output to ./build
+RUN npm run build
+
+# running the index.js file located in the build folder with node
+CMD ["node", "./build/index.js"]
