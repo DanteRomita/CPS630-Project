@@ -9,7 +9,7 @@ app.use(express.static("public"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
 
@@ -70,6 +70,11 @@ app.use(cors());
 // GET requests
 
 let adSearchResults = undefined;
+
+// Route to get all users
+app.get("/api/oauthToken", async (req, res) => {
+  res.json({ oauthtoken: '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com' });
+});
 
 // Route to get all users
 app.get("/api/users", async (req, res) => {
@@ -182,7 +187,6 @@ app.post('/api/users/toggleBan', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {

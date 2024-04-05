@@ -20,7 +20,6 @@ function App() {
     fetch("http://localhost:3001/api/users")
       .then((response) => response.json())
       .then((users) => {
-        // Assuming the 'admin' field is a boolean that indicates if the user is an admin
         const admins = users.filter(user => user.admin).map(user => user.email);
         setAdminUsers(admins);
       })
