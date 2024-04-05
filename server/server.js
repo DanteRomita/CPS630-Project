@@ -102,11 +102,10 @@ app.get("/api/ads", async (req, res) => {
     let database = client.db('sample_mflix');
     let collection = database.collection('adpostings');
     let ads = await collection.find({}).toArray();
-    if (ads.length > 0) {
-      res.json(ads);
-    } else {
-      res.status(404).send('No ad postings found');
-    }
+
+    if (adSearchResults) res.json(adSearchResults);
+    else res.json(ads);
+
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -153,7 +152,11 @@ app.post('/api/ads', async (req, res) => {
       timePosted
     });
 
-    await newPost.save(); // Save the new ad posting to the database
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    await collection.insertOne(newPost); // Save the new ad posting to the database
     // console.log(`New Post Created`)
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
@@ -208,8 +211,12 @@ app.post("/api/ads/search", async (req, res) => {
   }
 
   try {
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
     // Search for ads that match the provided keywords
-    adSearchResults = await adPosting.find({
+    adSearchResults = await collection.find({
       $or: [
         { title: { $regex: keywords, $options: "i" } },
         { description: { $regex: keywords, $options: "i" } },
@@ -218,10 +225,10 @@ app.post("/api/ads/search", async (req, res) => {
       location: { $regex: location, $options: "i" },
       price: priceRange.price,
       type: { $in: category },
-    });
+    }).toArray();
 
-    // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    // console.log(`Number of ADS: ${adSearchResults.length}`);
+    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
+    console.log(`Number of ADS: ${adSearchResults.length}`);
 
     res.sendStatus(204);
   } catch (err) {
@@ -236,9 +243,15 @@ app.post("/api/ads/search", async (req, res) => {
 // Endpoint to delete a post by ID
 app.delete('/api/ads/:id', async (req, res) => {
   try {
-    await adPosting.findByIdAndDelete(req.params.id);
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+
     res.status(200).json({ message: 'Ad deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).send(error);
   }
 });
@@ -256,7 +269,6 @@ app.put('/api/ads/:id', async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 
 // --- END OF ADMIN ACTIONS ---
 
