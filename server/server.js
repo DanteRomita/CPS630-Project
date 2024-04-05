@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const http = require("http");
 const WebSocket = require("ws");
+const { ObjectId } = require('mongodb');
 
 const app = express();
 app.use(express.static("public"));
@@ -67,20 +68,18 @@ mongoose
   .connect("mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  }).catch((err) => console.error("MongoDB connection error:", err));
 
 // Define a schema for the ad posting
 const adSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    price: Number,
-    type: String,
-    image: String,
-    location: String,
-    userEmail: String, // User email
-    timePosted: String,
+  title: String,
+  description: String,
+  price: Number,
+  type: String,
+  image: String,
+  location: String,
+  userEmail: String, // User email
+  timePosted: String,
 });
 
 const adPosting = mongoose.model("adPosting", adSchema);
@@ -100,10 +99,9 @@ let adSearchResults = undefined;
 app.get("/api/ads", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    client.connect()
-    const database = client.db('sample_mflix');
-    const collection = database.collection('adpostings');
-    const ads = await collection.find({}).toArray();
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+    let ads = await collection.find({}).toArray();
     if (ads.length > 0) {
       res.json(ads);
     } else {
@@ -118,7 +116,11 @@ app.get("/api/ads", async (req, res) => {
 // Route to get an ad by ID
 app.get('/api/ads/:id', async (req, res) => {
   try {
-    const ad = await adPosting.findById(req.params.id);
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    const ad = await collection.findOne({ _id: new ObjectId(req.params.id) });
     if (!ad) {
       return res.status(404).send('Ad not found');
     }
@@ -133,23 +135,23 @@ app.get('/api/ads/:id', async (req, res) => {
 
 // Route to create a new ad posting
 app.post('/api/ads', async (req, res) => {
-    // console.log(req.body);
-    let { title, description, price, type, image, location, userEmail } = req.body;
+  // console.log(req.body);
+  let { title, description, price, type, image, location, userEmail } = req.body;
 
-    try {
-        let timePosted = formatDate(Date.now());
+  try {
+    let timePosted = formatDate(Date.now());
 
-        // Create a new ad posting with all provided fields
-        let newPost = new adPosting({
-            title,
-            description,
-            price,
-            type,
-            image,
-            location,
-            userEmail,
-            timePosted
-        });
+    // Create a new ad posting with all provided fields
+    let newPost = new adPosting({
+      title,
+      description,
+      price,
+      type,
+      image,
+      location,
+      userEmail,
+      timePosted
+    });
 
     await newPost.save(); // Save the new ad posting to the database
     // console.log(`New Post Created`)
@@ -217,10 +219,10 @@ app.post("/api/ads/search", async (req, res) => {
       price: priceRange.price,
       type: { $in: category },
     });
-    
+
     // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
     // console.log(`Number of ADS: ${adSearchResults.length}`);
-    
+
     res.sendStatus(204);
   } catch (err) {
     res.status(500).send(err);
@@ -233,28 +235,28 @@ app.post("/api/ads/search", async (req, res) => {
 
 // Endpoint to delete a post by ID
 app.delete('/api/ads/:id', async (req, res) => {
-    try {
-      await adPosting.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: 'Ad deleted successfully' });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
-  // Endpoint to update a post by ID
-  app.put('/api/ads/:id', async (req, res) => {
-    try {
-      const updatedAd = await adPosting.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      res.status(200).json(updatedAd);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
+  try {
+    await adPosting.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Ad deleted successfully' });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Endpoint to update a post by ID
+app.put('/api/ads/:id', async (req, res) => {
+  try {
+    const updatedAd = await adPosting.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedAd);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 
 // --- END OF ADMIN ACTIONS ---
 
@@ -264,13 +266,13 @@ bin.listen(PORT, () => {
 });
 
 function formatDate(date) {
-    let d = new Date(date);
-    let day = String(d.getDate()).padStart(2, '0');
-    // Array of month names
-    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    // Get the month name using the month number as an index
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-  
-    return `${day} ${month} ${year}`;
-  }
+  let d = new Date(date);
+  let day = String(d.getDate()).padStart(2, '0');
+  // Array of month names
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  // Get the month name using the month number as an index
+  let month = months[d.getMonth()];
+  let year = d.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
