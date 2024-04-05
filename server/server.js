@@ -137,7 +137,7 @@ app.get("/api/users", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
-    let collection = database.collection('userEmail');
+    let collection = database.collection('useremails');
     
     let emails = await collection.find({}).toArray();
     res.json(emails);
@@ -187,8 +187,12 @@ app.post('/api/newUser', async (req, res) => {
   const { email, admin, banned } = req.body;
 
   try {
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('useremails');
+
     // Check if the user already exists
-    const existingUser = await userEmail.findOne({ email: email });
+    const existingUser = await collection.findOne({ email: email });
 
     if (existingUser) {
       // User already exists, don't add to the database
@@ -196,13 +200,13 @@ app.post('/api/newUser', async (req, res) => {
       res.status(409).json({ message: 'User already exists' }); // 409 Conflict
     } else {
       // User doesn't exist, create a new one
-      let newUser = new userEmail({
+      let newUser = {
         email,
         admin,
         banned
-      });
+      };
 
-      await newUser.save(); // Save the new user to the database
+      await collection.insertOne(newUser); // Save the new user to the database
       console.log(`New user ${email} added to the database.`);
       res.status(201).json(newUser); // 201 Created
     }
@@ -217,14 +221,18 @@ app.post('/api/users/toggleAdmin', async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await userEmail.findOne({ email: email });
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('useremails');
+
+    const user = await collection.findOne({ email: email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     // Toggle the admin field
     user.admin = !user.admin;
-    await user.save();
+    await collection.updateOne({ email: email }, { $set: { admin: user.admin } });
 
     res.json({ message: 'Admin status updated', admin: user.admin });
   } catch (error) {
@@ -238,14 +246,18 @@ app.post('/api/users/toggleBan', async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await userEmail.findOne({ email: email });
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('useremails');
+
+    const user = await collection.findOne({ email: email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     // Toggle the banned field
     user.banned = !user.banned;
-    await user.save();
+    await collection.updateOne({ email: email }, { $set: { banned: user.banned } });
 
     res.json({ message: 'Ban status updated', banned: user.banned });
   } catch (error) {
@@ -264,7 +276,7 @@ app.post('/api/ads', async (req, res) => {
     let timePosted = formatDate(Date.now());
 
     // Create a new ad posting with all provided fields
-    let newPost = new adPosting({
+    let newPost = {
       title,
       description,
       price,
@@ -273,14 +285,15 @@ app.post('/api/ads', async (req, res) => {
       location,
       userEmail,
       timePosted
-    });
+    };
 
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
     let collection = database.collection('adpostings');
 
     await collection.insertOne(newPost); // Save the new ad posting to the database
-    // console.log(`New Post Created`)
+    console.log(`New Post Created`)
+    console.log(newPost)
 
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
@@ -383,10 +396,14 @@ app.delete('/api/ads/:id', async (req, res) => {
 // Endpoint to update a post by ID
 app.put('/api/ads/:id', async (req, res) => {
   try {
-    const updatedAd = await adPosting.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    const updatedAd = await collection.findOneAndUpdate(
+      { _id: new ObjectId(req.params.id) },
+      { $set: req.body },
+      { returnDocument: 'after' }
     );
     res.status(200).json(updatedAd);
   } catch (error) {
