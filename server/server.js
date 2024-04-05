@@ -45,19 +45,30 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+async function runWithRetry() {
+  let maxRetries = 3;
+  let currentRetry = 0;
+
+  while (currentRetry < maxRetries) {
+    try {
+      await client.connect();
+      await client.db("admin").command({ ping: 1 });
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      return; // Exit the loop if the connection is successful
+    } catch (error) {
+      console.error('Error connecting to MongoDB:', error);
+      currentRetry++;
+      if (currentRetry < maxRetries) {
+        console.log(`Retrying connection... (Retry ${currentRetry} of ${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
+      } else {
+        throw new Error('Failed to connect to MongoDB after multiple attempts');
+      }
+    }
   }
 }
-run().catch(console.dir);
+
+runWithRetry().catch(console.dir);
 
 // --- END OF MONGODB SETUP ---
 
