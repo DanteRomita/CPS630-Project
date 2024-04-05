@@ -10,6 +10,18 @@ app.use(express.static("public"));
 const bin = http.createServer(app);
 const wss = new WebSocket.Server({ server: bin });
 
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Use memory storage
+const upload = multer({ storage: storage });
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dp7bfbfix', 
+  api_key: '498813646762871', 
+  api_secret: 'EGZV76xI74yiPM9ufEASpFwqOrs' 
+});
+
 const PORT = 3001;
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
@@ -141,7 +153,10 @@ app.get("/api/ads", async (req, res) => {
 
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
-  res.json({ oauthtoken: '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com' });
+  res.json({
+    oauthtoken:
+      "166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com",
+  });
 });
 
 // Route to get all emails
@@ -162,7 +177,7 @@ app.get("/api/users", async (req, res) => {
 });
 
 // Route to get an ad by ID
-app.get('/api/ads/:id', async (req, res) => {
+app.get("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
@@ -170,12 +185,34 @@ app.get('/api/ads/:id', async (req, res) => {
 
     const ad = await collection.findOne({ _id: new ObjectId(req.params.id) });
     if (!ad) {
-      return res.status(404).send('Ad not found');
+      return res.status(404).send("Ad not found");
     }
     res.json(ad);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
+  }
+});
+
+// POST requests
+
+// Route to upload an image to Cloudinary
+app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload_stream({
+      upload_preset: 'twup5uph'
+    }, (error, result) => {
+      if (error) throw error;
+      res.json({ secure_url: result.secure_url });
+    });
+
+    // Get the file buffer from multer
+    const fileBuffer = req.file.buffer;
+    // Use the buffer to upload the file to Cloudinary
+    result.end(fileBuffer);
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    res.status(500).send('Error uploading image');
   }
 });
 
@@ -324,13 +361,16 @@ app.post("/api/ads/search", async (req, res) => {
 
   // Set the default price range
   if (lowestPrice === "" && highestPrice === "") {
-    priceRange.price = { $gte: 0.00, $lte: 10000000000000000000.00 };
+    priceRange.price = { $gte: 0.0, $lte: 10000000000000000000.0 };
   } else {
     if (lowestPrice !== "") {
       priceRange.price = { $gte: parseFloat(lowestPrice) };
     }
     if (highestPrice !== "") {
-      priceRange.price = { ...priceRange.price, $lte: parseFloat(highestPrice) };
+      priceRange.price = {
+        ...priceRange.price,
+        $lte: parseFloat(highestPrice),
+      };
     }
   }
 
@@ -384,7 +424,7 @@ app.post("/api/ads/search", async (req, res) => {
 // --- START OF ADMIN ACTIONS ---
 
 // Endpoint to delete a post by ID
-app.delete('/api/ads/:id', async (req, res) => {
+app.delete("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
@@ -400,7 +440,7 @@ app.delete('/api/ads/:id', async (req, res) => {
 });
 
 // Endpoint to update a post by ID
-app.put('/api/ads/:id', async (req, res) => {
+app.put("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
     let database = client.db('sample_mflix');
@@ -426,9 +466,22 @@ bin.listen(PORT, () => {
 
 function formatDate(date) {
   let d = new Date(date);
-  let day = String(d.getDate()).padStart(2, '0');
+  let day = String(d.getDate()).padStart(2, "0");
   // Array of month names
-  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   // Get the month name using the month number as an index
   let month = months[d.getMonth()];
   let year = d.getFullYear();
