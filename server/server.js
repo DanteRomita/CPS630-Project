@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const http = require("http");
 const WebSocket = require("ws");
+const { ObjectId } = require('mongodb');
 
 const app = express();
 app.use(express.static("public"));
@@ -38,16 +39,59 @@ wss.on("connection", (ws) => {
 
 // --- END OF GLOBAL CHAT ROOM SETUP ---
 
+// --- START OF MONGODB SETUP ---
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+/* Connection String:
+mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/
+*/
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function runWithRetry() {
+  let maxRetries = 3;
+  let currentRetry = 0;
+
+  while (currentRetry < maxRetries) {
+    try {
+      await client.connect();
+      await client.db("admin").command({ ping: 1 });
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      return; // Exit the loop if the connection is successful
+    } catch (error) {
+      console.error('Error connecting to MongoDB:', error);
+      currentRetry++;
+      if (currentRetry < maxRetries) {
+        console.log(`Retrying connection... (Retry ${currentRetry} of ${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
+      } else {
+        throw new Error('Failed to connect to MongoDB after multiple attempts');
+      }
+    }
+  }
+}
+
+runWithRetry().catch(console.dir);
+
+// --- END OF MONGODB SETUP ---
+
 // --- START OF MONGOOSE SETUP ---
 
 // Used 127.0.0.1 instead of localhost for IPv6 compatibility
 mongoose
-  .connect("mongodb://127.0.0.1:27017/adDB", {
+  .connect("mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  }).catch((err) => console.error("MongoDB connection error:", err));
 
 // Define a schema for the ad posting
 const adSchema = new mongoose.Schema({
@@ -83,6 +127,22 @@ app.use(cors());
 
 let adSearchResults = undefined;
 
+// Route to get all ad postings using MongoDB driver
+app.get("/api/ads", async (req, res) => {
+  try {
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+    let ads = await collection.find({}).toArray();
+
+    if (adSearchResults) res.json(adSearchResults);
+    else res.json(ads);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+})
+
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
   res.json({
@@ -91,20 +151,30 @@ app.get("/api/oauthToken", async (req, res) => {
   });
 });
 
-// Route to get all users
+// Route to get all emails
 app.get("/api/users", async (req, res) => {
   try {
-    let ads = await userEmail.find({});
-    res.json(ads);
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('userEmail');
+    
+    let emails = await collection.find({}).toArray();
+    res.json(emails);
+
   } catch (err) {
-    res.status(500).send(err);
+    console.error(err);
+    res.status(500).send('Server error');
   }
 });
 
 // Route to get an ad by ID
 app.get("/api/ads/:id", async (req, res) => {
   try {
-    const ad = await adPosting.findById(req.params.id);
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    const ad = await collection.findOne({ _id: new ObjectId(req.params.id) });
     if (!ad) {
       return res.status(404).send("Ad not found");
     }
@@ -115,16 +185,23 @@ app.get("/api/ads/:id", async (req, res) => {
   }
 });
 
-// Route to get all ad postings
-app.get("/api/ads", async (req, res) => {
+// Route to upload an image to Cloudinary
+app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
   try {
-    if (adSearchResults) res.json(adSearchResults);
-    else {
-      let ads = await adPosting.find({});
-      res.json(ads);
-    }
-  } catch (err) {
-    res.status(500).send(err);
+    const result = await cloudinary.uploader.upload_stream({
+      upload_preset: 'twup5uph'
+    }, (error, result) => {
+      if (error) throw error;
+      res.json({ secure_url: result.secure_url });
+    });
+
+    // Get the file buffer from multer
+    const fileBuffer = req.file.buffer;
+    // Use the buffer to upload the file to Cloudinary
+    result.end(fileBuffer);
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    res.status(500).send('Error uploading image');
   }
 });
 
@@ -224,7 +301,8 @@ app.post("/api/users/toggleBan", async (req, res) => {
 
 // Route to create a new ad posting
 app.post("/api/ads", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
+
   let { title, description, price, type, image, location, userEmail } =
     req.body;
 
@@ -243,8 +321,13 @@ app.post("/api/ads", async (req, res) => {
       timePosted,
     });
 
-    await newPost.save(); // Save the new ad posting to the database
-    console.log(`New Post Created`);
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    await collection.insertOne(newPost); // Save the new ad posting to the database
+    // console.log(`New Post Created`);
+
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -265,7 +348,7 @@ app.post("/api/ads/search", async (req, res) => {
     AcademicServices,
   } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   let priceRange = {}; // price range object
   let category = [];
@@ -301,8 +384,12 @@ app.post("/api/ads/search", async (req, res) => {
   }
 
   try {
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
     // Search for ads that match the provided keywords
-    adSearchResults = await adPosting.find({
+    adSearchResults = await collection.find({
       $or: [
         { title: { $regex: keywords, $options: "i" } },
         { description: { $regex: keywords, $options: "i" } },
@@ -311,10 +398,10 @@ app.post("/api/ads/search", async (req, res) => {
       location: { $regex: location, $options: "i" },
       price: priceRange.price,
       type: { $in: category },
-    });
+    }).toArray();
 
-    // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
-    // console.log(`Number of ADS: ${adSearchResults.length}`);
+    console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
+    console.log(`Number of ADS: ${adSearchResults.length}`);
 
     res.sendStatus(204);
   } catch (err) {
@@ -329,9 +416,15 @@ app.post("/api/ads/search", async (req, res) => {
 // Endpoint to delete a post by ID
 app.delete("/api/ads/:id", async (req, res) => {
   try {
-    await adPosting.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Ad deleted successfully" });
+    await client.connect(); // Connect the client if not already connected
+    let database = client.db('sample_mflix');
+    let collection = database.collection('adpostings');
+
+    await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+
+    res.status(200).json({ message: 'Ad deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).send(error);
   }
 });
