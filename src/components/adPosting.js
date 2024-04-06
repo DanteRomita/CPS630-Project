@@ -30,7 +30,6 @@ function NewPost({ user }) {
       const data = await response.json();
       if (data.secure_url) {
         setImageURL(data.secure_url);
-        console.log("Uploaded image");
         return data.secure_url;
       }
     } catch (error) {

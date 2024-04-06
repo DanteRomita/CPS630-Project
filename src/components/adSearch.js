@@ -49,10 +49,6 @@ function NewSearch() {
       return;
     }
 
-    console.log(
-      `Keywords: ${keywords}\nAuthor Email: ${userEmail}\nLocation: ${location}\nLowest Price: ${lowestPrice}\nHighest Price: ${highestPrice}\nItems Wanted: ${ItemsWanted}\nItems For Sale: ${ItemsForSale}\nAcademic Services: ${AcademicServices}`
-    );
-
     const formData = {
       keywords,
       userEmail,

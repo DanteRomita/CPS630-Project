@@ -12,8 +12,8 @@ const options = {
 
 const app = express();
 app.use(express.static("build"));
-const bin = https.createServer(options, app).listen(3001, () => {
-  console.log('Server running on port 3001');
+const bin = https.createServer(options, app).listen(443, () => {
+  console.log('Server running on port 443');
 });
 
 const wss = new WebSocket.Server({ server: bin });
@@ -29,8 +29,6 @@ cloudinary.config({
   api_key: '498813646762871', 
   api_secret: 'EGZV76xI74yiPM9ufEASpFwqOrs' 
 });
-
-const PORT = 3001;
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
 
