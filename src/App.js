@@ -25,6 +25,7 @@ function App() {
   const getCookie = (name) => {
     const nameEQ = name + "=";
     const ca = document.cookie.split(';');
+    // Loop through ca and get the cookie value
     for(let i=0;i < ca.length;i++) {
         let c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1,c.length);
@@ -33,6 +34,7 @@ function App() {
     return null;
   }
 
+  // UseEffect to fetch users and set adminUsers
   useEffect(() => {
     const user = JSON.parse(getCookie('user'));
     console.log(user);

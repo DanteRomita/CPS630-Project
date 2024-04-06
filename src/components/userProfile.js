@@ -1,3 +1,4 @@
+// Displays user profile picture and name
 function UserProfile({ user }) {
     return (
       <div className="user-profile">

@@ -26,7 +26,7 @@ function Admin() {
             Manage Users
           </button>
         </div>
-        
+        {/* Render the appropriate component based on the current view */}
         {currentView === 'deletePosts' && <DeletePosting />}
         {currentView === 'manageUsers' && <UsersAdmin />}
       </FadeIn>

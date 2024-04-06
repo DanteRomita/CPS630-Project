@@ -27,6 +27,7 @@ function AdListings() {
     }
   };
 
+  // Create a function to get the icon for each ad type
   const getTitleWithIcon = (type, title) => {
     const icon = getIconForAdType(type);
     return (
@@ -37,7 +38,7 @@ function AdListings() {
     );
   };
 
-
+  // Create a function to get the icon for each ad type
   return (
     <div>
       <h1>Metropolitan Market</h1>

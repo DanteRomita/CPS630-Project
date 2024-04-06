@@ -10,6 +10,7 @@ const UsersAdmin = () => {
     fetchUsers();
   }, []);
 
+  // Fetch users from API and update state
   const fetchUsers = () => {
     fetch("/api/users")
       .then((response) => response.json())
@@ -17,6 +18,7 @@ const UsersAdmin = () => {
       .catch((error) => console.error("Error fetching users:", error));
   };
 
+  // Toggle admin status
   const toggleAdmin = (email) => {
     fetch(`/api/users/toggleAdmin`, {
       method: 'POST',
@@ -27,6 +29,7 @@ const UsersAdmin = () => {
     }).then(fetchUsers);
   };
 
+  // Toggle ban status
   const toggleBan = (email) => {
     fetch(`/api/users/toggleBan`, {
       method: 'POST',
@@ -37,6 +40,7 @@ const UsersAdmin = () => {
     }).then(fetchUsers);
   };
 
+  // Render user list
   return (
     <FadeIn>
       <div className="user-admin-container">

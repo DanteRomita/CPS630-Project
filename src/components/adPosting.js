@@ -17,6 +17,7 @@ function NewPost({ user }) {
   const [selectedFile, setSelectedFile] = useState(null); // State for the selected file
   const [imageURL, setImageURL] = useState("");
 
+  // Uploads image from the ad posting to cloudinary
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("file", file);

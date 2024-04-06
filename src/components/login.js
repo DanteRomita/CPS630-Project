@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 function Login({ setUser }) {
 
+    // Function to set a cookie so the use's email and data is stored in the browser
     const setCookie = (name, value, days) => {
         let expires = "";
         if (days) {
@@ -20,6 +21,7 @@ function Login({ setUser }) {
             banned: false
         }
 
+        // Add user to database if it doesn't already exist or if it does exist and is not banned
         try {
             const response = await fetch("/api/newUser", {
                 method: "POST",
@@ -40,6 +42,7 @@ function Login({ setUser }) {
         }
     };
 
+    // Function to check if a user exists in the database and return their banned status
     const checkUserStatus = async (email) => {
         try {
             const response = await fetch("/api/users", {

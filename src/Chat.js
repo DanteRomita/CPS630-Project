@@ -8,6 +8,7 @@ function Chat({ user }) {
   const [messages, setMessages] = useState([]);
   const [ws, setWs] = useState(null);
 
+  // Function to display a new message
   useEffect(() => {
     const location = window.location
     const url = new URL(`wss://${location.host}`)
@@ -25,6 +26,7 @@ function Chat({ user }) {
     };
   }, [user.email]);
 
+  // Function to send a new message to the websocket to other users
   const sendMessage = () => {
     if (message === "") {
       alert("Please enter a message")
@@ -42,6 +44,7 @@ function Chat({ user }) {
     }
   };
 
+  // Function to display a new message
   const displayMessage = (message, sender, sender_name) => {
     const isCurrentUser = sender_name === user.email;
     console.log(isCurrentUser)
@@ -66,7 +69,7 @@ function Chat({ user }) {
               <p
                 key={index} style={{ color: msg.isCurrentUser ? "green" : "black" }}
               >
-                {msg.isCurrentUser ? "You" : msg.sender}: {msg.text}
+                {msg.isCurrentUser ? "You" : msg.sender}: {msg.text} {/* Display the message with the sender's name */}
               </p>
             ))}
           </div>

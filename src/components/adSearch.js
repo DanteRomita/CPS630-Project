@@ -84,7 +84,7 @@ function NewSearch() {
                   id="keywords"
                   type="text"
                   name="keywords"
-                  placeholder="Search..." // You can still have a text placeholder
+                  placeholder="Search..."
                   value={keywords}
                   onChange={(e) => setKeywords(e.target.value)}
                 />
