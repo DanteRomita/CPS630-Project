@@ -83,7 +83,7 @@ function Login({ setUser }) {
                             }
                             document.getElementById('signInButton').hidden = true;
                             // Set a cookie for the user
-                            setCookie('userEmail', response, 7); // Set a cookie named 'userEmail' that expires in 7 days
+                            setCookie('user', response, 7); // Set a cookie named 'userEmail' that expires in 7 days
                         } else {
                             alert('Your account has been banned. You cannot log in.');
                         }
