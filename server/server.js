@@ -1,23 +1,26 @@
 const express = require("express");
 const cors = require("cors");
-const http = require("http");
+const fs = require('fs');
+const https = require('https');
 const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
 
+const options = {
+  key: fs.readFileSync('/private.key'),
+  cert: fs.readFileSync('/certificate.crt')
+};
+
 const app = express();
 app.use(express.static("build"));
-const bin = http.createServer(app);
+const bin = https.createServer(options, app).listen(443, () => {
+  console.log('Server running on port 443');
+});
+
 const wss = new WebSocket.Server({ server: bin });
 
 const multer = require('multer');
 const storage = multer.memoryStorage(); // Use memory storage
 const upload = multer({ storage: storage });
-
-const { OAuth2Client } = require('google-auth-library');
-const CLIENT_ID = '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'http://localhost:3000/';
-const googleClient = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
 const cloudinary = require('cloudinary').v2;
 
@@ -121,22 +124,6 @@ app.get("/api/ads", async (req, res) => {
     res.status(500).send('Server error');
   }
 })
-
-app.get('/api/auth', (req, res) => {
-  const url = googleClient.generateAuthUrl({
-    access_type: 'offline',
-    scope: ['profile', 'email'],
-  });
-  res.redirect(url);
-});
-
-// Route to get all users
-app.get("/api/oauthToken", async (req, res) => {
-  res.json({
-    oauthtoken:
-      "166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com",
-  });
-});
 
 // Route to get all emails
 app.get("/api/users", async (req, res) => {
@@ -434,7 +421,7 @@ app.put("/api/ads/:id", async (req, res) => {
 
 // Start the server
 bin.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
 function formatDate(date) {
