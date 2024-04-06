@@ -1,33 +1,33 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require('fs');
-const https = require('https');
+const fs = require("fs");
+const https = require("https");
 const WebSocket = require("ws");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 
 const options = {
-  key: fs.readFileSync('private.key'),
-  cert: fs.readFileSync('certificate.crt')
+  key: fs.readFileSync("private.key"),
+  cert: fs.readFileSync("certificate.crt"),
 };
 
 const app = express();
 app.use(express.static("build"));
 const bin = https.createServer(options, app).listen(443, () => {
-  console.log('Server running on port 443');
+  console.log("Server running on port 443");
 });
 
 const wss = new WebSocket.Server({ server: bin });
 
-const multer = require('multer');
+const multer = require("multer");
 const storage = multer.memoryStorage(); // Use memory storage
 const upload = multer({ storage: storage });
 
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 
-cloudinary.config({ 
-  cloud_name: 'dp7bfbfix', 
-  api_key: '498813646762871', 
-  api_secret: 'EGZV76xI74yiPM9ufEASpFwqOrs' 
+cloudinary.config({
+  cloud_name: "dp7bfbfix",
+  api_key: "498813646762871",
+  api_secret: "EGZV76xI74yiPM9ufEASpFwqOrs",
 });
 
 // --- START OF GLOBAL CHAT ROOM SETUP ---
@@ -47,9 +47,10 @@ wss.on("connection", (ws) => {
 
 // --- START OF MONGODB SETUP ---
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const e = require("express");
-const uri = "mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri =
+  "mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 /* Connection String:
 mongodb+srv://danteromita:4GK4wWtNCQ0xau27@cluster0.eiwryal.mongodb.net/
@@ -61,7 +62,7 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 async function runWithRetry() {
@@ -72,16 +73,20 @@ async function runWithRetry() {
     try {
       await client.connect();
       await client.db("admin").command({ ping: 1 });
-      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      console.log(
+        "Pinged your deployment. You successfully connected to MongoDB!"
+      );
       return; // Exit the loop if the connection is successful
     } catch (error) {
-      console.error('Error connecting to MongoDB:', error);
+      console.error("Error connecting to MongoDB:", error);
       currentRetry++;
       if (currentRetry < maxRetries) {
-        console.log(`Retrying connection... (Retry ${currentRetry} of ${maxRetries})`);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
+        console.log(
+          `Retrying connection... (Retry ${currentRetry} of ${maxRetries})`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
       } else {
-        throw new Error('Failed to connect to MongoDB after multiple attempts');
+        throw new Error("Failed to connect to MongoDB after multiple attempts");
       }
     }
   }
@@ -104,38 +109,35 @@ let adSearchResults = undefined;
 app.get("/api/ads", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
     let ads = await collection.find({}).toArray();
 
     if (adSearchResults) {
       res.json(adSearchResults);
       // console.log(`Check get("/api/ads") to uncomment this. Number of search results: ${adSearchResults.length}`);
-    }
-    else {
+    } else {
       res.json(ads);
       //console.log(`Check get("/api/ads") to uncomment this. Number of ads: ${ads.length}`);
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
-})
+});
 
 // Route to get all emails
 app.get("/api/users", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('useremails');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("useremails");
 
     let emails = await collection.find({}).toArray();
     res.json(emails);
-
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
@@ -143,8 +145,8 @@ app.get("/api/users", async (req, res) => {
 app.get("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
 
     const ad = await collection.findOne({ _id: new ObjectId(req.params.id) });
     if (!ad) {
@@ -160,35 +162,38 @@ app.get("/api/ads/:id", async (req, res) => {
 // POST requests
 
 // Route to upload an image to Cloudinary
-app.post('/api/uploadImage', upload.single('file'), async (req, res) => {
+app.post("/api/uploadImage", upload.single("file"), async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload_stream({
-      upload_preset: 'twup5uph'
-    }, (error, result) => {
-      if (error) throw error;
-      res.json({ secure_url: result.secure_url });
-    });
+    const result = await cloudinary.uploader.upload_stream(
+      {
+        upload_preset: "twup5uph",
+      },
+      (error, result) => {
+        if (error) throw error;
+        res.json({ secure_url: result.secure_url });
+      }
+    );
 
     // Get the file buffer from multer
     const fileBuffer = req.file.buffer;
     // Use the buffer to upload the file to Cloudinary
     result.end(fileBuffer);
   } catch (error) {
-    console.error('Error uploading to Cloudinary:', error);
-    res.status(500).send('Error uploading image');
+    console.error("Error uploading to Cloudinary:", error);
+    res.status(500).send("Error uploading image");
   }
 });
 
 // POST requests
 
 // Route to create new users in the DB or check existing user
-app.post('/api/newUser', async (req, res) => {
+app.post("/api/newUser", async (req, res) => {
   const { email, admin, banned } = req.body;
 
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('useremails');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("useremails");
 
     // Check if the user already exists
     const existingUser = await collection.findOne({ email: email });
@@ -196,13 +201,13 @@ app.post('/api/newUser', async (req, res) => {
     if (existingUser) {
       // User already exists, don't add to the database
       console.log(`User ${email} already exists in the database.`);
-      res.status(409).json({ message: 'User already exists' }); // 409 Conflict
+      res.status(409).json({ message: "User already exists" }); // 409 Conflict
     } else {
       // User doesn't exist, create a new one
       let newUser = {
         email,
         admin,
-        banned
+        banned,
       };
 
       await collection.insertOne(newUser); // Save the new user to the database
@@ -216,58 +221,65 @@ app.post('/api/newUser', async (req, res) => {
 });
 
 // Toggle Admin Status
-app.post('/api/users/toggleAdmin', async (req, res) => {
+app.post("/api/users/toggleAdmin", async (req, res) => {
   const { email } = req.body;
 
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('useremails');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("useremails");
 
     const user = await collection.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Toggle the admin field
     user.admin = !user.admin;
-    await collection.updateOne({ email: email }, { $set: { admin: user.admin } });
+    await collection.updateOne(
+      { email: email },
+      { $set: { admin: user.admin } }
+    );
 
-    res.json({ message: 'Admin status updated', admin: user.admin });
+    res.json({ message: "Admin status updated", admin: user.admin });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
 // Toggle Ban Status
-app.post('/api/users/toggleBan', async (req, res) => {
+app.post("/api/users/toggleBan", async (req, res) => {
   const { email } = req.body;
 
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('useremails');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("useremails");
 
     const user = await collection.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Toggle the banned field
     user.banned = !user.banned;
-    await collection.updateOne({ email: email }, { $set: { banned: user.banned } });
+    await collection.updateOne(
+      { email: email },
+      { $set: { banned: user.banned } }
+    );
 
-    res.json({ message: 'Ban status updated', banned: user.banned });
+    res.json({ message: "Ban status updated", banned: user.banned });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
 // Route to create a new ad posting
-app.post('/api/ads', async (req, res) => {
-  let { title, description, price, type, image, location, userEmail } = req.body;
+app.post("/api/ads", async (req, res) => {
+  let { title, description, price, type, image, location, userEmail } =
+    req.body;
 
   try {
     let timePosted = formatDate(Date.now());
@@ -281,15 +293,15 @@ app.post('/api/ads', async (req, res) => {
       image,
       location,
       userEmail,
-      timePosted
+      timePosted,
     };
 
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
 
     await collection.insertOne(newPost); // Save the new ad posting to the database
-    console.log(`New Post Created`)
+    console.log(`New Post Created`);
 
     res.status(201).json(newPost); // Respond with the created ad posting
   } catch (err) {
@@ -349,24 +361,36 @@ app.post("/api/ads/search", async (req, res) => {
 
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
 
-    if (keywords === '' && userEmail === '' && location === '' && lowestPrice === '' && highestPrice === '' && ItemsWanted === false && ItemsForSale === false && AcademicServices === false) {
+    if (
+      keywords === "" &&
+      userEmail === "" &&
+      location === "" &&
+      lowestPrice === "" &&
+      highestPrice === "" &&
+      ItemsWanted === false &&
+      ItemsForSale === false &&
+      AcademicServices === false
+    ) {
       adSearchResults = await collection.find({}).toArray();
       // adSearchResults = undefined;
     } else {
       // Search for ads that match the provided keywords
-      adSearchResults = await collection.find({
-        $or: [
-          { title: { $regex: keywords, $options: "i" } },
-          { description: { $regex: keywords, $options: "i" } },
-        ],
-        userEmail: { $regex: userEmail, $options: "i" },
-        location: { $regex: location, $options: "i" },
-        price: priceRange.price,
-        type: { $in: category },
-      }).sort({ price: 1 }).toArray();
+      adSearchResults = await collection
+        .find({
+          $or: [
+            { title: { $regex: keywords, $options: "i" } },
+            { description: { $regex: keywords, $options: "i" } },
+          ],
+          userEmail: { $regex: userEmail, $options: "i" },
+          location: { $regex: location, $options: "i" },
+          price: priceRange.price,
+          type: { $in: category },
+        })
+        .sort({ price: 1 })
+        .toArray();
     }
     // console.log(`AD SEARCH RESULTS: ${adSearchResults}`);
     // console.log(`AD SEARCH RESULTS LENGTH: ${adSearchResults.length}`);
@@ -385,12 +409,12 @@ app.post("/api/ads/search", async (req, res) => {
 app.delete("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
 
     await collection.deleteOne({ _id: new ObjectId(req.params.id) });
 
-    res.status(200).json({ message: 'Ad deleted successfully' });
+    res.status(200).json({ message: "Ad deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -401,13 +425,13 @@ app.delete("/api/ads/:id", async (req, res) => {
 app.put("/api/ads/:id", async (req, res) => {
   try {
     await client.connect(); // Connect the client if not already connected
-    let database = client.db('sample_mflix');
-    let collection = database.collection('adpostings');
+    let database = client.db("sample_mflix");
+    let collection = database.collection("adpostings");
 
     const updatedAd = await collection.findOneAndUpdate(
       { _id: new ObjectId(req.params.id) },
       { $set: req.body },
-      { returnDocument: 'after' }
+      { returnDocument: "after" }
     );
     res.status(200).json(updatedAd);
   } catch (error) {
@@ -441,3 +465,7 @@ function formatDate(date) {
 
   return `${day} ${month} ${year}`;
 }
+
+app.use((req, res) => {
+  res.redirect("/");
+});

@@ -7,7 +7,7 @@ import AdDetail from "./AdDetail";
 import LoginButton from "./components/login";
 import LogoutButton from "./components/logout";
 import UserProfile from "./components/userProfile";
-import { BrowserRouter, Route, Routes, Link, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link, Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,8 +20,6 @@ import {
 function App() {
   const [user, setUser] = useState({});
   const [adminUsers, setAdminUsers] = useState([]);
-
-  const navigate = useNavigate();
 
   // Function to get the value of a cookie by name
   const getCookie = (name) => {
@@ -36,11 +34,10 @@ function App() {
   }
 
   useEffect(() => {
-    const user = getCookie('user');
+    const user = JSON.parse(getCookie('user'));
+    console.log(user);
     if (user) {
       setUser(user);
-    }else{
-      navigate('/');
     }
 
     fetch("/api/users")

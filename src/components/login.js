@@ -50,7 +50,7 @@ function Login({ setUser }) {
             });
             const users = await response.json();
             const user = users.find(user => user.email === email);
-            
+
             if (user) {
                 // User exists, return their banned status
                 return { exists: true, banned: user.banned };
@@ -61,7 +61,7 @@ function Login({ setUser }) {
         } catch (error) {
             console.error("Error fetching users:", error.message);
             // Default to allow login in case of error but consider user does not exist
-            return { exists: false, banned: false }; 
+            return { exists: false, banned: false };
         }
     };
 
@@ -83,7 +83,7 @@ function Login({ setUser }) {
                             }
                             document.getElementById('signInButton').hidden = true;
                             // Set a cookie for the user
-                            setCookie('user', response, 7); // Set a cookie named 'userEmail' that expires in 7 days
+                            setCookie('user', JSON.stringify(response), 7); // Set a cookie named 'userEmail' that expires in 7 days
                         } else {
                             alert('Your account has been banned. You cannot log in.');
                         }
