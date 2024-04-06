@@ -3,6 +3,16 @@ import { jwtDecode } from 'jwt-decode';
 
 function Login({ setUser }) {
 
+    const setCookie = (name, value, days) => {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+
     const handleNewUser = async (user) => {
         const formData = {
             email: user.email,
@@ -43,7 +53,6 @@ function Login({ setUser }) {
             
             if (user) {
                 // User exists, return their banned status
-                console.log(user)
                 return { exists: true, banned: user.banned };
             } else {
                 // User does not exist
@@ -64,7 +73,6 @@ function Login({ setUser }) {
                 size="medium"
                 onSuccess={async (credentialResponse) => {
                     let response = jwtDecode(credentialResponse.credential);
-                    console.log(response);
                     const domain = response.email.split('@')[1];
                     if (domain === 'torontomu.ca' || domain === 'ryerson.ca') {
                         const { exists, banned } = await checkUserStatus(response.email);
@@ -74,6 +82,8 @@ function Login({ setUser }) {
                                 handleNewUser(response); // Call this only if user does not exist
                             }
                             document.getElementById('signInButton').hidden = true;
+                            // Set a cookie for the user
+                            setCookie('userEmail', response.email, 7); // Set a cookie named 'userEmail' that expires in 7 days
                         } else {
                             alert('Your account has been banned. You cannot log in.');
                         }

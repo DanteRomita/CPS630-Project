@@ -6,14 +6,14 @@ const WebSocket = require("ws");
 const { ObjectId } = require('mongodb');
 
 const options = {
-  key: fs.readFileSync('/private.key'),
-  cert: fs.readFileSync('/certificate.crt')
+  key: fs.readFileSync('private.key'),
+  cert: fs.readFileSync('certificate.crt')
 };
 
 const app = express();
 app.use(express.static("build"));
-const bin = https.createServer(options, app).listen(443, () => {
-  console.log('Server running on port 443');
+const bin = https.createServer(options, app).listen(3001, () => {
+  console.log('Server running on port 3001');
 });
 
 const wss = new WebSocket.Server({ server: bin });
@@ -418,11 +418,6 @@ app.put("/api/ads/:id", async (req, res) => {
 });
 
 // --- END OF ADMIN ACTIONS ---
-
-// Start the server
-bin.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
 function formatDate(date) {
   let d = new Date(date);

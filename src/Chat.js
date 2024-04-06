@@ -9,7 +9,9 @@ function Chat({ user }) {
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const websocket = new WebSocket("ws://localhost:3001");
+    const location = window.location
+    const url = new URL(`wss://${location.host}`)
+    const websocket = new WebSocket(url);
 
     websocket.onmessage = event => {
       const messageData = JSON.parse(event.data);
