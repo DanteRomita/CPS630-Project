@@ -13,6 +13,12 @@ const multer = require('multer');
 const storage = multer.memoryStorage(); // Use memory storage
 const upload = multer({ storage: storage });
 
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = '166802367480-rqq3532mvaqamifrp1ouqqjl6f4a1god.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
+const REDIRECT_URI = 'http://localhost:3000/';
+const googleClient = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({ 
@@ -115,6 +121,14 @@ app.get("/api/ads", async (req, res) => {
     res.status(500).send('Server error');
   }
 })
+
+app.get('/api/auth', (req, res) => {
+  const url = googleClient.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['profile', 'email'],
+  });
+  res.redirect(url);
+});
 
 // Route to get all users
 app.get("/api/oauthToken", async (req, res) => {
