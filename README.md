@@ -1,80 +1,38 @@
-# Overview
+# Metropolitan Market Setup and Deployment Guide
 
-# Prerequisites
+Metropolitan Market is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) application. As such, the step-by-step instructions for setting up and deploying a full-stack MERN application are mostly standardized, with a few modifications shown below.
 
-# Installation
+[https://beam.seven88.racing:55560/](https://beam.seven88.racing:55560/) (Currently Inactive Due to Server Costs!)
+## Local Project Setup
+### 1. Pre-requisites:
+- Ensure you have Node.js and npm installed on your system.
+- A stable internet/ethernet connection.
+### 2. Download the full-stack project
+Download the project as a .zip or pull the code to a location of your choice on your machine.
+### 3. Install dependencies:
+Navigate into the project directory and run:
+`cd CPS630-Project`
+`npm install --force`
+### 4. Run the backend and frontend locally
+Using the “local deployment” code folder…
+`nodemon server/server.js`
 
-# Deployment
+---
 
-# ----- END OF INSTRUCTIONS -----
+If nodemon does not work then use:
+`node server/server.js`
+  
+In another terminal use:
+`npm start`
+### 5. Enjoy!
+The react app should be running on `localhost:3000` and the server should be running on `localhost:3001`
+# Deploy the app on a server
+1. Using the “server deployment” code folder…
+2. **Install Docker:** Ensure Docker is installed on your server.
+3. **Prepare Dockerfile** found in the repo
+4. **Build Docker Image**: Run docker build -t your-app-name . in your project directory.
+5. **Push Docker Image (Optional)**: If built locally, push the image to a Docker registry using docker push your-dockerhub-username/your-app-name.
+6. **Pull and Run on Server**: If pushed to a registry, pull the image on your server with docker pull your-dockerhub-username/your-app-name, then run it using docker run -d -p 80:3001 your-app-name.
+7. **Verify Deployment**: Access your server's IP or domain in a browser to check the app.
 
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[https://beam.seven88.racing:55560/](https://beam.seven88.racing:55560/) (Currently Inactive Due to Server Costs!)
